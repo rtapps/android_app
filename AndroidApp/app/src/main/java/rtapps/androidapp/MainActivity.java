@@ -9,8 +9,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.BottomBarFragment;
+import com.roughike.bottombar.OnTabSelectedListener;
 
+public class MainActivity extends AppCompatActivity {
+    private BottomBar bottomBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,14 +22,25 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        bottomBar = BottomBar.attach(this, savedInstanceState);
+
+        bottomBar.setFragmentItems(getFragmentManager(), R.id.fragmentContainer,
+                new BottomBarFragment(InboxFragment.newInstance("Inbox under construction."), R.mipmap.btn_dialog_info, "Inbox"),
+                new BottomBarFragment(StoreInfoFragment.newInstance("Store info under construction."), R.mipmap.btn_dialog_info, "Store Info"),
+                new BottomBarFragment(StoreWebsiteFragment.newInstance("Website page under construction."), R.mipmap.btn_dialog_info, "Website")
+        );
+
+
+        bottomBar.setOnItemSelectedListener(new OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onItemSelected(int position) {
+                switch (position) {
+                    case 0:
+                        // Item 1 Selected
+                }
             }
         });
+
     }
 
     @Override
