@@ -49,7 +49,7 @@ public class StoreWebsiteFragment extends WebViewFragment {
         WebSettings webSettings = webView.getSettings();
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setBuiltInZoomControls(false);
         webView.getSettings().setPluginState(WebSettings.PluginState.ON);
 
 
