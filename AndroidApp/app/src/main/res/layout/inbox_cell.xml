@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="right"
+    android:layoutDirection="rtl"
     android:orientation="horizontal"
     tools:context="com.example.tazo.newbottom.Inbox.InboxFragment">
 
     <ImageView
         android:id="@+id/inbox_item_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="5dp"
         android:src="@drawable/animal_king_logo" />
 
@@ -33,19 +34,19 @@
             android:layout_height="wrap_content"
             android:textDirection="anyRtl"
             android:textStyle="bold"
+            android:textSize="17sp"
             tools:text="מבצע החודש במלך החיות"
             />
 
         <TextView
             android:id="@+id/inbox_item_content"
             android:layout_gravity="right"
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textDirection="anyRtl"
             tools:text="מבצע החודש במלך החיות"
             />
-
-
 
     </LinearLayout>
 

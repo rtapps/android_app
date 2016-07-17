@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="info_store_name">מלך החיות</string>
+    <string name="info_subtitle">הרשת המובילה למזון וציוד לבעלי חיים</string>
+
+    <string name="info_store1_name">סניף ירושלים</string>
+    <string name="info_store1_address">רחוב אורוגואי 1</string>
+
+
+    <string name="info_store2_name">סניף תל אביב</string>
+    <string name="info_store2_address">שלמה המלך 1, תל אביב</string>
+
+</resources>

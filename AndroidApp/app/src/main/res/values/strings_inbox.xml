@@ -3,7 +3,7 @@
     <string name="title1">מבצע לשבועיים בלבד!</string>
     <string name="content1">קנה מזרקת מים לחתול ב 219 שח קבל לבחירתך חול מתגבש פטקס 18 קג או 4 חבילות חול קריסטל 3.8 ליטר מתנה</string>
 
-    <string name="title2">מעדכון</string>
+    <string name="title2">עדכון</string>
     <string name="content2">בחול המועד פסח נהיה סגורים , חג שמח !!!</string>
 
     <string name="content3">קבל\n לחתול 6.8 ק"ג\n אקאנה ריג'ינאל (דגים)</string>
@@ -12,6 +12,14 @@
 
     <string name="default2">מבצע לחברי מועדון בלבד</string>
     <string name="default3">מ20% הנחה על כל החנות</string>
+
+
+
+       <string name="content33">חול פטקס (קופסא) לחתול 10 ק"ג 2 יח' ב 99 ש"ח</string>
+
+
+
+
 
 
 </resources>

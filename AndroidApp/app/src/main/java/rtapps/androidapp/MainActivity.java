@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
         bottomBar = BottomBar.attach(this, savedInstanceState);
 
         bottomBar.setFragmentItems(getFragmentManager(), R.id.fragmentContainer,
-                new BottomBarFragment(new InboxFragment(), R.mipmap.btn_dialog_info, "Inbox"),
-                new BottomBarFragment(StoreInfoFragment.newInstance("Store info under construction."), R.mipmap.btn_dialog_info, "Store Info"),
-                new BottomBarFragment(StoreWebsiteFragment.newInstance("Website page under construction."), R.mipmap.btn_dialog_info, "Website")
+                new BottomBarFragment(new InboxFragment(), R.drawable.mail, "Inbox"),
+                new BottomBarFragment(StoreInfoFragment.newInstance("Store info under construction."), R.drawable.info, "Store Info"),
+                new BottomBarFragment(StoreWebsiteFragment.newInstance("Website page under construction."), R.drawable.globus, "Website")
         );
 
 

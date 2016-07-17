@@ -1,5 +1,8 @@
 package Inbox;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -18,6 +21,12 @@ import rtapps.androidapp.R;
  */
 public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    Activity context;
+
+    public InboxAdapter(Activity c){
+        this.context = c;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_cell, parent, false);
@@ -30,22 +39,36 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         switch (position){
 
-            case 1:
+            case 0:
                 ((ViewHolder) holder).title.setText(R.string.title1);
                 ((ViewHolder) holder).content.setText(R.string.content1);
                 ((ViewHolder) holder).image.setImageResource(R.drawable.item1);
                 break;
-            case 2:
+            case 1:
                 ((ViewHolder) holder).title.setText(R.string.title2);
                 ((ViewHolder) holder).content.setText(R.string.content2);
                 ((ViewHolder) holder).image.setImageResource(R.drawable.animal_king_logo);
                 break;
-            case 3:
+            case 2:
                 ((ViewHolder) holder).title.setText(R.string.title1);
                 ((ViewHolder) holder).content.setText(R.string.content3);
                 ((ViewHolder) holder).image.setImageResource(R.drawable.food);
                 break;
-            case 0:
+            case 3:
+                ((ViewHolder) holder).title.setText(R.string.title1);
+                ((ViewHolder) holder).content.setText(R.string.content33);
+                ((ViewHolder) holder).image.setImageResource(R.drawable.mvza1);
+                break;
+            case 4:
+                ((ViewHolder) holder).title.setText(R.string.title1);
+                ((ViewHolder) holder).content.setText(R.string.content3);
+                ((ViewHolder) holder).image.setImageResource(R.drawable.mvza2);
+                break;
+            case 5:
+                ((ViewHolder) holder).title.setText(R.string.title1);
+                ((ViewHolder) holder).content.setText(R.string.content3);
+                ((ViewHolder) holder).image.setImageResource(R.drawable.mvza3);
+                break;
             default:
                 ((ViewHolder) holder).title.setText(R.string.default2);
                 ((ViewHolder) holder).content.setText(R.string.default3);
@@ -56,7 +79,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 30;
+        return 6;
     }
 
 
@@ -74,13 +97,12 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             content = (TextView) view.findViewById(R.id.inbox_item_content);
             image = (ImageView) view.findViewById(R.id.inbox_item_image);
 
-//            view.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Logger.get().debug(ILogger.eTag.ACTIVITIES, "ContactsAdapter.ViewHolder:onClick() invoked. Contact hash: " + contactHash);
-//                    new RetrieveContactDataTask().execute(contactHash);
-//                }
-//            });
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   // context.startActivity(new Intent(context , adPage.class));
+                }
+            });
 
 
         }

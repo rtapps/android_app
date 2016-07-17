@@ -36,7 +36,7 @@ public class InboxFragment extends Fragment {
         // Inflate the layout for this fragment
         View v=  inflater.inflate(R.layout.fragment_inbox, container, false);
 
-        Toolbar toolbar = (Toolbar) v.findViewById(R.id.mainToolBar);
+        //Toolbar toolbar = (Toolbar) v.findViewById(R.id.mainToolBar);
         //set toolbar appearance
 
         recyclerView = (RecyclerView) v.findViewById(R.id.inbox_recycler_view);
@@ -44,7 +44,7 @@ public class InboxFragment extends Fragment {
         RecyclerView.LayoutManager layoutManger = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManger);
 
-        recyclerView.setAdapter(new InboxAdapter());
+        recyclerView.setAdapter(new InboxAdapter(getActivity()));
 
         return v;
     }
