@@ -1,7 +1,6 @@
-package Inbox;
+package inbox;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
@@ -12,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import java.util.logging.Logger;
-
+import network.NetworkAPI;
+import network.responses.AllMessagesResponse;
 import rtapps.androidapp.R;
 
 /**
@@ -30,12 +29,22 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_cell, parent, false);
+
+        ///
+
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context , MessageContentActivity.class );
+                intent.putExtra("NUM" , position);
+                context.startActivity(intent);
+            }
+        });
 
         switch (position){
 
@@ -89,6 +98,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public final TextView title;
         public final TextView content;
         public final ImageView image;
+        public final View button;
 
 
         public ViewHolder(View view) {
@@ -96,6 +106,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             title = (TextView) view.findViewById(R.id.inbox_item_title);
             content = (TextView) view.findViewById(R.id.inbox_item_content);
             image = (ImageView) view.findViewById(R.id.inbox_item_image);
+            button = view.findViewById(R.id.inbox_cell_button);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

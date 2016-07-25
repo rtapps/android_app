@@ -1,13 +1,7 @@
 package rtapps.androidapp;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,13 +16,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
       //  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
        // setSupportActionBar(toolbar);
 
         bottomBar = BottomBar.attach(this, savedInstanceState);
 
         bottomBar.setFragmentItems(getFragmentManager(), R.id.fragmentContainer,
-                new BottomBarFragment(new InboxFragment(), R.drawable.mail, "Inbox"),
+                new BottomBarFragment(new InboxFragment(), R.drawable.mail, "inbox"),
                 new BottomBarFragment(StoreInfoFragment.newInstance("Store info under construction."), R.drawable.info, "Store Info"),
                 new BottomBarFragment(StoreWebsiteFragment.newInstance("Website page under construction."), R.drawable.globus, "Website")
         );
