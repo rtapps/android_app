@@ -1,4 +1,4 @@
-package inbox;
+package rtapps.app.inbox;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rtapps.kingofthejungle.R;
 
-import network.NetworkAPI;
-import network.responses.AllMessagesResponse;
-import rtapps.androidapp.R;
 
 /**
  * Created by tazo on 15/07/2016.

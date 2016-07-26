@@ -1,4 +1,4 @@
-package inbox;
+package rtapps.app.inbox;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -8,23 +8,12 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
+import com.rtapps.kingofthejungle.R;
 
-import java.net.URL;
-import java.util.logging.Logger;
-
-import javax.security.auth.callback.Callback;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import network.NetworkAPI;
-import network.responses.AllMessagesResponse;
+import rtapps.app.network.NetworkAPI;
+import rtapps.app.network.responses.AllMessagesResponse;
 
 import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import rtapps.androidapp.R;
 
 /**
  * Created by tazo on 21/07/2016.

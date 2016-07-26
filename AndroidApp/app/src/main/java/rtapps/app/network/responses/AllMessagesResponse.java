@@ -1,4 +1,4 @@
-package network.responses;
+package rtapps.app.network.responses;
 
 import java.util.List;
 

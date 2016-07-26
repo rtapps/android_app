@@ -1,4 +1,4 @@
-package inbox;
+package rtapps.app.inbox;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

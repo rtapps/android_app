@@ -1,4 +1,4 @@
-package rtapps.androidapp;
+package rtapps.app.ui;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import inbox.InboxAdapter;
+import com.rtapps.kingofthejungle.R;
+
+import rtapps.app.inbox.InboxAdapter;
 
 
 public class InboxFragment extends Fragment {

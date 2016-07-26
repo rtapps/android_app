@@ -1,4 +1,4 @@
-package rtapps.androidapp;
+package rtapps.app;
 
 import org.junit.Test;
 

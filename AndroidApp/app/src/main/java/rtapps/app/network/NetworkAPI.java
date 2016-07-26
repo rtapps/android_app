@@ -1,8 +1,6 @@
-package network;
+package rtapps.app.network;
 
-import javax.security.auth.callback.Callback;
-
-import network.responses.AllMessagesResponse;
+import rtapps.app.network.responses.AllMessagesResponse;
 import retrofit.http.GET;
 
 

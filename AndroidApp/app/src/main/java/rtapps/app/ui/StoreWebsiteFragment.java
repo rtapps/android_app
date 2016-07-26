@@ -1,10 +1,7 @@
-package rtapps.androidapp;
+package rtapps.app.ui;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +9,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebViewFragment;
+
+import com.rtapps.kingofthejungle.R;
 
 
 public class StoreWebsiteFragment extends WebViewFragment {

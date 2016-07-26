@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "695706498713",
+    "project_id": "firebase-king-of-the-jungle"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695706498713:android:569184c6c4f59502",
+        "android_client_info": {
+          "package_name": "com.rtapps.kingofthejungle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvGURTwghij_2t67fTXgZ8MyXqXpkNf40"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
