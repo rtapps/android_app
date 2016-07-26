@@ -30,6 +30,10 @@ import com.rtapps.kingofthejungle.R;
 
 import java.io.IOException;
 
+import retrofit.RestAdapter;
+import rtapps.app.config.Configurations;
+import rtapps.app.network.NetworkAPI;
+
 public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
@@ -56,8 +60,9 @@ public class RegistrationIntentService extends IntentService {
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
 
-            // TODO: Implement this method to send any registration to your app's servers.
-            sendRegistrationToServer(token);
+
+            String pushTokenId = sharedPreferences.getString(GcmPrefrences.PUSH_TOKEN_ID,null);
+            sendRegistrationToServer(token, pushTokenId);
 
             // Subscribe to topic channels
             subscribeTopics(token);
@@ -86,8 +91,18 @@ public class RegistrationIntentService extends IntentService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String token) {
-        // Add custom implementation, as needed.
+    private void sendRegistrationToServer(String token, String pushTokenId) {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Configurations.BASE_URL)
+                .build();
+
+        final NetworkAPI yourUsersApi = restAdapter.create(NetworkAPI.class);
+        if (pushTokenId == null){
+            yourUsersApi.updatePushToken(Configurations.APPLICATION_ID, token);
+        }
+        else{
+            yourUsersApi.updatePushToken(Configurations.APPLICATION_ID, token, pushTokenId);
+        }
     }
 
     /**

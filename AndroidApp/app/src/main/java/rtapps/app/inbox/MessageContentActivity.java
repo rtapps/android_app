@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.rtapps.kingofthejungle.R;
 
+import rtapps.app.config.Configurations;
 import rtapps.app.network.NetworkAPI;
 import rtapps.app.network.responses.AllMessagesResponse;
 
@@ -101,18 +102,16 @@ public class MessageContentActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String BASE_URL = "http://54.175.240.176:8080";
-
 
             RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint(BASE_URL)
+                    .setEndpoint(Configurations.BASE_URL)
                     .build();
 
 
             final NetworkAPI yourUsersApi = restAdapter.create(NetworkAPI.class);
 
 
-            AllMessagesResponse dd = yourUsersApi.getAllMessages();
+            AllMessagesResponse dd = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID,0);
             Log.d("magic", dd.getLastUpdateTime() + "");
 
 

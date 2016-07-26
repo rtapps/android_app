@@ -1,7 +1,17 @@
 package rtapps.app.network;
 
+import com.google.gson.JsonObject;
+
+import retrofit.http.Body;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.Header;
+import retrofit.http.POST;
+import retrofit.http.PUT;
+import retrofit.http.Path;
+import retrofit.http.Field;
 import rtapps.app.network.responses.AllMessagesResponse;
 import retrofit.http.GET;
+import rtapps.app.network.responses.PushToken;
 
 
 /**
@@ -9,14 +19,19 @@ import retrofit.http.GET;
  */
 public interface NetworkAPI {
 
-//    @GET("/contacts/1/addressbooks/{user_key}")
-//    AllMessagesResponse getAllMessages(@Header("Authorization") String oauthToken,
-//                                @Path("user_key") String userKey, @Query("lastModified") String lastModified);
+    @GET("/messages?applicationId={applicationId}&fromTime={fromTime}")
+    AllMessagesResponse  getAllMessages(@Path("applicationId") String applicationId,
+                                        @Path("fromTime")long fromTime);
 
-    //@GET("/rtapps/TestServlet")
-    //AllMessagesResponse getAllMessages(@Query("lastModified") String lastModified);
+    @FormUrlEncoded
+    @POST("/pushToken")
+    PushToken updatePushToken(@Field("applicationId") String applicationId,
+                              @Field("pushToken")String pushToken);
+    @FormUrlEncoded
+    @POST("/pushToken")
+    PushToken updatePushToken(@Field("applicationId") String applicationId,
+                              @Field("pushToken")String pushToken,
+                              @Field("pushTokenId")String pushTokenId);
 
-    @GET("/messages?applicationId=1234&fromTime=0")
-    AllMessagesResponse  getAllMessages();
 
 }
