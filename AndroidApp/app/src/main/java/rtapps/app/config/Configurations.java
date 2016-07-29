@@ -9,4 +9,8 @@ public class Configurations {
 
     public static final String APPLICATION_ID = "1234";
 
+    public static final String OS_TYPE = "android";
+
+    public static final String DEVICE_MODEL_TYPE = android.os.Build.MODEL;
+
 }

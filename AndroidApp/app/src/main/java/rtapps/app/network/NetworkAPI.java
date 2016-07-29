@@ -26,12 +26,16 @@ public interface NetworkAPI {
     @FormUrlEncoded
     @POST("/pushToken")
     PushToken updatePushToken(@Field("applicationId") String applicationId,
-                              @Field("pushToken")String pushToken);
+                              @Field("pushToken")String pushToken,
+                              @Field("osType")String osType,
+                              @Field("deviceModelType")String deviceModelType);
     @FormUrlEncoded
     @POST("/pushToken")
     PushToken updatePushToken(@Field("applicationId") String applicationId,
                               @Field("pushToken")String pushToken,
-                              @Field("pushTokenId")String pushTokenId);
+                              @Field("pushTokenId")String pushTokenId,
+                              @Field("osType")String osType,
+                              @Field("deviceModelType")String deviceModelType);
 
 
 }

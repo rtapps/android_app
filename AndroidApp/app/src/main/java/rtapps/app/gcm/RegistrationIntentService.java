@@ -29,23 +29,27 @@ import com.google.android.gms.iid.InstanceID;
 import com.rtapps.kingofthejungle.R;
 
 import java.io.IOException;
+import java.util.Date;
 
 import retrofit.RestAdapter;
 import rtapps.app.config.Configurations;
 import rtapps.app.network.NetworkAPI;
+import rtapps.app.network.responses.PushToken;
 
 public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
+    private static final long ONE_WEEK_IN_MILLIS = 1000 * 60 * 60 * 24 * 14;
 
+    SharedPreferences sharedPreferences;
     public RegistrationIntentService() {
         super(TAG);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
             // [START register_for_gcm]
@@ -60,9 +64,7 @@ public class RegistrationIntentService extends IntentService {
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
 
-
-            String pushTokenId = sharedPreferences.getString(GcmPrefrences.PUSH_TOKEN_ID,null);
-            sendRegistrationToServer(token, pushTokenId);
+            sendRegistrationToServer(token);
 
             // Subscribe to topic channels
             subscribeTopics(token);
@@ -91,18 +93,37 @@ public class RegistrationIntentService extends IntentService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String token, String pushTokenId) {
+    private void sendRegistrationToServer(String token) {
+        Date now = new Date();
+        long lastUpdateTime = sharedPreferences.getLong(GcmPrefrences.LAST_REFRESH_TOKEN_UPDATE, 0);
+
+        String lastToken = sharedPreferences.getString(GcmPrefrences.PUSH_TOKEN,"");
+
+        if (lastToken.equals(token) && (now.getTime() - lastUpdateTime) < ONE_WEEK_IN_MILLIS){
+            return;
+        }
+
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(Configurations.BASE_URL)
                 .build();
 
         final NetworkAPI yourUsersApi = restAdapter.create(NetworkAPI.class);
+
+        PushToken pushToken;
+        String pushTokenId = sharedPreferences.getString(GcmPrefrences.PUSH_TOKEN_ID,null);
         if (pushTokenId == null){
-            yourUsersApi.updatePushToken(Configurations.APPLICATION_ID, token);
+            pushToken = yourUsersApi.updatePushToken(Configurations.APPLICATION_ID, token, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
+            if (pushToken != null) {
+                sharedPreferences.edit().putString(GcmPrefrences.PUSH_TOKEN_ID, pushToken.getId()).apply();
+            }
         }
         else{
-            yourUsersApi.updatePushToken(Configurations.APPLICATION_ID, token, pushTokenId);
+            yourUsersApi.updatePushToken(Configurations.APPLICATION_ID, token, pushTokenId, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
         }
+
+        sharedPreferences.edit().putLong(GcmPrefrences.LAST_REFRESH_TOKEN_UPDATE, now.getTime()).apply();
+        sharedPreferences.edit().putString(GcmPrefrences.PUSH_TOKEN,token).apply();
+
     }
 
     /**
