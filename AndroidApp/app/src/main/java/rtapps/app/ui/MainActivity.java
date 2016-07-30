@@ -21,6 +21,7 @@ import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.gcm.GcmPrefrences;
 import rtapps.app.gcm.RegistrationIntentService;
+import rtapps.app.inbox.MessageContentActivity;
 
 public class MainActivity extends AppCompatActivity {
     private BottomBar bottomBar;
@@ -36,13 +37,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         bottomBar = BottomBar.attach(this, savedInstanceState);
 
 
         bottomBar.setFragmentItems(getSupportFragmentManager(), R.id.fragmentContainer,
                 new BottomBarFragment(new InboxFragment(), R.drawable.mail, R.string.tab_sales),
-                new BottomBarFragment(new CatalogFragment()  , R.drawable.globus, R.string.tab_catalog),
+                new BottomBarFragment(new CatalogFragment(), R.drawable.globus, R.string.tab_catalog),
                 new BottomBarFragment(StoreInfoFragment.newInstance("Website page under construction."), R.drawable.info, R.string.tab_store_info)
                 //new BottomBarFragment(StoreWebsiteFragment.newInstance("Website page under construction."), R.drawable.globus, R.string.tab_website),
         );

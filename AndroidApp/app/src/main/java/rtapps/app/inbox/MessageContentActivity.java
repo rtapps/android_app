@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import rtapps.app.network.NetworkAPI;
 import rtapps.app.network.responses.AllMessagesResponse;
 
 import retrofit.RestAdapter;
+import rtapps.app.notifications.NotificationsManager;
 
 /**
  * Created by tazo on 21/07/2016.
@@ -34,9 +36,6 @@ public class MessageContentActivity extends AppCompatActivity {
         TextView content = (TextView) findViewById(R.id.content_body);
         ImageView image = (ImageView) findViewById(R.id.content_image);
 
-        //String BASE_URL = "http://54.175.240.176:8080/";
-        String BASE_URL = "http://www.mocky.io/v2/57967c27260000f80517f995";
-
 
 //        Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl(BASE_URL)
@@ -49,7 +48,6 @@ public class MessageContentActivity extends AppCompatActivity {
 
 //        Log.d("magic" , response.getId() + "");
         ///
-
 
 
         new RetrieveFeedTask().execute();
@@ -111,10 +109,9 @@ public class MessageContentActivity extends AppCompatActivity {
             final NetworkAPI yourUsersApi = restAdapter.create(NetworkAPI.class);
 
 
-            AllMessagesResponse dd = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID,0);
+            AllMessagesResponse dd = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID, 0);
             Log.d("magic", dd.toString());
-
-
+            
             return null;
         }
 

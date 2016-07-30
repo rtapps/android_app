@@ -1,33 +1,24 @@
 package rtapps.app.ui;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Button;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.rtapps.kingofthejungle.R;
 
 import java.util.HashMap;
-import java.util.logging.Logger;
 
-import rtapps.app.catalog.ChildAnimationExample;
+import rtapps.app.notifications.NotificationsManager;
 
 
 /**
@@ -35,6 +26,7 @@ import rtapps.app.catalog.ChildAnimationExample;
  */
 public class CatalogFragment extends Fragment implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
+    public static int i = 0;
     private SliderLayout slider;
     View v;
 
@@ -51,6 +43,16 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
         slider = (SliderLayout)v.findViewById(R.id.slider);
 
         initSlider();
+
+        Button b = (Button)v.findViewById(R.id.notyButton);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotificationsManager a = new NotificationsManager(getActivity());
+                a.createNewSaleNotification(22 , "tittlae" + i++ , "message");
+            }
+        });
 
         return v;
     }
