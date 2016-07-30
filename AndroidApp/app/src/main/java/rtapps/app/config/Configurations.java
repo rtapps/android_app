@@ -13,4 +13,5 @@ public class Configurations {
 
     public static final String DEVICE_MODEL_TYPE = android.os.Build.MODEL;
 
+    public static final String APPLICATION_NAME = "מלך החיות";
 }

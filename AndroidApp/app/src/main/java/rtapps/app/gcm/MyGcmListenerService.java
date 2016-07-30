@@ -27,7 +27,9 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.rtapps.kingofthejungle.R;
 
+import rtapps.app.config.Configurations;
 import rtapps.app.ui.MainActivity;
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -72,7 +74,8 @@ public class MyGcmListenerService extends GcmListenerService {
     // [END receive_message]
 
     /**
-     * Create and show a simple notification containing the received GCM message.
+     * Create and show a simple
+     * notification containing the received GCM message.
      *
      * @param message GCM message received.
      */
@@ -85,8 +88,8 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 //TODO set small icon
-                //.setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle("GCM Message")
+                .setSmallIcon(R.drawable.ic_stat_image_tag_faces)
+                .setContentTitle(Configurations.APPLICATION_NAME)
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

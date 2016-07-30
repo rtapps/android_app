@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import rtapps.app.network.NetworkAPI;
 import rtapps.app.network.responses.AllMessagesResponse;
 
 import retrofit.RestAdapter;
-import rtapps.app.notifications.NotificationsManager;
 
 /**
  * Created by tazo on 21/07/2016.

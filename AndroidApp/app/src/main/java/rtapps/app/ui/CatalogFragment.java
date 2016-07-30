@@ -18,7 +18,7 @@ import com.rtapps.kingofthejungle.R;
 
 import java.util.HashMap;
 
-import rtapps.app.notifications.NotificationsManager;
+import rtapps.app.gcm.NotificationsManager;
 
 
 /**

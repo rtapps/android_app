@@ -1,4 +1,4 @@
-package rtapps.app.notifications;
+package rtapps.app.gcm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
