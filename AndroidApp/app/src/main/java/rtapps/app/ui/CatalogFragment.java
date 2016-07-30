@@ -1,8 +1,11 @@
 package rtapps.app.ui;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +21,13 @@ import com.rtapps.kingofthejungle.R;
 
 import java.util.HashMap;
 
+
 import rtapps.app.gcm.NotificationsManager;
+
+import rtapps.app.data_bases.DataBaseHelper;
+import rtapps.app.network.responses.AllMessagesResponse;
+
+
 
 
 /**
@@ -54,6 +63,16 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
             }
         });
 
+        DataBaseHelper helper = new DataBaseHelper(getActivity());
+
+        AllMessagesResponse.Message f = new AllMessagesResponse.Message("1255" ,4444d ,456 , "sadfsdf" , "body" , "http" , 123124234234d, true);
+
+
+
+        helper.insertNewMessage(f);
+
+        Log.d("catalog" , "DB count = " + helper.getAllMessagesFromDB().getCount());
+
         return v;
     }
 
@@ -61,9 +80,9 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
 
         HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
 
-        file_maps.put("",R.drawable.flaierdog1);
-        file_maps.put("",R.drawable.flaierdog2);
-        file_maps.put("", R.drawable.flaiercat1);
+        file_maps.put("1",R.drawable.flaierdog1);
+        file_maps.put("2",R.drawable.flaierdog2);
+        file_maps.put("3", R.drawable.flaiercat1);
 
         for(String name : file_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(getActivity());//new TextSliderView(getActivity());
