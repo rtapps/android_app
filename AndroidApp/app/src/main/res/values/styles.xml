@@ -7,6 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="AppThemeRTApps" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#44C8F5</item>
+        <item name="colorPrimaryDark">#06b8f4</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="colorAccent">#0000ff</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+    </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

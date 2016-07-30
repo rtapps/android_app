@@ -2,6 +2,10 @@
     <string name="app_name">AndroidApp</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="tab_sales">מבצעים</string>
+    <string name="tab_store_info">מידע</string>
+    <string name="tab_website">האתר</string>
+    <string name="tab_catalog">קטלוג</string>
+
 </resources>

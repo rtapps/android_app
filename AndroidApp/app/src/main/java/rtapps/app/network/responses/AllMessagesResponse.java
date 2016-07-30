@@ -55,4 +55,17 @@ public class AllMessagesResponse {
         }
 
     }
+
+    public String toString(){
+        String allMessagesString = "";
+        for(int i = 0 ; i < messageList.size() ; i++){
+            allMessagesString +=
+                    messageList.get(i).id + "" +
+                    messageList.get(i).applicationId + " " +
+                    messageList.get(i).header + " " +messageList.get(i).body + " " +
+                    messageList.get(i).fileUrl + "  " + messageList.get(i).lastUpdateDate + " "  +
+                    messageList.get(i).exists + "/n";
+        }
+        return  allMessagesString;
+    }
 }

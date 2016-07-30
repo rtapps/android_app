@@ -5,19 +5,19 @@
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.rtapps.kingofthejungle.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo1"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppThemeRTApps">
 
-        >
         <activity
             android:name="rtapps.app.ui.MainActivity"
             android:label="מלך החיות"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppThemeRTApps" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

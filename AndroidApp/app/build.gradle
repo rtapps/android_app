@@ -32,5 +32,14 @@ dependencies {
 
     compile "com.google.android.gms:play-services-gcm:9.2.0"
 
+    compile "com.android.support:support-v4:+"
+    compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.slider:library:1.1.5@aar'
+    compile 'com.daimajia.androidanimations:library:1.0.3@aar'
+
+    compile ('com.android.support:support-v4:23.4.0'){
+        force = true;
+    }
 }
 apply plugin: 'com.google.gms.google-services'
