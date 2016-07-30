@@ -112,7 +112,7 @@ public class MessageContentActivity extends AppCompatActivity {
 
 
             AllMessagesResponse dd = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID,0);
-            Log.d("magic", dd.getLastUpdateTime() + "");
+            Log.d("magic", dd.toString());
 
 
             return null;

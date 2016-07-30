@@ -9,6 +9,7 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Field;
+import retrofit.http.Query;
 import rtapps.app.network.responses.AllMessagesResponse;
 import retrofit.http.GET;
 import rtapps.app.network.responses.PushToken;
@@ -19,9 +20,9 @@ import rtapps.app.network.responses.PushToken;
  */
 public interface NetworkAPI {
 
-    @GET("/messages?applicationId={applicationId}&fromTime={fromTime}")
-    AllMessagesResponse  getAllMessages(@Path("applicationId") String applicationId,
-                                        @Path("fromTime")long fromTime);
+    @GET("/messages")
+    AllMessagesResponse  getAllMessages(@Query("applicationId") String applicationId,
+                                        @Query("fromTime")long fromTime);
 
     @FormUrlEncoded
     @POST("/pushToken")
