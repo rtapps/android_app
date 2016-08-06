@@ -8,33 +8,35 @@ import java.util.List;
 public class AllMessagesResponse {
 
     private List<Message> messageList;
-    private int lastUpdateTime;
+    private long lastUpdateTime;
 
     public List<Message> getMessagesList() {
         return messageList;
     }
 
-    public int getLastUpdateTime() {
+    public long getLastUpdateTime() {
         return lastUpdateTime;
     }
 
     public static class Message {
         private String id;
-        private double creationDate;
-        private int applicationId;
+        private String applicationId;
         private String header;
         private String body;
-        private String fileUrl;
-        private double lastUpdateDate;
+        private String fileName;
+        private String fileServerHost;
+        private Long creationDate;
+        private Long lastUpdateDate;
         private boolean exists;
 
         //For tests only
-        public Message(String id, double creationDate, int applicationId, String header, String body, String fileUrl, double lastUpdateDate, boolean exist) {
+        public Message(String id, Long creationDate, String applicationId, String header, String body, String fileUrl, String fileServerHost, Long lastUpdateDate, boolean exist) {
             this.id = id;
             this.applicationId = applicationId;
             this.header = header;
             this.body = body;
-            this.fileUrl = fileUrl;
+            this.fileName = fileUrl;
+            this.fileServerHost = fileServerHost;
             this.lastUpdateDate = lastUpdateDate;
             this.exists = exist;
             this.creationDate = creationDate;
@@ -45,7 +47,7 @@ public class AllMessagesResponse {
             return id;
         }
 
-        public int getApplicationId() {
+        public String getApplicationId() {
             return applicationId;
         }
 
@@ -57,15 +59,19 @@ public class AllMessagesResponse {
             return body;
         }
 
-        public String getFileUrl() {
-            return fileUrl;
+        public String getFileName() {
+            return fileName;
         }
 
-        public double getLastUpdateDate() {
+        public String getFileServerHost() {
+            return fileServerHost;
+        }
+
+        public Long getLastUpdateDate() {
             return lastUpdateDate;
         }
 
-        public double getCreationDate() {
+        public Long getCreationDate() {
             return creationDate;
         }
 
@@ -73,18 +79,30 @@ public class AllMessagesResponse {
             return exists;
         }
 
+        @Override
+        public String toString() {
+            String allMessagesString = "";
+
+            allMessagesString +=
+                    id + "" +
+                            creationDate + "" +
+                            applicationId + " " +
+                            header + " " +
+                            body + " " +
+                            fileName + "  " +
+                            lastUpdateDate + " " +
+                            exists + "/n";
+
+            return allMessagesString;
+        }
+
     }
 
+    @Override
     public String toString() {
         String allMessagesString = "";
         for (int i = 0; i < messageList.size(); i++) {
-            allMessagesString +=
-                    messageList.get(i).id + "" +
-                            messageList.get(i).creationDate + "" +
-                            messageList.get(i).applicationId + " " +
-                            messageList.get(i).header + " " + messageList.get(i).body + " " +
-                            messageList.get(i).fileUrl + "  " + messageList.get(i).lastUpdateDate + " " +
-                            messageList.get(i).exists + "/n";
+            allMessagesString += messageList.get(i).toString() + "\n";
         }
         return allMessagesString;
     }

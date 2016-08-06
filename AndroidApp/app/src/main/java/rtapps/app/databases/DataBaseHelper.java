@@ -1,4 +1,4 @@
-package rtapps.app.data_bases;
+package rtapps.app.databases;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -67,7 +67,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      //   values.put(SALES_CREATION_DATE, message.getCreationDate());
         values.put(SALES_TITLE, message.getHeader());
         values.put(SALES_BODY, message.getBody());
-        values.put(SALES_IMAGE_ID, message.getFileUrl());
+        values.put(SALES_IMAGE_ID, message.getFileName());
         values.put(SALES_LAST_UPDATED_TIME, message.getLastUpdateDate());
         values.put(SALES_EXIST, message.getExist());
 

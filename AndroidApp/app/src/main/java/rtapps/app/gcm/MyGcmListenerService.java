@@ -30,6 +30,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.config.Configurations;
+import rtapps.app.inbox.AsyncGetAllMessages;
 import rtapps.app.ui.MainActivity;
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -69,6 +70,8 @@ public class MyGcmListenerService extends GcmListenerService {
          * that a message was received.
          */
         sendNotification(message);
+
+        new AsyncGetAllMessages().execute(getApplicationContext());
         // [END_EXCLUDE]
     }
     // [END receive_message]

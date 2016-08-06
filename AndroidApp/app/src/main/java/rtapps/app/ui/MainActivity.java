@@ -16,12 +16,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarFragment;
-import com.roughike.bottombar.OnTabSelectedListener;
 import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.gcm.GcmPrefrences;
 import rtapps.app.gcm.RegistrationIntentService;
-import rtapps.app.inbox.MessageContentActivity;
+import rtapps.app.inbox.AsyncGetAllMessages;
+
 
 public class MainActivity extends AppCompatActivity {
     private BottomBar bottomBar;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+
         // Registering BroadcastReceiver
         registerReceiver();
 
@@ -83,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver();
+        callSyncMessages();
+    }
+
+    private void callSyncMessages(){
+        AsyncGetAllMessages gam = new AsyncGetAllMessages();
+        gam.execute(this);
     }
 
     @Override
@@ -120,4 +127,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+
+
 }

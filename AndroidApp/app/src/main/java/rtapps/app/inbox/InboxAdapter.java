@@ -1,16 +1,39 @@
 package rtapps.app.inbox;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.rtapps.kingofthejungle.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+
+import rtapps.app.config.Configurations;
+import rtapps.app.databases.MessagesTable;
 
 
 /**
@@ -19,9 +42,11 @@ import com.rtapps.kingofthejungle.R;
 public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Activity context;
+    List<MessagesTable> messagesList;
 
-    public InboxAdapter(Activity c){
+    public InboxAdapter(Activity c, List<MessagesTable> newMessagesList) {
         this.context = c;
+        this.messagesList = newMessagesList;
     }
 
     @Override
@@ -29,7 +54,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_cell, parent, false);
 
         ///
-
         return new ViewHolder(view);
     }
 
@@ -38,55 +62,97 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context , MessageContentActivity.class );
-                intent.putExtra("NUM" , position);
+                Intent intent = new Intent(context, MessageContentActivity.class);
+                intent.putExtra("NUM", position);
                 context.startActivity(intent);
             }
         });
 
-        switch (position){
+        MessagesTable message = messagesList.get(position);
 
-            case 0:
-                ((ViewHolder) holder).title.setText(R.string.title1);
-                ((ViewHolder) holder).content.setText(R.string.content1);
-                ((ViewHolder) holder).image.setImageResource(R.drawable.item1);
-                break;
-            case 1:
-                ((ViewHolder) holder).title.setText(R.string.title2);
-                ((ViewHolder) holder).content.setText(R.string.content2);
-                ((ViewHolder) holder).image.setImageResource(R.drawable.animal_king_logo);
-                break;
-            case 2:
-                ((ViewHolder) holder).title.setText(R.string.title1);
-                ((ViewHolder) holder).content.setText(R.string.content3);
-                ((ViewHolder) holder).image.setImageResource(R.drawable.food);
-                break;
-            case 3:
-                ((ViewHolder) holder).title.setText(R.string.title1);
-                ((ViewHolder) holder).content.setText(R.string.content33);
-                ((ViewHolder) holder).image.setImageResource(R.drawable.mvza1);
-                break;
-            case 4:
-                ((ViewHolder) holder).title.setText(R.string.title1);
-                ((ViewHolder) holder).content.setText(R.string.content3);
-                ((ViewHolder) holder).image.setImageResource(R.drawable.mvza2);
-                break;
-            case 5:
-                ((ViewHolder) holder).title.setText(R.string.title1);
-                ((ViewHolder) holder).content.setText(R.string.content3);
-                ((ViewHolder) holder).image.setImageResource(R.drawable.mvza3);
-                break;
-            default:
-                ((ViewHolder) holder).title.setText(R.string.default2);
-                ((ViewHolder) holder).content.setText(R.string.default3);
-                ((ViewHolder) holder).image.setImageResource(R.drawable.animal_king_logo);
-                break;
+
+        ((ViewHolder) holder).title.setText(message.getHeader());
+        ((ViewHolder) holder).content.setText(message.getBody());
+        String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + message.getId() + "/" + message.getFileName();
+        Log.d("InboxAdapter", "loading image URL: " + imageUrl);
+
+
+        Picasso.with(context).load(imageUrl).into(((ViewHolder) holder).image);
+
+        final ImageView image = ((ViewHolder) holder).image;
+        final String imageName = message.getId();
+
+        if (fileExistance(imageName)) {
+            image.setImageBitmap(loadBitmap(imageName));
+        } else {
+            Picasso.with(context).load(imageUrl).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    saveFile(bitmap , imageName);
+                    image.setImageBitmap(bitmap);
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            });
         }
+
     }
+
+    public void saveFile(Bitmap b, String picName) {
+        FileOutputStream fos;
+        try {
+            fos = context.openFileOutput(picName, Context.MODE_PRIVATE);
+            b.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d("InboxAdapter", "file not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.d("InboxAdapter", "io exception");
+            e.printStackTrace();
+        }
+
+    }
+
+    public Bitmap loadBitmap(String picName) {
+        Bitmap b = null;
+        FileInputStream fis;
+        try {
+            fis = context.openFileInput(picName);
+            b = BitmapFactory.decodeStream(fis);
+            fis.close();
+
+        } catch (FileNotFoundException e) {
+            Log.d("loadBitmap", "file not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.d("loadBitmap", "io exception");
+            e.printStackTrace();
+        }
+        return b;
+    }
+
+    public boolean fileExistance(String fname) {
+        File file = context.getFileStreamPath(fname);
+        return file.exists();
+    }
+
 
     @Override
     public int getItemCount() {
-        return 6;
+        if (messagesList == null) {
+            return 0;
+        }
+
+        return messagesList.size();
     }
 
 
@@ -109,11 +175,12 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   // context.startActivity(new Intent(context , adPage.class));
+                    // context.startActivity(new Intent(context , adPage.class));
                 }
             });
 
-
         }
     }
+
+
 }

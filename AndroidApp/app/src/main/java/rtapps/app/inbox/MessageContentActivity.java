@@ -91,13 +91,13 @@ public class MessageContentActivity extends AppCompatActivity {
 
     }
 
-    class RetrieveFeedTask extends AsyncTask<Void, Void, Void> {
+    class RetrieveFeedTask extends AsyncTask<Void, Void, AllMessagesResponse> {
 
         private Exception exception;
 
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected AllMessagesResponse doInBackground(Void... params) {
 
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setEndpoint(Configurations.BASE_URL)
@@ -110,11 +110,11 @@ public class MessageContentActivity extends AppCompatActivity {
             AllMessagesResponse dd = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID, 0);
             Log.d("magic", dd.toString());
             
-            return null;
+            return dd;
         }
 
-        protected void onPostExecute(Void feed) {
-
+        protected void onPostExecute(AllMessagesResponse allMessages) {
+            //new AsyncSyncMessagesToDb().execute(allMessages.getMessagesList());
         }
     }
 }

@@ -1,7 +1,5 @@
 package rtapps.app.ui;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,7 +22,7 @@ import java.util.HashMap;
 
 import rtapps.app.gcm.NotificationsManager;
 
-import rtapps.app.data_bases.DataBaseHelper;
+import rtapps.app.databases.DataBaseHelper;
 import rtapps.app.network.responses.AllMessagesResponse;
 
 
@@ -63,15 +61,6 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
             }
         });
 
-        DataBaseHelper helper = new DataBaseHelper(getActivity());
-
-        AllMessagesResponse.Message f = new AllMessagesResponse.Message("1255" ,4444d ,456 , "sadfsdf" , "body" , "http" , 123124234234d, true);
-
-
-
-        helper.insertNewMessage(f);
-
-        Log.d("catalog" , "DB count = " + helper.getAllMessagesFromDB().getCount());
 
         return v;
     }
