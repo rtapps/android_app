@@ -39,15 +39,20 @@ public class MainActivity extends AppCompatActivity {
 
         bottomBar = BottomBar.attach(this, savedInstanceState);
 
+        bottomBar.setFixedInactiveIconColor(0xffa9a9a9);
 
         bottomBar.setFragmentItems(getSupportFragmentManager(), R.id.fragmentContainer,
-                new BottomBarFragment(new InboxFragment(), R.drawable.mail, R.string.tab_sales),
-                new BottomBarFragment(new CatalogFragment(), R.drawable.globus, R.string.tab_catalog),
-                new BottomBarFragment(StoreInfoFragment.newInstance("Website page under construction."), R.drawable.info, R.string.tab_store_info)
+                new BottomBarFragment(new InboxFragment(), R.drawable.ic_sale, R.string.tab_sales),
+                new BottomBarFragment(new CatalogFragment(), R.drawable.ic_catalog, R.string.tab_catalog),
+                new BottomBarFragment(StoreInfoFragment.newInstance("Website page under construction."), R.drawable.ic_info, R.string.tab_store_info)
                 //new BottomBarFragment(StoreWebsiteFragment.newInstance("Website page under construction."), R.drawable.globus, R.string.tab_website),
         );
 
-        bottomBar.selectTabAtPosition(1 , false);
+        bottomBar.selectTabAtPosition(1, false);
+
+        bottomBar.setActiveTabColor(0xff090909);
+
+
 
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {

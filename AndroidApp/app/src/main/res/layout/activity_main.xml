@@ -8,6 +8,26 @@
     android:layout_height="match_parent"
     tools:context="rtapps.app.ui.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:background="#eeede8"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:layout_height="58dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/tool_bar_title"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.7"
+        android:background="#e4e4e4" />
 
     <FrameLayout
         android:id="@+id/fragmentContainer"

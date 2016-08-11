@@ -51,15 +51,7 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
 
         initSlider();
 
-        Button b = (Button)v.findViewById(R.id.notyButton);
 
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NotificationsManager a = new NotificationsManager(getActivity());
-                a.createNewSaleNotification(22 , "tittlae" + i++ , "message");
-            }
-        });
 
 
         return v;
@@ -69,9 +61,10 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
 
         HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
 
-        file_maps.put("1",R.drawable.flaierdog1);
-        file_maps.put("2",R.drawable.flaierdog2);
-        file_maps.put("3", R.drawable.flaiercat1);
+        file_maps.put("1",R.drawable.catalog1);
+        file_maps.put("2",R.drawable.catalog2);
+        file_maps.put("3", R.drawable.catalog3);
+        file_maps.put("3", R.drawable.catalog4);
 
         for(String name : file_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(getActivity());//new TextSliderView(getActivity());
@@ -90,15 +83,15 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
             slider.addSlider(textSliderView);
         }
 
-        slider.setPresetTransformer(SliderLayout.Transformer.Default);
-        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-
-//        slider.setCustomIndicator((PagerIndicator) v.findViewById(R.id.custom_indicator));
-
-
-        slider.setCustomAnimation(new DescriptionAnimation());
-        slider.setDuration(2000);
-        slider.addOnPageChangeListener(this);
+//        slider.setPresetTransformer(SliderLayout.Transformer.Default);
+//        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+//
+////        slider.setCustomIndicator((PagerIndicator) v.findViewById(R.id.custom_indicator));
+//
+//
+//        slider.setCustomAnimation(new DescriptionAnimation());
+//        slider.setDuration(2000);
+//        slider.addOnPageChangeListener(this);
 
     }
 
