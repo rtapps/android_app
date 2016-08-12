@@ -1,69 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingRight="20dp"
     android:id="@+id/inbox_cell_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
     tools:context="com.example.tazo.newbottom.inbox.InboxFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:padding="20dp"
-        android:orientation="horizontal"
-        android:gravity="right"
-        android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/inbox_item_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="5dp"
-        android:src="@drawable/animal_king_logo" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_gravity="right"
-        android:layout_weight="1"
-        android:orientation="vertical">
+
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
 
         <TextView
             android:id="@+id/inbox_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
+            android:layout_marginRight="10dp"
+            android:textAlignment="textStart"
+            android:lineSpacingExtra="1dp"
+            android:fontFamily="sans-serif"
+            android:gravity="bottom"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textSize="17sp"
-            tools:text="מבצע החודש במלך החיות"
-            />
+            tools:text="קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב 50% הנחה!" />
+
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:background="@color/businessMainColor"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:text="40%"
+                android:textColor="#ff0000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="serif"
+                android:gravity="top"
+                android:text="הנחה"
+                android:textColor="#ff0000"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/inbox_item_image"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_margin="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/msg1" />
+
+
+    <TextView
+        android:id="@+id/inbox_item_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="16sp"
+        tools:text="מבצע החודש במלך החיות" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:gravity="right">
 
         <TextView
-            android:id="@+id/inbox_item_content"
-            android:layout_gravity="right"
-            android:textSize="16sp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="שתפי"
+            android:textStyle="bold" />
 
-            tools:text="מבצע החודש במלך החיות"
-            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_share" />
 
     </LinearLayout>
 
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:background="#f4f4f4">
 
     </LinearLayout>

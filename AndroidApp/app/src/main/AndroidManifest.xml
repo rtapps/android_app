@@ -28,7 +28,8 @@
 
         <activity
             android:name="rtapps.app.inbox.MessageContentActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+
+            android:theme="@style/RTTransparent">
 
         </activity>
 

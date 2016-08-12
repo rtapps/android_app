@@ -59,6 +59,11 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+        if(position == 0){
+            setMockData((ViewHolder)holder);
+            return;
+        }
         ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,43 +87,67 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final ImageView image = ((ViewHolder) holder).image;
         final String imageName = message.getId();
 
-        if (fileExistance(imageName)) {
-            image.setImageBitmap(loadBitmap(imageName));
-        } else {
-            Picasso.with(context).load(imageUrl).into(new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    saveFile(bitmap , imageName);
-                    image.setImageBitmap(bitmap);
-                }
+//        if (fileExistance(imageName)) {
+//            image.setImageBitmap(loadBitmap(imageName));
+//        } else {
+        Picasso.with(context).load(imageUrl).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                //saveFile(bitmap, imageName);
+                image.setImageBitmap(bitmap);
+            }
 
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
 
-                }
+            }
 
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-                }
-            });
-        }
+            }
+        });
+        //  }
+
+    }
+
+    public void setMockData(ViewHolder holder){
+
+        String title = "קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב 50% הנחה!";
+        String content = "שימו לב חברות יקרות!\n" +
+                "נא לפתוח יומנים ולרשום בגדול-\n" +
+                "בעוד שבוע זה קורה והולך להיות מטורף!!\n" +
+                "לקראת החלפת הקולקצייה ובואה של קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב50% הנחה!!\n" +
+                "באופן חד פעמי ולשלושה ימים בלבד!\n" +
+                "\uD83C\uDF1Fרביעי-שישי 28-30/10";
+
+        String content2 = "שימו לב חברות יקרות!\n" +
+                "נא לפתוח יומנים ולרשום בגדול-\n" +
+                "בעוד שבוע זה קורה והולך להיות מטורף!!\n" +
+                "לקראת החלפת הקולקצייה ובואה של קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב50% הנחה!!\n" +
+                "באופן חד פעמי ולשלושה ימים בלבד!\n" +
+                "\uD83C\uDF1Fרביעי-שישי 28-30/10";
+
+        holder.title.setText(title);
+        holder.content.setText(content);
+        holder.image.setImageResource(R.drawable.msg2);
+
 
     }
 
     public void saveFile(Bitmap b, String picName) {
-        FileOutputStream fos;
-        try {
-            fos = context.openFileOutput(picName, Context.MODE_PRIVATE);
-            b.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d("InboxAdapter", "file not found");
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.d("InboxAdapter", "io exception");
-            e.printStackTrace();
-        }
+//        FileOutputStream fos;
+//        try {
+//            fos = context.openFileOutput(picName, Context.MODE_PRIVATE);
+//            b.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//            fos.close();
+//        } catch (FileNotFoundException e) {
+//            Log.d("InboxAdapter", "file not found");
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            Log.d("InboxAdapter", "io exception");
+//            e.printStackTrace();
+//        }
 
     }
 

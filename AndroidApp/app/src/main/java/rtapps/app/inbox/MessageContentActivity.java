@@ -30,8 +30,7 @@ public class MessageContentActivity extends AppCompatActivity {
 
         int num = intent.getExtras().getInt("NUM");
 
-        TextView title = (TextView) findViewById(R.id.content_header);
-        TextView content = (TextView) findViewById(R.id.content_body);
+
         ImageView image = (ImageView) findViewById(R.id.content_image);
 
 
@@ -50,43 +49,10 @@ public class MessageContentActivity extends AppCompatActivity {
 
         new RetrieveFeedTask().execute();
 
-        switch (num) {
-            case 0:
-                title.setText(R.string.title1);
-                content.setText(R.string.content1);
-                image.setImageResource(R.drawable.item1);
-                break;
-            case 1:
-                title.setText(R.string.title2);
-                content.setText(R.string.content2);
-                image.setImageResource(R.drawable.animal_king_logo);
-                break;
-            case 2:
-                title.setText(R.string.title1);
-                content.setText(R.string.content3);
-                image.setImageResource(R.drawable.food);
-                break;
-            case 3:
-                title.setText(R.string.title1);
-                content.setText(R.string.content33);
-                image.setImageResource(R.drawable.mvza1);
-                break;
-            case 4:
-                title.setText(R.string.title1);
-                content.setText(R.string.content3);
-                image.setImageResource(R.drawable.mvza2);
-                break;
-            case 5:
-                title.setText(R.string.title1);
-                content.setText(R.string.content3);
-                image.setImageResource(R.drawable.mvza3);
-                break;
-            default:
-                title.setText(R.string.default2);
-                content.setText(R.string.default3);
-                image.setImageResource(R.drawable.animal_king_logo);
-                break;
-        }
+
+        image.setImageResource(R.drawable.msg2);
+
+
 
 
     }
