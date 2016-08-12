@@ -33,7 +33,7 @@ import java.util.Date;
 
 import retrofit.RestAdapter;
 import rtapps.app.config.Configurations;
-import rtapps.app.network.NetworkAPI;
+import rtapps.app.network.AppAPI;
 import rtapps.app.network.responses.PushToken;
 
 public class RegistrationIntentService extends IntentService {
@@ -107,7 +107,7 @@ public class RegistrationIntentService extends IntentService {
                 .setEndpoint(Configurations.BASE_URL)
                 .build();
 
-        final NetworkAPI yourUsersApi = restAdapter.create(NetworkAPI.class);
+        final AppAPI yourUsersApi = restAdapter.create(AppAPI.class);
 
         PushToken pushToken;
         String pushTokenId = sharedPreferences.getString(GcmPrefrences.PUSH_TOKEN_ID,null);

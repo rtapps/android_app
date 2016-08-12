@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.config.Configurations;
-import rtapps.app.network.NetworkAPI;
+import rtapps.app.network.AppAPI;
 import rtapps.app.network.responses.AllMessagesResponse;
 
 import retrofit.RestAdapter;
@@ -70,7 +70,7 @@ public class MessageContentActivity extends AppCompatActivity {
                     .build();
 
 
-            final NetworkAPI yourUsersApi = restAdapter.create(NetworkAPI.class);
+            final AppAPI yourUsersApi = restAdapter.create(AppAPI.class);
 
 
             AllMessagesResponse dd = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID, 0);

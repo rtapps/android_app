@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.rtapps.kingofthejungle.R;
-import com.squareup.otto.Bus;
-
 import java.util.List;
 
 import retrofit.RestAdapter;
@@ -15,7 +12,8 @@ import retrofit.RetrofitError;
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
 import rtapps.app.infrastructure.BusHolder;
-import rtapps.app.network.NetworkAPI;
+import rtapps.app.network.AppAPI;
+import rtapps.app.account.authentication.network.OauthService;
 import rtapps.app.network.responses.AllMessagesResponse;
 
 /**
@@ -29,6 +27,9 @@ public class AsyncGetAllMessages extends AsyncTask<Context, Void, Void> {
     @Override
     protected Void doInBackground(Context... params) {
 
+
+
+
         Context context = params[0];
 
         Log.d("AsyncGetAllMessages", "Sending network request ");
@@ -38,7 +39,7 @@ public class AsyncGetAllMessages extends AsyncTask<Context, Void, Void> {
                 .build();
 
 
-        final NetworkAPI yourUsersApi = restAdapter.create(NetworkAPI.class);
+        final AppAPI yourUsersApi = restAdapter.create(AppAPI.class);
 
 
         SharedPreferences sharedPref = context.getSharedPreferences(APP_PREFS, Context.MODE_PRIVATE);

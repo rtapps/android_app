@@ -58,5 +58,12 @@ dependencies {
 
     compile "net.zetetic:android-database-sqlcipher:3.5.1"
 
+    // https://mvnrepository.com/artifact/com.github.scribejava/scribejava-core
+    compile group: 'com.github.scribejava', name: 'scribejava-core', version: '2.0'
+
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+
+    compile 'com.google.code.gson:gson:2.7'
+
 }
 apply plugin: 'com.google.gms.google-services'

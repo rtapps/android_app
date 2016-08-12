@@ -18,7 +18,7 @@ import rtapps.app.network.responses.PushToken;
 /**
  * Created by tazo on 25/07/2016.
  */
-public interface NetworkAPI {
+public interface AppAPI {
 
     @GET("/messages")
     AllMessagesResponse  getAllMessages(@Query("applicationId") String applicationId,
