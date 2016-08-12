@@ -1,9 +1,12 @@
 package rtapps.app.account;
 
 import android.content.SharedPreferences;
+
 import android.util.Log;
 
 import com.google.gson.Gson;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Date;
 
@@ -57,9 +60,7 @@ public class AccountManager {
         oAuthClient.getAccessToken(username, password, new OAuthClient.GetAccessTokenCallback() {
             @Override
             public void onAccessTokenResponse(OAuthTokenResponse oAuthTokenResponse) {
-                Date now = new Date();
-                Date expirationDate = new Date(now.getTime() + (oAuthTokenResponse.getExpires_in()* 1000));
-                AccessToken accessToken = new AccessToken(oAuthTokenResponse.getAccess_token(), oAuthTokenResponse.getRefresh_token(), oAuthTokenResponse.getScope(), oAuthTokenResponse.getToken_type(),expirationDate);
+                AccessToken accessToken = getAccessTokenFromOAuthResponse(oAuthTokenResponse);
                 getAdminUserFromServer(accessToken, username, new AdminUserFromServerCallback() {
                     @Override
                     public void onAdminUserFromServerSuccess(User user) {
@@ -70,17 +71,56 @@ public class AccountManager {
         });
     }
 
+    private AccessToken getAccessTokenFromOAuthResponse(OAuthTokenResponse oAuthTokenResponse){
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + (oAuthTokenResponse.getExpires_in()* 1000));
+        AccessToken accessToken = new AccessToken(oAuthTokenResponse.getAccess_token(), oAuthTokenResponse.getRefresh_token(), oAuthTokenResponse.getScope(), oAuthTokenResponse.getToken_type(),expirationDate);
+        return accessToken;
+    }
+
     private void getAdminUserFromServer (final AccessToken accessToken, final String username, final AdminUserFromServerCallback adminUserFromServerCallback){
         UserClient userClient = new UserClient();
         userClient.getAdminUser(username, accessToken, new UserClient.GetAdminUserCallBack() {
             @Override
             public void onGetAdminUserResponse(AdminUserResponse adminUserResponse) {
-                Gson gson = new Gson();
-                User user = new User(adminUserResponse.getFirstName(), adminUserResponse.getLastName(), adminUserResponse.getBuisnessName(), adminUserResponse.getApplicationId(), adminUserResponse.getUsername(), accessToken);
+                User user = saveUserFromResponse(adminUserResponse, accessToken);
                 Log.d("AccountManager", "Returned user=" + user);
-                String jsonUser = gson.toJson(user);
-                sharedPreferences.edit().putString(AccountConfiguration.USER, jsonUser).apply();
                 adminUserFromServerCallback.onAdminUserFromServerSuccess(user);
+            }
+        });
+    }
+
+    private User saveUserFromResponse(AdminUserResponse adminUserResponse, AccessToken accessToken){
+        Gson gson = new Gson();
+        User user = new User(adminUserResponse.getFirstName(), adminUserResponse.getLastName(), adminUserResponse.getBuisnessName(), adminUserResponse.getApplicationId(), adminUserResponse.getUsername(), accessToken);
+        String jsonUser = gson.toJson(user);
+        sharedPreferences.edit().putString(AccountConfiguration.USER, jsonUser).apply();
+        return user;
+    }
+
+    public void refreshUser(){
+        final String userString = sharedPreferences.getString(AccountConfiguration.USER, null);
+        if (userString == null){
+            return;
+        }
+        Gson gson = new Gson();
+        final User user = gson.fromJson(userString, User.class);
+
+
+        if (!user.getAccessToken().getExpirationDate().after(new Date())){
+            return;
+        }
+        OAuthClient oAuthClient = new OAuthClient();
+        oAuthClient.refreshAccessToken(user.getAccessToken().getRefreshToken(), new OAuthClient.GetAccessTokenCallback() {
+            @Override
+            public void onAccessTokenResponse(OAuthTokenResponse oAuthTokenResponse) {
+                AccessToken accessToken = getAccessTokenFromOAuthResponse(oAuthTokenResponse);
+                getAdminUserFromServer(accessToken, user.getUsername(), new AdminUserFromServerCallback() {
+                    @Override
+                    public void onAdminUserFromServerSuccess(User user) {
+                        Log.d("AccountManager", "Refresh token completed. User=" + user);
+                    }
+                });
             }
         });
     }

@@ -32,4 +32,16 @@ public class OAuthClient {
             }
         });
     }
+
+    public void refreshAccessToken(final String refreshToken, final GetAccessTokenCallback getAccessTokenCallback){
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                OauthService oauthService = ServiceGenerator.createService(OauthService.class, "app", "appsecret");
+                OAuthTokenResponse oAuthTokenResponse = oauthService.getAccessToken("refresh_token",refreshToken);
+                Log.d("OAuthClient", "auth token response=" + oAuthTokenResponse);
+                getAccessTokenCallback.onAccessTokenResponse(oAuthTokenResponse);
+            }
+        });
+    }
 }

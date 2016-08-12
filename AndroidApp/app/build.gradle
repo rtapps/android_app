@@ -65,5 +65,7 @@ dependencies {
 
     compile 'com.google.code.gson:gson:2.7'
 
+    compile 'org.apache.commons:commons-lang3:3.4'
+
 }
 apply plugin: 'com.google.gms.google-services'

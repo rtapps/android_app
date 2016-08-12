@@ -16,4 +16,9 @@ public interface OauthService {
                                       @Field("username")String username,
                                       @Field("password")String password);
 
+    @FormUrlEncoded
+    @POST("/oauth/token")
+    OAuthTokenResponse getAccessToken(@Field("grant_type") String grant_type,
+                                      @Field("refresh_token")String refreshToken);
+
 }
