@@ -5,8 +5,7 @@
     <color name="colorAccent">#0000ff</color>
     <color name="textColorPrimary">#ffffff</color>
     <color name="businessMainColor">#eeede8</color>
-
-    <color name="transparent2">#AA000000</color>
+    <color name="transparent2">#DD000000</color>
 </resources>
 
 

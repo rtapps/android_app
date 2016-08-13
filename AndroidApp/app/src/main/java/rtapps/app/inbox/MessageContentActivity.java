@@ -1,6 +1,7 @@
 package rtapps.app.inbox;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,15 @@ import rtapps.app.network.AppAPI;
 import rtapps.app.network.responses.AllMessagesResponse;
 
 import retrofit.RestAdapter;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by tazo on 21/07/2016.
  */
 public class MessageContentActivity extends AppCompatActivity {
+    ImageView mImageView;
+    PhotoViewAttacher mAttacher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +33,14 @@ public class MessageContentActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        int num = intent.getExtras().getInt("NUM");
+        
+        mImageView = (ImageView) findViewById(R.id.content_image);
 
+        Drawable bitmap = getResources().getDrawable(R.drawable.msg2);
 
-        ImageView image = (ImageView) findViewById(R.id.content_image);
+        mImageView.setImageDrawable(bitmap);
 
+        mAttacher = new PhotoViewAttacher(mImageView);
 
 //        Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl(BASE_URL)
@@ -47,10 +55,12 @@ public class MessageContentActivity extends AppCompatActivity {
         ///
 
 
-        new RetrieveFeedTask().execute();
+      //  new RetrieveFeedTask().execute();
 
 
-        image.setImageResource(R.drawable.msg2);
+      //  image.setImageResource(R.drawable.msg2);
+
+
 
 
 
