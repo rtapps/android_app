@@ -3,6 +3,9 @@ package rtapps.app.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+
+import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.account.AccountManager;
 
@@ -16,6 +19,7 @@ public class MainActivity extends MainActivityBase {
         if (AccountManager.get().getUser() == null){
             finish();
             LoginActivity.startActivity(this);
+            return;
         }
         super.onCreate(savedInstanceState);
     }

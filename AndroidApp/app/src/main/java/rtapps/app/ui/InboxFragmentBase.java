@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,11 +26,11 @@ import rtapps.app.inbox.InboxAdapter;
 import rtapps.app.infrastructure.BusHolder;
 
 
-public class InboxFragment extends Fragment {
+public abstract class InboxFragmentBase extends Fragment {
     protected RecyclerView recyclerView;
 
 
-    public InboxFragment() {
+    public InboxFragmentBase() {
         // Required empty public constructor
     }
 
@@ -36,7 +38,6 @@ public class InboxFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BusHolder.get().getBus().register(this);
-
     }
 
     @Override
