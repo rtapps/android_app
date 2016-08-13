@@ -23,7 +23,7 @@ import rtapps.app.gcm.RegistrationIntentService;
 import rtapps.app.inbox.AsyncGetAllMessages;
 
 
-public class MainActivity extends AppCompatActivity {
+public abstract class MainActivityBase extends AppCompatActivity {
     private BottomBar bottomBar;
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 boolean sentToken = sharedPreferences
                         .getBoolean(GcmPrefrences.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
-                    Toast.makeText(MainActivity.this, "succeeded", Toast.LENGTH_LONG);
+                    Toast.makeText(MainActivityBase.this, "succeeded", Toast.LENGTH_LONG);
                 } else {
-                    Toast.makeText(MainActivity.this, "failed", Toast.LENGTH_LONG);
+                    Toast.makeText(MainActivityBase.this, "failed", Toast.LENGTH_LONG);
                 }
             }
         };

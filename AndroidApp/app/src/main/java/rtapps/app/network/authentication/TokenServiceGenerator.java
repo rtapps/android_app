@@ -2,8 +2,10 @@ package rtapps.app.network.authentication;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.client.OkClient;
 import rtapps.app.config.Configurations;
 import rtapps.app.network.AccessToken;
@@ -26,6 +28,14 @@ public class TokenServiceGenerator {
                   }
               });
           }
+
+        builder.setErrorHandler(new ErrorHandler() {
+            @Override
+            public Throwable handleError(RetrofitError cause) {
+                //Todo: deal with expired tokens
+                return null;
+            }
+        });
 
         RestAdapter adapter = builder.build();
         return adapter.create(serviceClass);

@@ -19,6 +19,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        customer{
+//            applicationId="com.rtapps.kingofthejungle"
+        }
+
+        adminuser {
+//            applicationId="com.rtapps.adminuser"
+        }
+    }
 }
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }

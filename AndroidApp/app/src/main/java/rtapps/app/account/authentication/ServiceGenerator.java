@@ -3,8 +3,10 @@ package rtapps.app.account.authentication;
 
 import android.util.Base64;
 
+import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.client.OkClient;
 import rtapps.app.config.Configurations;
 
@@ -37,6 +39,13 @@ public class ServiceGenerator {
                 }
             });
         }
+
+        builder.setErrorHandler(new ErrorHandler() {
+            @Override
+            public Throwable handleError(RetrofitError cause) {
+                return null;
+            }
+        });
 
         RestAdapter adapter = builder.build();
         return adapter.create(serviceClass);

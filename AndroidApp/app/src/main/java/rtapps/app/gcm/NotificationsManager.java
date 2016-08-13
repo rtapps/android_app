@@ -9,8 +9,8 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.rtapps.kingofthejungle.R;
 
-import rtapps.app.inbox.MessageContentActivity;
 import rtapps.app.ui.MainActivity;
+import rtapps.app.inbox.MessageContentActivity;
 
 /**
  * Created by tazo on 30/07/2016.

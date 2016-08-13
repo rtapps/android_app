@@ -30,8 +30,8 @@ import com.google.android.gms.gcm.GcmListenerService;
 import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.config.Configurations;
-import rtapps.app.inbox.AsyncGetAllMessages;
 import rtapps.app.ui.MainActivity;
+import rtapps.app.inbox.AsyncGetAllMessages;
 
 public class MyGcmListenerService extends GcmListenerService {
 
