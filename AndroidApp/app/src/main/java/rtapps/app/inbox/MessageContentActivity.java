@@ -2,14 +2,19 @@ package rtapps.app.inbox;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rtapps.kingofthejungle.R;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import rtapps.app.config.Configurations;
 import rtapps.app.network.AppAPI;
@@ -33,12 +38,14 @@ public class MessageContentActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        
+        String filename = intent.getExtras().getString("123");
+
         mImageView = (ImageView) findViewById(R.id.content_image);
 
-        Drawable bitmap = getResources().getDrawable(R.drawable.msg2);
+       // Drawable bitmap = getResources().getDrawable(R.drawable.msg2);
 
-        mImageView.setImageDrawable(bitmap);
+        loadFileFromStorage(filename   , mImageView);
+        //mImageView.setImageDrawable(bitmap);
 
         mAttacher = new PhotoViewAttacher(mImageView);
 
@@ -92,5 +99,14 @@ public class MessageContentActivity extends AppCompatActivity {
         protected void onPostExecute(AllMessagesResponse allMessages) {
             //new AsyncSyncMessagesToDb().execute(allMessages.getMessagesList());
         }
+    }
+
+    private void  loadFileFromStorage(final String imageName, final ImageView image){
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/yourDirectory5");
+        String name = imageName + ".jpg";
+        myDir = new File(myDir, name);
+        Uri uri = Uri.fromFile(myDir);
+        Picasso.with(this).load(uri).resize(1024, 1024).centerCrop().into(image);
     }
 }

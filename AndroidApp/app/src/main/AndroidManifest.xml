@@ -28,6 +28,7 @@
         android:theme="@style/AppThemeRTApps">
         <activity
             android:name="rtapps.app.ui.MainActivity"
+            android:launchMode= "singleTop"
             android:label="מלך החיות"
             android:theme="@style/AppThemeRTApps.NoActionBar">
             <intent-filter>

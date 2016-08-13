@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 
@@ -58,60 +60,83 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
-        if(position == 0){
-            setMockData((ViewHolder)holder);
-            return;
-        }
+//        if (position == 0) {
+//            setMockData((ViewHolder) holder);
+//            return;
+//        }
+        final MessagesTable message = messagesList.get(position);
+
         ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageContentActivity.class);
-                intent.putExtra("NUM", position);
+                intent.putExtra("123", message.getId());
                 context.startActivity(intent);
             }
         });
 
-        MessagesTable message = messagesList.get(position);
 
 
         ((ViewHolder) holder).title.setText(message.getHeader());
         ((ViewHolder) holder).content.setText(message.getBody());
-        String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + message.getId() + "/" + message.getFileName();
-        Log.d("InboxAdapter", "loading image URL: " + imageUrl);
-
-
-        Picasso.with(context).load(imageUrl).into(((ViewHolder) holder).image);
-
         final ImageView image = ((ViewHolder) holder).image;
+        image.setImageResource(R.drawable.animal_king_logo);
+
+
         final String imageName = message.getId();
 
-//        if (fileExistance(imageName)) {
-//            image.setImageBitmap(loadBitmap(imageName));
-//        } else {
-        Picasso.with(context).load(imageUrl).into(new Target() {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/yourDirectory5");
+        String name = imageName + ".jpg";
+        myDir = new File(myDir, name);
+
+        File file = new File(myDir.getPath());
+        if (file.exists()) {
+            Log.d("F", "exist");
+            loadFileFromStorage(imageName , image);
+        } else {
+            Log.d("F", "not exist");
+            loadFromNetwork(message , image);
+        }
+
+
+    }
+
+    private void  loadFileFromStorage(final String imageName, final ImageView image){
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/yourDirectory5");
+        String name = imageName + ".jpg";
+        myDir = new File(myDir, name);
+        Uri uri = Uri.fromFile(myDir);
+        Picasso.with(context).load(uri).resize(1024, 1024).centerCrop().into(image);
+    }
+
+    private void loadFromNetwork(MessagesTable message, final ImageView image) {
+        final String imageName = message.getId();
+        final String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + imageName + "/" + message.getFileName();
+
+        Picasso.with(context).load(imageUrl).resize(1024,1024).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                //saveFile(bitmap, imageName);
+                saveFile(bitmap, imageName);
                 image.setImageBitmap(bitmap);
             }
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-
+                Log.d("Loade Image", "can load image from network");
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
-
+                Log.d("Loade Image", "can load image from network");
             }
         });
-        //  }
-
     }
 
-    public void setMockData(ViewHolder holder){
+    public void setMockData(ViewHolder holder) {
 
         String title = "קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב 50% הנחה!";
         String content = "שימו לב חברות יקרות!\n" +
@@ -136,43 +161,28 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public void saveFile(Bitmap b, String picName) {
-//        FileOutputStream fos;
-//        try {
-//            fos = context.openFileOutput(picName, Context.MODE_PRIVATE);
-//            b.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            Log.d("InboxAdapter", "file not found");
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            Log.d("InboxAdapter", "io exception");
-//            e.printStackTrace();
-//        }
-
-    }
-
-    public Bitmap loadBitmap(String picName) {
-        Bitmap b = null;
-        FileInputStream fis;
         try {
-            fis = context.openFileInput(picName);
-            b = BitmapFactory.decodeStream(fis);
-            fis.close();
+            String root = Environment.getExternalStorageDirectory().toString();
+            File myDir = new File(root + "/yourDirectory5");
 
-        } catch (FileNotFoundException e) {
-            Log.d("loadBitmap", "file not found");
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.d("loadBitmap", "io exception");
-            e.printStackTrace();
+            if (!myDir.exists()) {
+                myDir.mkdirs();
+            }
+            String name = picName + ".jpg";
+            myDir = new File(myDir, name);
+            FileOutputStream out = new FileOutputStream(myDir);
+            b.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            Log.d("SAVE IMAGE", "SAVE IMAGE " + picName);
+        } catch (Exception e) {
+            // some action
+            Log.d("SAVE IMAGE", "CANT SAVE IMAGE" + e.toString());
         }
-        return b;
+
     }
 
-    public boolean fileExistance(String fname) {
-        File file = context.getFileStreamPath(fname);
-        return file.exists();
-    }
+
 
 
     @Override
@@ -180,7 +190,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (messagesList == null) {
             return 0;
         }
-
         return messagesList.size();
     }
 
@@ -210,6 +219,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         }
     }
+
 
 
 }

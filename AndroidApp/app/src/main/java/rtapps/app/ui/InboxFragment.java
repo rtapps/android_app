@@ -85,6 +85,7 @@ public class InboxFragment extends Fragment {
         @Override
         protected void onPostExecute(List<MessagesTable> newMessagesList) {
             super.onPostExecute(newMessagesList);
+
             //messagesList = newMessagesList;
             recyclerView.setAdapter(new InboxAdapter(getActivity(), newMessagesList));
         }
