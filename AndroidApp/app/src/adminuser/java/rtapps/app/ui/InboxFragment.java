@@ -32,6 +32,7 @@ public class InboxFragment extends InboxFragmentBase {
         // handle item selection
         switch (item.getItemId()) {
             case R.id.add_message:
+                AddMessageActivity.startActivity(getActivity());
                 // do s.th.
                 return true;
             default:
