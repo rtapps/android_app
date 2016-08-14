@@ -22,6 +22,8 @@ public class MainActivity extends MainActivityBase {
             return;
         }
         super.onCreate(savedInstanceState);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     public static void startActivity(Context context) {
