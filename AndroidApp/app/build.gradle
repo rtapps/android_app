@@ -79,7 +79,11 @@ dependencies {
 
     compile 'com.github.chrisbanes:PhotoView:1.3.0'
 
+
     compile 'com.sw926.imagefileselector:library:1.0.3'
+
+
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
 
 
 }

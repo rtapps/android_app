@@ -77,6 +77,10 @@
             android:name="rtapps.app.gcm.RegistrationIntentService"
             android:exported="false"></service>
 
+        <service
+            android:name="rtapps.app.services.SyncDataService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

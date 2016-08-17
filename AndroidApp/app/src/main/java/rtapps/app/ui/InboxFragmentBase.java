@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -20,7 +22,6 @@ import com.squareup.otto.Subscribe;
 import java.util.List;
 
 import rtapps.app.databases.MessagesTable;
-import rtapps.app.inbox.AsyncGetAllMessages;
 import rtapps.app.inbox.AsyncGetAllMessages.MessagesSyncEvent;
 import rtapps.app.inbox.InboxAdapter;
 import rtapps.app.infrastructure.BusHolder;
@@ -60,15 +61,10 @@ public abstract class InboxFragmentBase extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_inbox, container, false);
 
-        //Toolbar toolbar = (Toolbar) v.findViewById(R.id.mainToolBar);
-        //set toolbar appearance
-
         recyclerView = (RecyclerView) v.findViewById(R.id.inbox_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManger = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManger);
-
-        //recyclerView.setAdapter(new InboxAdapter(getActivity()));
 
         return v;
     }

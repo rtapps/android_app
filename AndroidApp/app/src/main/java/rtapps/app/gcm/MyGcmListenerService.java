@@ -71,7 +71,7 @@ public class MyGcmListenerService extends GcmListenerService {
          */
         sendNotification(message);
 
-        new AsyncGetAllMessages().execute(getApplicationContext());
+      //  new AsyncGetAllMessages().execute(getApplicationContext());todo what to do???
         // [END_EXCLUDE]
     }
     // [END receive_message]

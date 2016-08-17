@@ -21,6 +21,7 @@ import com.rtapps.kingofthejungle.R;
 import rtapps.app.gcm.GcmPrefrences;
 import rtapps.app.gcm.RegistrationIntentService;
 import rtapps.app.inbox.AsyncGetAllMessages;
+import rtapps.app.services.SyncDataService;
 
 
 public abstract class MainActivityBase extends AppCompatActivity {
@@ -93,8 +94,10 @@ public abstract class MainActivityBase extends AppCompatActivity {
     }
 
     private void callSyncMessages(){
-        AsyncGetAllMessages gam = new AsyncGetAllMessages();
-        gam.execute(this);
+
+        startService(new Intent(this, SyncDataService.class));
+//        AsyncGetAllMessages gam = new AsyncGetAllMessages();
+//        gam.execute(this);
     }
 
     @Override

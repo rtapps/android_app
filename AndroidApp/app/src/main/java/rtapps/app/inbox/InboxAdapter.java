@@ -2,6 +2,7 @@ package rtapps.app.inbox;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -87,53 +88,67 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         final String imageName = message.getId();
 
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/yourDirectory5");
-        String name = imageName + ".jpg";
-        myDir = new File(myDir, name);
+        //String root = Environment.getExternalStorageDirectory().toString();
 
-        File file = new File(myDir.getPath());
+        ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
+        File file =new File(directory, imageName + ".jpg");
+
+
+        Log.d("InboxAdapter" , "Load Image from" + context.getFilesDir() + file.getPath());
         if (file.exists()) {
-            Log.d("F", "exist");
-            loadFileFromStorage(imageName , image);
+            Log.d("InboxAdapter", "file exist load from internal storage");
+            loadImageFromStoragePicasso(imageName , image);
         } else {
-            Log.d("F", "not exist");
+            Log.d("InboxAdapter", "file not exist load from network" + file.getPath() );
             loadFromNetwork(message , image);
         }
 
 
     }
 
-    private void  loadFileFromStorage(final String imageName, final ImageView image){
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/yourDirectory5");
-        String name = imageName + ".jpg";
-        myDir = new File(myDir, name);
-        Uri uri = Uri.fromFile(myDir);
-        Picasso.with(context).load(uri).resize(1024, 1024).centerCrop().into(image);
+    private void loadImageFromStorage(final String imageName, final ImageView image)
+    {
+        try {
+            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+            File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
+            File file =new File(directory, imageName + ".jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
+            image.setImageBitmap(b);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
     }
+
+
+    private void loadImageFromStoragePicasso(final String imageName, final ImageView image)
+    {
+        try {
+            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+            File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
+            File file =new File(directory, imageName + ".jpg");
+
+            Picasso.with(context).load(file).resize(700,700).placeholder(R.drawable.animal_king_logo).into(image);
+            //Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
+        //    image.setImageBitmap(b);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     private void loadFromNetwork(MessagesTable message, final ImageView image) {
         final String imageName = message.getId();
         final String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + imageName + "/" + message.getFileName();
-
-        Picasso.with(context).load(imageUrl).resize(1024,1024).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                saveFile(bitmap, imageName);
-                image.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                Log.d("Loade Image", "can load image from network");
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                Log.d("Loade Image", "can load image from network");
-            }
-        });
+        Picasso.with(context).load(imageUrl).resize(700,700).placeholder(R.drawable.animal_king_logo).into(image);
     }
 
     public void setMockData(ViewHolder holder) {
@@ -160,27 +175,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
-    public void saveFile(Bitmap b, String picName) {
-        try {
-            String root = Environment.getExternalStorageDirectory().toString();
-            File myDir = new File(root + "/yourDirectory5");
 
-            if (!myDir.exists()) {
-                myDir.mkdirs();
-            }
-            String name = picName + ".jpg";
-            myDir = new File(myDir, name);
-            FileOutputStream out = new FileOutputStream(myDir);
-            b.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-            Log.d("SAVE IMAGE", "SAVE IMAGE " + picName);
-        } catch (Exception e) {
-            // some action
-            Log.d("SAVE IMAGE", "CANT SAVE IMAGE" + e.toString());
-        }
-
-    }
 
 
 
