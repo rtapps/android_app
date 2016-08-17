@@ -2,6 +2,11 @@
 <resources>
     <string name="info_store_name">מלך החיות</string>
     <string name="info_subtitle">הרשת המובילה למזון וציוד לבעלי חיים</string>
+    <string name="info_store_address">מאפו 2</string>
+    <string name="info_store_address_city">חיפה</string>
+    <string name="info_store_phone_number">04-825-1881</string>
+
+
 
     <string name="info_store1_name">סניף ירושלים</string>
     <string name="info_store1_address">רחוב אורוגואי 1</string>

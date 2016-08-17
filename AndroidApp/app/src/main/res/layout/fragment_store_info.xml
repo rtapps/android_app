@@ -1,76 +1,146 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:orientation="vertical"
     tools:context="rtapps.app.ui.StoreInfoFragment">
 
-
-    <RelativeLayout
-        android:id="@+id/info_header"
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            android:id="@+id/info_main_image"
-            android:src="@drawable/cat" />
-
-        <ImageView
-            android:layout_alignParentEnd="true"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="7dp"
-            android:layout_marginRight="120dp"
-            android:layout_alignBottom="@+id/info_main_image"
-            android:src="@drawable/fb" />
-
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="7dp"
-            android:layout_marginLeft="120dp"
-            android:layout_alignBottom="@+id/info_main_image"
-            android:src="@drawable/insta1" />
-
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/info_title"
+    <LinearLayout
+        android:id="@+id/stores_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="20dp"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        tools:text="מלך החיו" />
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/info_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="20dp"
-        android:paddingTop="5dp"
-        tools:text="מוביל בבעלי חיים"
-
-        />
-
-    <ScrollView
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/stores_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:gravity="center_vertical">
 
-    </ScrollView>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/youyube" />
+
+            <LinearLayout
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#a0a0a0" />
 
 
-</LinearLayout>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/twiter" />
+
+            <LinearLayout
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#a0a0a0" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/insta" />
+
+            <LinearLayout
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#a0a0a0" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/facebook_logo" />
+
+            <LinearLayout
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#a0a0a0" />
+
+            <TextView
+                android:id="@+id/store_info_store_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="right"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="פסי בוטיק" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:alpha="0.5"
+            android:background="#a0a0a0" />
+
+
+        <TextView
+            android:id="@+id/store_info_store_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="right"
+            android:textSize="16sp"
+            tools:text="מאפו 2" />
+
+        <TextView
+            android:id="@+id/store_info_address_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="right"
+            android:textSize="16sp"
+            tools:text="חיפה" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:alpha="0.5"
+            android:background="#a0a0a0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|right"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/store_info_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="right"
+                android:textSize="18sp"
+                android:layout_marginRight="10dp"
+                tools:text="04-825-1881" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/phone" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</ScrollView>

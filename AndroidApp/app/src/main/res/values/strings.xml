@@ -3,6 +3,8 @@
     <string name="action_settings">Settings</string>
 
 
+    <string name="store_name"> פסי בוטיק</string>
+
     <string name="tab_sales">הטבות</string>
     <string name="tab_store_info">מידע</string>
     <string name="tab_website">האתר</string>

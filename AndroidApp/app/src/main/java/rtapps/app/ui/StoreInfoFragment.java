@@ -34,17 +34,19 @@ public class StoreInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_store_info, container, false);
 
-        TextView title = (TextView) v.findViewById(R.id.info_title);
-        title.setText(R.string.info_store_name);
 
-        TextView subtitle = (TextView) v.findViewById(R.id.info_subtitle);
-        subtitle.setText(R.string.info_subtitle);
-
-
-        addStores(v, inflater);
+        TextView storeName = (TextView)v.findViewById(R.id.store_info_store_name);
+        TextView storeAddress = (TextView)v.findViewById(R.id.store_info_store_address);
+        TextView storeAddressCity = (TextView)v.findViewById(R.id.store_info_address_city);
+        TextView storePhoneNumber = (TextView)v.findViewById(R.id.store_info_phone_number);
 
 
+        storeName.setText(R.string.store_name);
+        storeAddress.setText(R.string.info_store_address);
+        storeAddressCity.setText(R.string.info_store_address_city);
+        storePhoneNumber.setText(R.string.info_store_phone_number);
 
+        //addStores(v, inflater);
 
 
         return v;
