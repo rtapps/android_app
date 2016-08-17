@@ -8,6 +8,7 @@
     tools:context="rtapps.app.ui.StoreInfoFragment">
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:id="@+id/stores_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

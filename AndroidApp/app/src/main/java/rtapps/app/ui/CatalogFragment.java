@@ -83,6 +83,7 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
             slider.addSlider(textSliderView);
         }
 
+        slider.startAutoCycle(1000,2000,true);
 //        slider.setPresetTransformer(SliderLayout.Transformer.Default);
 //        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
 //
