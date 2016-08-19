@@ -65,7 +65,9 @@ public class AllMessagesResponse {
             return fullImageName;
         }
 
-        public String getPreviewImageName(){return previewImageName;}
+        public String getPreviewImageName() {
+            return previewImageName;
+        }
 
         public String getFileServerHost() {
             return fileServerHost;
@@ -86,17 +88,16 @@ public class AllMessagesResponse {
         @Override
         public String toString() {
             String allMessagesString = "";
-
             allMessagesString +=
-                    id + "" +
-                            creationDate + "" +
-                            applicationId + " " +
-                            header + " " +
-                            body + " " +
-                            fullImageName + "  " +
-                            previewImageName + "  " +
-                            lastUpdateDate + " " +
-                            exists + "/n";
+                    "Id: " + id + " " +
+                            "creation date-" + creationDate + " " +
+                            "applicationId-" + applicationId + " " +
+                            "header-" + header + " " +
+                            "body-" + body + " " +
+                            "fullImageName-" + fullImageName + " " +
+                            "previewImageName-" + previewImageName + " " +
+                            "lastUpdateDate-" + lastUpdateDate + " " +
+                            "exists-" + exists + "/n";
 
             return allMessagesString;
         }

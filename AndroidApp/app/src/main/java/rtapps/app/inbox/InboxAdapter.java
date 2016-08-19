@@ -59,7 +59,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageContentActivity.class);
-                intent.putExtra("123", message.getId());
+                intent.putExtra(MessageContentActivity.EXTRA_FILE_NAME, message.getFullImageName());
                 context.startActivity(intent);
             }
         });
@@ -73,17 +73,19 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         image.setImageResource(R.drawable.animal_king_logo);
 
 
-        final String imageName = message.getId();
+        final String imageName = message.getPreviewImageName();
 
         //String root = Environment.getExternalStorageDirectory().toString();
+
 
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-        File file =new File(directory, imageName + ".jpg");
+        File file =new File(directory, imageName);
+
+        Log.d("InboxAdapter" , "Load Image from" + file.getPath());
 
 
-        Log.d("InboxAdapter" , "Load Image from" + context.getFilesDir() + file.getPath());
         if (file.exists()) {
             Log.d("InboxAdapter", "file exist load from internal storage");
             loadImageFromStoragePicasso(imageName , image);
@@ -95,21 +97,21 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
-    private void loadImageFromStorage(final String imageName, final ImageView image)
-    {
-        try {
-            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
-            File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-            File file =new File(directory, imageName + ".jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
-            image.setImageBitmap(b);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-
-    }
+//    private void loadImageFromStorage(final String imageName, final ImageView image)
+//    {
+//        try {
+//            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+//            File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
+//            File file =new File(directory, imageName);
+//            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
+//            image.setImageBitmap(b);
+//        }
+//        catch (FileNotFoundException e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
 
     private void loadImageFromStoragePicasso(final String imageName, final ImageView image)
@@ -117,7 +119,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         try {
             ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
             File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-            File file =new File(directory, imageName + ".jpg");
+            File file =new File(directory, imageName);
 
             Picasso.with(context).load(file).placeholder(R.drawable.animal_king_logo).into(image);
             //Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));

@@ -30,6 +30,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.config.Configurations;
+import rtapps.app.services.SyncDataService;
 import rtapps.app.ui.MainActivity;
 import rtapps.app.inbox.AsyncGetAllMessages;
 
@@ -71,6 +72,8 @@ public class MyGcmListenerService extends GcmListenerService {
          */
         sendNotification(message);
 
+
+        startService(new Intent(this, SyncDataService.class));
       //  new AsyncGetAllMessages().execute(getApplicationContext());todo what to do???
         // [END_EXCLUDE]
     }

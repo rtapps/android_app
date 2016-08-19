@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/content_image"
+        android:id="@+id/content_image2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_marginRight="10dp"
+        android:visibility="gone"
         android:layout_marginLeft="10dp"
         android:src="@drawable/animal_king_logo" />
+
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        android:id="@+id/content_image"
+        app:src="@drawable/animal_king_logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 

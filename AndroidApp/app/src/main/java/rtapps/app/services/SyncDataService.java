@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.raizlabs.android.dbflow.sql.language.NameAlias;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -55,7 +57,7 @@ public class SyncDataService extends IntentService {
         final AppAPI yourUsersApi = restAdapter.create(AppAPI.class);
         SharedPreferences sharedPref = getSharedPreferences(APP_PREFS, Context.MODE_PRIVATE);
         Long lastUpdatedTime = sharedPref.getLong(LAST_UPDATED_TIME, 0);
-
+        lastUpdatedTime = 0l;
         try {
 
             AllMessagesResponse allMessagesResponse = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID, lastUpdatedTime);
@@ -83,15 +85,11 @@ public class SyncDataService extends IntentService {
             Log.d("AsyncGetAllMessages", "update preference LastUpdateTime to: " + allMessagesResponse.getLastUpdateTime());
             // Get preview Images
 
+            // Get  All Images - read all messages from DB, and download Image if not exist
+            NameAlias nameAlias = NameAlias.builder("creationDate").withTable("MessagesTable").build();
+            List<MessagesTable> allMessages = new Select().from(MessagesTable.class).orderBy(nameAlias, false).queryList();
+            SyncDataThreadPool.downloadAndSaveAllImages(allMessages , this);
 
-            // Get  Images
-            for (AllMessagesResponse.Message currentMessage : messagesList) {
-                try {
-                    loadFromNetwork(currentMessage.getId(), currentMessage.getFileServerHost(), currentMessage.getPreviewImageName());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         } catch (Exception e) {
 
         }
@@ -99,34 +97,34 @@ public class SyncDataService extends IntentService {
 
     }
 
-    private void loadFromNetwork(String messageId, String fileServerHost, String filename) throws IOException {
-        final String imageName = messageId;
-        final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + imageName + "/" + filename;
-        Log.d("load image", "downloaded!!! " + imageUrl);
-
-        Bitmap bitmap = Picasso.with(this).load(imageUrl).get();
-        Log.d("load image", "downloaded!!! " + bitmap.getByteCount());
-        saveToInternalStorage(bitmap, imageName);
-    }
-
-    private String saveToInternalStorage(Bitmap bitmapImage, String imageName) throws IOException {
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath = new File(directory, imageName + ".jpg");
-
-        Log.d("Save", "Save to" + mypath);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            fos.close();
-        }
-        return directory.getAbsolutePath();
-    }
+//    private void loadFromNetwork(String messageId, String fileServerHost, String filename) throws IOException {
+//        final String imageName = messageId;
+//        final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + imageName + "/" + filename;
+//        Log.d("load image", "downloaded!!! " + imageUrl);
+//
+//        Bitmap bitmap = Picasso.with(this).load(imageUrl).get();
+//        Log.d("load image", "downloaded!!! " + bitmap.getByteCount());
+//        saveToInternalStorage(bitmap, imageName);
+//    }
+//
+//    private String saveToInternalStorage(Bitmap bitmapImage, String imageName) throws IOException {
+//        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+//        // path to /data/data/yourapp/app_data/imageDir
+//        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+//        // Create imageDir
+//        File mypath = new File(directory, imageName + ".jpg");
+//
+//        Log.d("Save", "Save to" + mypath);
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(mypath);
+//            // Use the compress method on the BitMap object to write image to the OutputStream
+//            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            fos.close();
+//        }
+//        return directory.getAbsolutePath();
+//    }
 }

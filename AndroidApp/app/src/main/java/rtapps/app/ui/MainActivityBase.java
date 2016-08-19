@@ -94,7 +94,6 @@ public abstract class MainActivityBase extends AppCompatActivity {
     }
 
     private void callSyncMessages(){
-
         startService(new Intent(this, SyncDataService.class));
 //        AsyncGetAllMessages gam = new AsyncGetAllMessages();
 //        gam.execute(this);

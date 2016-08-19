@@ -2,14 +2,18 @@ package rtapps.app.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rtapps.kingofthejungle.R;
+
+import java.util.logging.Logger;
 
 
 public class StoreInfoFragment extends Fragment {
@@ -39,6 +43,14 @@ public class StoreInfoFragment extends Fragment {
         TextView storeAddress = (TextView)v.findViewById(R.id.store_info_store_address);
         TextView storeAddressCity = (TextView)v.findViewById(R.id.store_info_address_city);
         TextView storePhoneNumber = (TextView)v.findViewById(R.id.store_info_phone_number);
+
+        ImageView youtubeButton = (ImageView)v.findViewById(R.id.youtube_img_button);
+        youtubeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("asd" , "asd");
+            }
+        });
 
 
         storeName.setText(R.string.store_name);
