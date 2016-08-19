@@ -1,8 +1,9 @@
-package rtapps.app.ui;
+package rtapps.app.messages;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,16 @@ import com.sw926.imagefileselector.ImageCropper;
 import com.sw926.imagefileselector.ImageFileSelector;
 
 import java.io.File;
+
+import id.zelory.compressor.Compressor;
+import retrofit.mime.TypedFile;
+import rtapps.app.account.AccountManager;
+import rtapps.app.account.authentication.BasicAuthorizationServiceGenerator;
+import rtapps.app.account.user.User;
+import rtapps.app.config.Configurations;
+import rtapps.app.messages.network.AddMessageAPI;
+import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
+import rtapps.app.network.AccessToken;
 
 /**
  * Created by rtichauer on 8/13/16.
@@ -52,6 +63,10 @@ public class AddMessageActivity extends Activity{
             @Override
             public void onCropperCallback(ImageCropper.CropperResult result, File srcFile, File outFile) {
                 if (result == ImageCropper.CropperResult.success) {
+                    File compressedCroppedImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
+//                    File compressedOriginalImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
+
+                    uploadMessage(srcFile, compressedCroppedImage);
 
                 } else if (result == ImageCropper.CropperResult.error_illegal_input_file) {
 
@@ -60,6 +75,40 @@ public class AddMessageActivity extends Activity{
                 }
             }
         });
+    }
+
+    private void uploadMessage(File fullImage, File compressedCroppedImage) {
+        AccessToken accessToken = AccountManager.get().getUser().getAccessToken();
+        TypedFile typedFullImage = new TypedFile("multipart/form-data", fullImage);
+        TypedFile typedCompressedCroppedImage = new TypedFile("multipart/form-data", compressedCroppedImage);
+        UploadNewMessageTask uploadNewMessageTask = new UploadNewMessageTask(accessToken,"header","body", typedFullImage, typedCompressedCroppedImage);
+
+        uploadNewMessageTask.execute();
+
+    }
+
+    private static class UploadNewMessageTask extends AsyncTask<Void, Void, Void>{
+
+        AccessToken accessToken;
+        String messageHeader;
+        String messageBody;
+        TypedFile typedFullImage;
+        TypedFile typedCompressedCroppedImage;
+
+        public UploadNewMessageTask(AccessToken accessToken, String messageHeader, String messageBody, TypedFile typedFullImage, TypedFile typedCompressedCroppedImage){
+            this.accessToken = accessToken;
+            this.messageHeader = messageHeader;
+            this.messageBody = messageBody;
+            this.typedFullImage = typedFullImage;
+            this.typedCompressedCroppedImage = typedCompressedCroppedImage;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            AddMessageAPI addMessageAPI = AuthFileUploadServiceGenerator.createService(AddMessageAPI.class, accessToken);
+            addMessageAPI.putMessage(Configurations.APPLICATION_ID, this.messageHeader, this.messageBody, this.typedFullImage, this.typedCompressedCroppedImage);
+            return null;
+        }
     }
 
     @Override
@@ -101,11 +150,9 @@ public class AddMessageActivity extends Activity{
 
     private void cropImage(final String file){
 
-
-        mImageCropper.setOutPutAspect(3, 1);
+        mImageCropper.setOutPutAspect(2, 1);
         mImageCropper.setOutPut(0, 180);
         mImageCropper.setScale(true);
-
         mImageCropper.cropImage(new File(file));
     }
 }

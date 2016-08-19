@@ -2,17 +2,14 @@ package rtapps.app.account;
 
 import android.content.SharedPreferences;
 
-import android.content.res.Configuration;
 import android.util.Log;
 
 import com.google.gson.Gson;
 
-import org.apache.commons.lang3.time.DateUtils;
-
 import java.util.Date;
 
 import rtapps.app.account.authentication.OAuthClient;
-import rtapps.app.account.authentication.ServiceGenerator;
+import rtapps.app.account.authentication.BasicAuthorizationServiceGenerator;
 import rtapps.app.account.authentication.network.OauthService;
 import rtapps.app.account.authentication.network.responses.OAuthTokenResponse;
 import rtapps.app.account.user.User;
@@ -77,7 +74,7 @@ public class AccountManager {
     }
 
     public User loginSync(String username ,String password){
-        OauthService oauthService = ServiceGenerator.createService(OauthService.class, "app", "appsecret");
+        OauthService oauthService = BasicAuthorizationServiceGenerator.createService(OauthService.class, "app", "appsecret");
         OAuthTokenResponse oAuthTokenResponse = oauthService.getAccessToken("password", username, password);
         AccessToken accessToken = getAccessTokenFromOAuthResponse(oAuthTokenResponse);
         return getAdminUserFromServerSync(accessToken, username);

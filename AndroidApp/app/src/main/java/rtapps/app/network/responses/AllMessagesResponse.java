@@ -23,19 +23,21 @@ public class AllMessagesResponse {
         private String applicationId;
         private String header;
         private String body;
-        private String fileName;
+        private String fullImageName;
+        private String previewImageName;
         private String fileServerHost;
         private Long creationDate;
         private Long lastUpdateDate;
         private boolean exists;
 
         //For tests only
-        public Message(String id, Long creationDate, String applicationId, String header, String body, String fileUrl, String fileServerHost, Long lastUpdateDate, boolean exist) {
+        public Message(String id, Long creationDate, String applicationId, String header, String body, String fullImageName, String previewImageName, String fileServerHost, Long lastUpdateDate, boolean exist) {
             this.id = id;
             this.applicationId = applicationId;
             this.header = header;
             this.body = body;
-            this.fileName = fileUrl;
+            this.fullImageName = fullImageName;
+            this.previewImageName = previewImageName;
             this.fileServerHost = fileServerHost;
             this.lastUpdateDate = lastUpdateDate;
             this.exists = exist;
@@ -59,9 +61,11 @@ public class AllMessagesResponse {
             return body;
         }
 
-        public String getFileName() {
-            return fileName;
+        public String getFullImageName() {
+            return fullImageName;
         }
+
+        public String getPreviewImageName(){return previewImageName;}
 
         public String getFileServerHost() {
             return fileServerHost;
@@ -89,7 +93,8 @@ public class AllMessagesResponse {
                             applicationId + " " +
                             header + " " +
                             body + " " +
-                            fileName + "  " +
+                            fullImageName + "  " +
+                            previewImageName + "  " +
                             lastUpdateDate + " " +
                             exists + "/n";
 

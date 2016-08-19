@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.infrastructure.BusHolder;
+import rtapps.app.messages.AddMessageActivity;
 
 /**
  * Created by rtichauer on 8/13/16.

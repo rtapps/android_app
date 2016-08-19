@@ -25,7 +25,7 @@ public class OAuthClient {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                OauthService oauthService = ServiceGenerator.createService(OauthService.class, "app", "appsecret");
+                OauthService oauthService = BasicAuthorizationServiceGenerator.createService(OauthService.class, "app", "appsecret");
                 OAuthTokenResponse oAuthTokenResponse = oauthService.getAccessToken("password", username, password);
                 Log.d("OAuthClient", "auth token response=" + oAuthTokenResponse);
                 getAccessTokenCallback.onAccessTokenResponse(oAuthTokenResponse);
@@ -37,7 +37,7 @@ public class OAuthClient {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                OauthService oauthService = ServiceGenerator.createService(OauthService.class, "app", "appsecret");
+                OauthService oauthService = BasicAuthorizationServiceGenerator.createService(OauthService.class, "app", "appsecret");
                 OAuthTokenResponse oAuthTokenResponse = oauthService.getAccessToken("refresh_token",refreshToken);
                 Log.d("OAuthClient", "auth token response=" + oAuthTokenResponse);
                 getAccessTokenCallback.onAccessTokenResponse(oAuthTokenResponse);

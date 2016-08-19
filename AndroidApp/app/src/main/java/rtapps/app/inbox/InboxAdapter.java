@@ -132,7 +132,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
             File file =new File(directory, imageName + ".jpg");
 
-            Picasso.with(context).load(file).resize(700,700).placeholder(R.drawable.animal_king_logo).into(image);
+            Picasso.with(context).load(file).placeholder(R.drawable.animal_king_logo).into(image);
             //Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
         //    image.setImageBitmap(b);
         }
@@ -147,8 +147,8 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void loadFromNetwork(MessagesTable message, final ImageView image) {
         final String imageName = message.getId();
-        final String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + imageName + "/" + message.getFileName();
-        Picasso.with(context).load(imageUrl).resize(700,700).placeholder(R.drawable.animal_king_logo).into(image);
+        final String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + imageName + "/" + message.getPreviewImageName();
+        Picasso.with(context).load(imageUrl).placeholder(R.drawable.animal_king_logo).into(image);
     }
 
     public void setMockData(ViewHolder holder) {

@@ -1,18 +1,11 @@
 package rtapps.app.account.user;
 
-import android.util.Log;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import retrofit.RestAdapter;
-import rtapps.app.account.authentication.ServiceGenerator;
-import rtapps.app.account.authentication.network.responses.OAuthTokenResponse;
 import rtapps.app.account.user.network.AdminUserAPI;
 import rtapps.app.account.user.network.responses.AdminUserResponse;
-import rtapps.app.config.Configurations;
 import rtapps.app.network.AccessToken;
-import rtapps.app.network.AppAPI;
 import rtapps.app.network.authentication.TokenServiceGenerator;
 
 /**

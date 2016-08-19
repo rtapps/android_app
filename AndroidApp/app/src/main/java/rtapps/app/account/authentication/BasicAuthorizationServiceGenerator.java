@@ -12,7 +12,7 @@ import rtapps.app.config.Configurations;
 
 import com.squareup.okhttp.OkHttpClient;
 
-public class ServiceGenerator {
+public class BasicAuthorizationServiceGenerator {
 
 
     private static RestAdapter.Builder builder = new RestAdapter.Builder()

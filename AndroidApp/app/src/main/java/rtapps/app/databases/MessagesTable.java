@@ -28,7 +28,10 @@ public class MessagesTable extends BaseModel {
     String fileServerHost;
 
     @Column
-    String fileName;
+    String fullImageName;
+
+    @Column
+    String previewImageName;
 
     @Column
     Long creationDate;
@@ -50,7 +53,8 @@ public class MessagesTable extends BaseModel {
         this.header = message.getHeader();
         this.body = message.getBody();
         this.fileServerHost = message.getFileServerHost();
-        this.fileName = message.getFileName();
+        this.fullImageName = message.getFullImageName();
+        this.previewImageName = message.getPreviewImageName();
         this.creationDate = message.getCreationDate();
         this.lastUpdateDate = message.getLastUpdateDate();
         this.isExists = message.getExist();
@@ -79,10 +83,13 @@ public class MessagesTable extends BaseModel {
     }
 
 
-    public String getFileName() {
-        return fileName;
+    public String getFullImageName(){
+        return fullImageName;
     }
 
+    public String getPreviewImageName(){
+        return previewImageName;
+    }
 
     public Long getCreationDate() {
         return creationDate;
@@ -108,7 +115,8 @@ public class MessagesTable extends BaseModel {
                         body + " " +
                         header + " " +
                         fileServerHost + "  " +
-                        fileName + " " +
+                        fullImageName + " " +
+                        previewImageName + " " +
                         lastUpdateDate + " " +
                         isExists + "/n";
 

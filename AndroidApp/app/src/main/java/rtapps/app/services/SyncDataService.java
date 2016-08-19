@@ -87,7 +87,7 @@ public class SyncDataService extends IntentService {
             // Get  Images
             for (AllMessagesResponse.Message currentMessage : messagesList) {
                 try {
-                    loadFromNetwork(currentMessage.getId(), currentMessage.getFileServerHost(), currentMessage.getFileName());
+                    loadFromNetwork(currentMessage.getId(), currentMessage.getFileServerHost(), currentMessage.getPreviewImageName());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -104,7 +104,7 @@ public class SyncDataService extends IntentService {
         final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + imageName + "/" + filename;
         Log.d("load image", "downloaded!!! " + imageUrl);
 
-        Bitmap bitmap = Picasso.with(this).load(imageUrl).resize(700, 700).get();
+        Bitmap bitmap = Picasso.with(this).load(imageUrl).get();
         Log.d("load image", "downloaded!!! " + bitmap.getByteCount());
         saveToInternalStorage(bitmap, imageName);
     }

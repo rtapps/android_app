@@ -9,7 +9,7 @@
             android:label="@string/title_activity_login"></activity>
 
         <activity
-            android:name="rtapps.app.ui.AddMessageActivity"
+            android:name="rtapps.app.messages.AddMessageActivity"
             android:theme="@style/RTTransparent"></activity>
     </application>
 

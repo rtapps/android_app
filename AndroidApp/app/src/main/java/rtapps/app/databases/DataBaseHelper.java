@@ -58,24 +58,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertNewMessage( AllMessagesResponse.Message message){
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-
-        values.put(SALES_MESSAGE_ID, message.getId());
-     //   values.put(SALES_CREATION_DATE, message.getCreationDate());
-        values.put(SALES_TITLE, message.getHeader());
-        values.put(SALES_BODY, message.getBody());
-        values.put(SALES_IMAGE_ID, message.getFileName());
-        values.put(SALES_LAST_UPDATED_TIME, message.getLastUpdateDate());
-        values.put(SALES_EXIST, message.getExist());
-
-        long newRowId;
-        newRowId = db.insertWithOnConflict(SALES_TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
-        Log.d("DAtaBaseHelper" , "Insert new Message row id = " + newRowId);
-    }
-
     public Cursor getAllMessagesFromDB(){
         SQLiteDatabase db = getWritableDatabase();
          return db.query(

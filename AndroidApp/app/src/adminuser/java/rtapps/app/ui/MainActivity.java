@@ -16,12 +16,12 @@ public class MainActivity extends MainActivityBase {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (AccountManager.get().getUser() == null){
             finish();
             LoginActivity.startActivity(this);
             return;
         }
-        super.onCreate(savedInstanceState);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
     }
