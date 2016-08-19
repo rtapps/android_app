@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.rtapps.kingofthejungle.R;
 import com.sw926.imagefileselector.ImageCropper;
@@ -81,7 +83,15 @@ public class AddMessageActivity extends Activity{
         AccessToken accessToken = AccountManager.get().getUser().getAccessToken();
         TypedFile typedFullImage = new TypedFile("multipart/form-data", fullImage);
         TypedFile typedCompressedCroppedImage = new TypedFile("multipart/form-data", compressedCroppedImage);
-        UploadNewMessageTask uploadNewMessageTask = new UploadNewMessageTask(accessToken,"header","body", typedFullImage, typedCompressedCroppedImage);
+
+        String messageTag = ((EditText)findViewById(R.id.message_tag)).getText().toString();
+        String messageHeader = ((EditText)findViewById(R.id.message_header)).getText().toString();
+        String messageBody = ((EditText)findViewById(R.id.message_body)).getText().toString();
+        boolean sendPush = ((CheckBox)findViewById(R.id.send_push)).isChecked();
+
+
+
+        UploadNewMessageTask uploadNewMessageTask = new UploadNewMessageTask(this, accessToken,messageHeader,messageBody, sendPush, typedFullImage, typedCompressedCroppedImage);
 
         uploadNewMessageTask.execute();
 
@@ -94,11 +104,15 @@ public class AddMessageActivity extends Activity{
         String messageBody;
         TypedFile typedFullImage;
         TypedFile typedCompressedCroppedImage;
+        Context context;
+        boolean isPush;
 
-        public UploadNewMessageTask(AccessToken accessToken, String messageHeader, String messageBody, TypedFile typedFullImage, TypedFile typedCompressedCroppedImage){
+        public UploadNewMessageTask(Context context, AccessToken accessToken, String messageHeader, String messageBody,boolean isPush, TypedFile typedFullImage, TypedFile typedCompressedCroppedImage){
+            this.context = context;
             this.accessToken = accessToken;
             this.messageHeader = messageHeader;
             this.messageBody = messageBody;
+            this.isPush = isPush;
             this.typedFullImage = typedFullImage;
             this.typedCompressedCroppedImage = typedCompressedCroppedImage;
         }
@@ -106,8 +120,13 @@ public class AddMessageActivity extends Activity{
         @Override
         protected Void doInBackground(Void... params) {
             AddMessageAPI addMessageAPI = AuthFileUploadServiceGenerator.createService(AddMessageAPI.class, accessToken);
-            addMessageAPI.putMessage(Configurations.APPLICATION_ID, this.messageHeader, this.messageBody, this.typedFullImage, this.typedCompressedCroppedImage);
+            addMessageAPI.putMessage(Configurations.APPLICATION_ID, this.messageHeader, this.messageBody,this.isPush, this.typedFullImage, this.typedCompressedCroppedImage);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            ((AddMessageActivity)context).finish();
         }
     }
 

@@ -11,11 +11,11 @@ public class User {
     private String firstName;
     private String lastName;
     private String buisnessName;
-    private int applicationId;
+    private String applicationId;
     private String username;
     private AccessToken accessToken;
 
-    public User (String firstName, String lastName, String buisnessName, int applicationId, String username, AccessToken accessToken){
+    public User (String firstName, String lastName, String buisnessName, String applicationId, String username, AccessToken accessToken){
         this.firstName = firstName;
         this.lastName = lastName;
         this.buisnessName = buisnessName;
@@ -34,7 +34,7 @@ public class User {
         return this.buisnessName;
     }
 
-    public int getApplicationId(){
+    public String getApplicationId(){
         return this.applicationId;
     }
     public String getUsername(){

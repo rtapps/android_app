@@ -6,33 +6,19 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.rtapps.kingofthejungle.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 import rtapps.app.config.Configurations;
@@ -57,7 +43,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_cell, parent, false);
 
         ///
-        return new ViewHolder(view);
+        return new InboxViewHolder(view, this.context);
     }
 
     @Override
@@ -69,7 +55,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //        }
         final MessagesTable message = messagesList.get(position);
 
-        ((ViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
+        ((InboxViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageContentActivity.class);
@@ -80,9 +66,10 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
 
-        ((ViewHolder) holder).title.setText(message.getHeader());
-        ((ViewHolder) holder).content.setText(message.getBody());
-        final ImageView image = ((ViewHolder) holder).image;
+        ((InboxViewHolder) holder).title.setText(message.getHeader());
+        ((InboxViewHolder) holder).content.setText(message.getBody());
+        ((InboxViewHolder) holder).setMessageId(message.getId());
+        final ImageView image = ((InboxViewHolder) holder).image;
         image.setImageResource(R.drawable.animal_king_logo);
 
 
@@ -151,7 +138,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         Picasso.with(context).load(imageUrl).placeholder(R.drawable.animal_king_logo).into(image);
     }
 
-    public void setMockData(ViewHolder holder) {
+    public void setMockData(InboxViewHolder holder) {
 
         String title = "קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב 50% הנחה!";
         String content = "שימו לב חברות יקרות!\n" +
@@ -175,11 +162,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
-
-
-
-
-
     @Override
     public int getItemCount() {
         if (messagesList == null) {
@@ -187,34 +169,4 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         return messagesList.size();
     }
-
-
-    //Contacts View holder class
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public final TextView title;
-        public final TextView content;
-        public final ImageView image;
-        public final View button;
-
-
-        public ViewHolder(View view) {
-            super(view);
-            title = (TextView) view.findViewById(R.id.inbox_item_title);
-            content = (TextView) view.findViewById(R.id.inbox_item_content);
-            image = (ImageView) view.findViewById(R.id.inbox_item_image);
-            button = view.findViewById(R.id.inbox_cell_button);
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // context.startActivity(new Intent(context , adPage.class));
-                }
-            });
-
-        }
-    }
-
-
-
 }

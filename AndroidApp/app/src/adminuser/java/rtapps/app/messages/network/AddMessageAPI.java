@@ -20,6 +20,7 @@ public interface AddMessageAPI {
     AddMessageResponse putMessage(@Part("applicationId") String applicationId,
                                    @Part("messageHeader") String messageHeader,
                                    @Part("messageBody") String messageBody,
+                                   @Part("sendPush") boolean sendPush,
                                    @Part("fullImage") TypedFile fullImage,
                                    @Part("previewImage") TypedFile previewImage
     );

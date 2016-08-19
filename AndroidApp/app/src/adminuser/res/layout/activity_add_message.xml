@@ -2,13 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     >
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/send_push"
+        android:background="#ffffff"
+        android:text="Should Send Push"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:id="@+id/message_tag"
+        android:hint="Message Tag"
+        android:textColorHint="#F8F8FF"
+        />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
+        android:id="@+id/message_header"
+        android:hint="Message Header"
+        android:textColorHint="#F8F8FF"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:id="@+id/message_body"
+        android:hint="Message Body"
+        android:textColorHint="#F8F8FF"
         />
 
     <Button
@@ -17,10 +44,4 @@
         android:text="Choose Photo"
         android:id="@+id/activity_add_message_image_picker"
         />
-
-
-
-
-
-
 </LinearLayout>
