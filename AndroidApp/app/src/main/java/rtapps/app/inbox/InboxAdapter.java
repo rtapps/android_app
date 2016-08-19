@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.share.widget.LikeView;
 import com.rtapps.kingofthejungle.R;
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +43,11 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_cell, parent, false);
 
+        LikeView likeView = (LikeView)view.findViewById(R.id.like_view);
+        likeView.setLikeViewStyle(LikeView.Style.STANDARD);
+        likeView.setObjectIdAndType(
+                "https://www.facebook.com/melechahayot/",
+        LikeView.ObjectType.PAGE);
         ///
         return new InboxViewHolder(view, this.context);
     }

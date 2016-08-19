@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.roughike.bottombar.BottomBar;
@@ -91,6 +93,9 @@ public abstract class MainActivityBase extends AppCompatActivity {
         super.onResume();
         registerReceiver();
         callSyncMessages();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 
     private void callSyncMessages(){
