@@ -54,7 +54,7 @@ public class LoadImageAndSaveThread implements Runnable {
     private Bitmap loadImageFromNetwork(String fileName, String fileServerHost , String imageName) throws IOException {
         final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + fileName + "/" + imageName;
         Log.d("load image", "loading image from url - !!! " + imageUrl);
-        Bitmap bitmap = Picasso.with(context).load(imageUrl).resize(700, 700).get();
+        Bitmap bitmap = Picasso.with(context).load(imageUrl).get();
         Log.d("load image", "downloaded!!! #Byte: " + bitmap.getByteCount());
         return bitmap;
     }

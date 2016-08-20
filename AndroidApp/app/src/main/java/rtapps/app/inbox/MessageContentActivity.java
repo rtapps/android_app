@@ -16,6 +16,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexvasilkov.gestures.views.GestureImageView;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.rtapps.kingofthejungle.R;
@@ -50,14 +52,13 @@ public class MessageContentActivity extends AppCompatActivity {
 
         String filename = intent.getExtras().getString(MessageContentActivity.EXTRA_FILE_NAME);
 
-        mImageView = (SubsamplingScaleImageView) findViewById(R.id.content_image);
-        
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
         File file = new File(directory, filename);
 
-        mImageView.setImage(ImageSource.uri(file.getPath()));
+        GestureImageView fimg =(GestureImageView)findViewById(R.id.g_image);
 
+        Picasso.with(this).load(file).placeholder(R.drawable.animal_king_logo).into(fimg);
     }
 
 
