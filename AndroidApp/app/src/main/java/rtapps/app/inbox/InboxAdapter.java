@@ -6,6 +6,8 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.LikeView;
+import com.facebook.share.widget.ShareButton;
 import com.rtapps.kingofthejungle.R;
 import com.squareup.picasso.Picasso;
 
@@ -74,9 +80,27 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         ((InboxViewHolder) holder).title.setText(message.getHeader());
         ((InboxViewHolder) holder).content.setText(message.getBody());
-        ((InboxViewHolder) holder).setMessageId(message.getId());
         final ImageView image = ((InboxViewHolder) holder).image;
+        ((InboxViewHolder) holder).setMessageId(message.getId());
+
         image.setImageResource(R.drawable.animal_king_logo);
+
+        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(bitmap)
+                .build();
+//        SharePhotoContent content = new SharePhotoContent.Builder()
+//                .addPhoto(photo)
+//                .build();
+
+        ShareLinkContent content = new ShareLinkContent.Builder()
+
+        .setContentUrl(Uri.parse("http://xn--8dbcficln6h.co.il/default.aspx"))
+                .build();
+
+        ((InboxViewHolder) holder).fbShareButton.setShareContent(content);
+
+
 
 
         final String imageName = message.getPreviewImageName();
@@ -89,7 +113,8 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
         File file =new File(directory, imageName);
 
-        Log.d("InboxAdapter" , "Load Image from" + file.getPath());
+        Log.d("InboxAdapter", "Load Image from" + file.getPath());
+
 
 
         if (file.exists()) {
@@ -127,7 +152,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
             File file =new File(directory, imageName);
 
-            Picasso.with(context).load(file).placeholder(R.drawable.animal_king_logo).into(image);
+            Picasso.with(context).load(file).placeholder(R.drawable.animal_king_logo).fit().into(image);
             //Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
         //    image.setImageBitmap(b);
         }
