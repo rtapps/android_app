@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Parcel;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.ShareApi;
+import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareContent;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.ShareMediaContent;
@@ -35,6 +41,7 @@ import java.util.List;
 
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
+import rtapps.app.network.responses.AllMessagesResponse;
 
 
 /**
@@ -76,35 +83,24 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         });
 
 
-
         ((InboxViewHolder) holder).title.setText(message.getHeader());
         ((InboxViewHolder) holder).content.setText(message.getBody());
         final ImageView image = ((InboxViewHolder) holder).image;
         ((InboxViewHolder) holder).setMessageId(message.getId());
 
 
-
-
-
         image.setImageResource(R.drawable.animal_king_logo);
 
-        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
-        SharePhoto photo = new SharePhoto.Builder()
-                .setBitmap(bitmap)
-                .build();
+
 //        SharePhotoContent content = new SharePhotoContent.Builder()
 //                .addPhoto(photo)
 //                .build();
 
-        final ShareContent shareContent = new ShareMediaContent.Builder()
-                .addMedium(photo).build();
 
-     //   ShareLinkContent content = new ShareLinkContent.Builder().setContentUrl(Uri.parse("http://xn--8dbcficln6h.co.il/default.aspx")).build();
+        //   ShareLinkContent content = new ShareLinkContent.Builder().setContentUrl(Uri.parse("http://xn--8dbcficln6h.co.il/default.aspx")).build();
 
 
-       // ((InboxViewHolder) holder).fbShareButton.setShareContent(shareContent);
-
-
+        // ((InboxViewHolder) holder).fbShareButton.setShareContent(shareContent);
 
 
         final String imageName = message.getPreviewImageName();
@@ -112,30 +108,77 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         //String root = Environment.getExternalStorageDirectory().toString();
 
 
-        ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-        File file =new File(directory, imageName);
+//        ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+//        // path to /data/data/yourapp/app_data/imageDir
+//        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
+//        File file = new File(directory, imageName);
+//
+//        Log.d("InboxAdapter", "Load Image from" + file.getPath());
+//
+//
+//        if (file.exists()) {
+//            Log.d("InboxAdapter", "file exist load from internal storage");
+//            loadImageFromStoragePicasso(imageName, image);
+//        } else {
+//            Log.d("InboxAdapter", "file not exist load from network" + file.getPath());
+//            loadFromNetwork(message, image);
+//        }
 
-        Log.d("InboxAdapter", "Load Image from" + file.getPath());
+        setImageBitmap(message, imageName, image);
 
-
-
-        if (file.exists()) {
-            Log.d("InboxAdapter", "file exist load from internal storage");
-            loadImageFromStoragePicasso(imageName , image);
-        } else {
-            Log.d("InboxAdapter", "file not exist load from network" + file.getPath() );
-            loadFromNetwork(message , image);
-        }
 
         ((InboxViewHolder) holder).shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareDialog shareDialog = new ShareDialog(context);
-                shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+                // Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+                // path to /data/data/yourapp/app_data/imageDir
+                File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
+                File file = new File(directory, message.getFullImageName());
+                Bitmap b = null;
+                try {
+                    b = BitmapFactory.decodeStream(new FileInputStream(file));
+                    
+                    SharePhoto photo = new SharePhoto.Builder()
+                            .setCaption("asdasdasd")
+                            .setBitmap(b)
+                            .build();
+//                final ShareContent shareContent = new ShareMediaContent.Builder()
+//                        .addMedium(photo).build();
+
+                    final SharePhotoContent shareContent = new SharePhotoContent.Builder()
+                            .addPhoto(photo).build();
+
+                    shareContent.describeContents();
+
+                    ShareDialog shareDialog = new ShareDialog(context);
+
+
+                    shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
+    }
+
+    private void setImageBitmap(MessagesTable message, String imageName, ImageView image) {
+        ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
+        File file = new File(directory, imageName);
+
+        Log.d("InboxAdapter", "Load Image from" + file.getPath());
+
+
+        if (file.exists()) {
+            Log.d("InboxAdapter", "file exist load from internal storage");
+            loadImageFromStoragePicasso(imageName, image);
+        } else {
+            Log.d("InboxAdapter", "file not exist load from network" + file.getPath());
+            loadFromNetwork(message, image);
+        }
     }
 
 //    private void loadImageFromStorage(final String imageName, final ImageView image)
@@ -155,24 +198,20 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //    }
 
 
-    private void loadImageFromStoragePicasso(final String imageName, final ImageView image)
-    {
+    private void loadImageFromStoragePicasso(final String imageName, final ImageView image) {
         try {
             ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
             File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-            File file =new File(directory, imageName);
+            File file = new File(directory, imageName);
 
             Picasso.with(context).load(file).placeholder(R.drawable.animal_king_logo).fit().into(image);
             //Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
-        //    image.setImageBitmap(b);
-        }
-        catch (Exception e)
-        {
+            //    image.setImageBitmap(b);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-
 
 
     private void loadFromNetwork(MessagesTable message, final ImageView image) {
@@ -212,4 +251,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         return messagesList.size();
     }
+
+
 }
