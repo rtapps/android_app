@@ -15,5 +15,7 @@ public class Configurations {
 
     public static final String APPLICATION_NAME = "פסי בוטיק";
 
+    public static final String STORE_FACEBOOK_PAGE_URL = "https://www.facebook.com/melechahayot/";
+
     public static final String IMAGE_LIBRARY_PATH = "imageDir";
 }

@@ -15,7 +15,6 @@ public abstract class InboxViewHolderBase extends RecyclerView.ViewHolder {
     public final TextView content;
     public final ImageView image;
     public final LinearLayout shareButton;
-    public final ShareButton fbShareButton;
     public final View button;
 
     protected String messageId;
@@ -28,7 +27,6 @@ public abstract class InboxViewHolderBase extends RecyclerView.ViewHolder {
         image = (ImageView) view.findViewById(R.id.inbox_item_image);
         button = view.findViewById(R.id.inbox_cell_button);
         shareButton = (LinearLayout)view.findViewById(R.id.share_button);
-        fbShareButton = (ShareButton)view.findViewById(R.id.fb_share_button);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

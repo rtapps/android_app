@@ -11,9 +11,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.share.widget.LikeView;
 import com.rtapps.kingofthejungle.R;
 
 import java.util.logging.Logger;
+
+import rtapps.app.config.Configurations;
 
 
 public class StoreInfoFragment extends Fragment {
@@ -48,7 +51,7 @@ public class StoreInfoFragment extends Fragment {
         youtubeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("asd" , "asd");
+                Log.d("asd", "asd");
             }
         });
 
@@ -57,6 +60,13 @@ public class StoreInfoFragment extends Fragment {
         storeAddress.setText(R.string.info_store_address);
         storeAddressCity.setText(R.string.info_store_address_city);
         storePhoneNumber.setText(R.string.info_store_phone_number);
+
+        LikeView likeView = (LikeView)v.findViewById(R.id.like_view);
+        likeView.setLikeViewStyle(LikeView.Style.STANDARD);
+        likeView.setObjectIdAndType(
+                Configurations.STORE_FACEBOOK_PAGE_URL,
+                LikeView.ObjectType.PAGE);
+
 
         //addStores(v, inflater);
 

@@ -15,17 +15,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.share.model.ShareContent;
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareMediaContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.LikeView;
 import com.facebook.share.widget.ShareButton;
+import com.facebook.share.widget.ShareDialog;
 import com.rtapps.kingofthejungle.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import rtapps.app.config.Configurations;
@@ -49,12 +54,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_cell, parent, false);
 
-        LikeView likeView = (LikeView)view.findViewById(R.id.like_view);
-        likeView.setLikeViewStyle(LikeView.Style.STANDARD);
-        likeView.setObjectIdAndType(
-                "https://www.facebook.com/melechahayot/",
-        LikeView.ObjectType.PAGE);
-        ///
         return new InboxViewHolder(view, this.context);
     }
 
@@ -83,6 +82,10 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final ImageView image = ((InboxViewHolder) holder).image;
         ((InboxViewHolder) holder).setMessageId(message.getId());
 
+
+
+
+
         image.setImageResource(R.drawable.animal_king_logo);
 
         Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
@@ -93,12 +96,13 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //                .addPhoto(photo)
 //                .build();
 
-        ShareLinkContent content = new ShareLinkContent.Builder()
+        final ShareContent shareContent = new ShareMediaContent.Builder()
+                .addMedium(photo).build();
 
-        .setContentUrl(Uri.parse("http://xn--8dbcficln6h.co.il/default.aspx"))
-                .build();
+     //   ShareLinkContent content = new ShareLinkContent.Builder().setContentUrl(Uri.parse("http://xn--8dbcficln6h.co.il/default.aspx")).build();
 
-        ((InboxViewHolder) holder).fbShareButton.setShareContent(content);
+
+       // ((InboxViewHolder) holder).fbShareButton.setShareContent(shareContent);
 
 
 
@@ -125,7 +129,13 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             loadFromNetwork(message , image);
         }
 
-
+        ((InboxViewHolder) holder).shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareDialog shareDialog = new ShareDialog(context);
+                shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
+            }
+        });
     }
 
 //    private void loadImageFromStorage(final String imageName, final ImageView image)
