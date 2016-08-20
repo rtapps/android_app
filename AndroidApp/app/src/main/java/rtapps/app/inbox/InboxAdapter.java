@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,24 +139,26 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 Bitmap b = null;
                 try {
                     b = BitmapFactory.decodeStream(new FileInputStream(file));
-                    
+
                     SharePhoto photo = new SharePhoto.Builder()
-                            .setCaption("asdasdasd")
                             .setBitmap(b)
                             .build();
 //                final ShareContent shareContent = new ShareMediaContent.Builder()
 //                        .addMedium(photo).build();
 
-                    final SharePhotoContent shareContent = new SharePhotoContent.Builder()
-                            .addPhoto(photo).build();
-
-                    shareContent.describeContents();
+//                    final SharePhotoContent shareContent = new SharePhotoContent.Builder()
+//                            .addPhoto(photo).build();
+                    final String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + message.getId() + "/" + message.getFullImageName();
+                    Uri myUri = Uri.parse(imageUrl);
+                    ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
+                            .setContentTitle(message.getHeader())
+                            .setContentDescription(message.getBody())
+                            .setContentUrl(Uri.parse(Configurations.STORE_FACEBOOK_PAGE_URL))
+                            .setImageUrl(myUri)
+                            .build();
 
                     ShareDialog shareDialog = new ShareDialog(context);
-
-
-                    shareDialog.show(shareContent, ShareDialog.Mode.AUTOMATIC);
-
+                    shareDialog.show(shareLinkContent, ShareDialog.Mode.AUTOMATIC);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
