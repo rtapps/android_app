@@ -1,5 +1,7 @@
 package rtapps.app.ui;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,11 +17,18 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.raizlabs.android.dbflow.sql.language.NameAlias;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.rtapps.kingofthejungle.R;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
+import rtapps.app.databases.CatalogTable;
+import rtapps.app.databases.MessagesTable;
 import rtapps.app.gcm.NotificationsManager;
 
 import rtapps.app.databases.DataBaseHelper;
@@ -59,31 +68,17 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
 
     private void initSlider(){
 
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
 
-        file_maps.put("1",R.drawable.catalog1);
-        file_maps.put("2",R.drawable.catalog2);
-        file_maps.put("3", R.drawable.catalog3);
-        file_maps.put("4", R.drawable.catalog4);
+        List <CatalogTable> catalogTables = getCatalogFromDB();
 
-        for(String name : file_maps.keySet()){
-            DefaultSliderView textSliderView = new DefaultSliderView(getActivity());//new TextSliderView(getActivity());
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(file_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(this);
-
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra",name);
-
-            slider.addSlider(textSliderView);
+        if (catalogTables == null || !catalogHasBeenSynced(catalogTables)){
+            setDefaultSlider();
+        }
+        else{
+            setSliderFromCatalog(catalogTables);
         }
 
-        slider.startAutoCycle(1000,2000,true);
+        slider.startAutoCycle(1500,1500,true);
 //        slider.setPresetTransformer(SliderLayout.Transformer.Default);
 //        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
 //
@@ -94,6 +89,55 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
 //        slider.setDuration(2000);
 //        slider.addOnPageChangeListener(this);
 
+    }
+
+    private void setSliderFromCatalog(List<CatalogTable> catalogTables) {
+        ContextWrapper cw = new ContextWrapper(getContext().getApplicationContext());
+        File directory = cw.getDir("catalog", Context.MODE_PRIVATE);
+        DefaultSliderView textSliderView;
+        for (CatalogTable catalogTable: catalogTables){
+            File file = new File(directory, catalogTable.getId() + "/" + catalogTable.getFullImageName());
+            textSliderView = new DefaultSliderView(getActivity());
+            textSliderView.image(file).setScaleType(BaseSliderView.ScaleType.CenterCrop).setOnSliderClickListener(this);
+            slider.addSlider(textSliderView);
+        }
+    }
+
+    private void setDefaultSlider() {
+        DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+        textSliderView.image(R.drawable.catalog1).setScaleType(BaseSliderView.ScaleType.Fit).setOnSliderClickListener(this);
+        slider.addSlider(textSliderView);
+
+        textSliderView = new DefaultSliderView(getActivity());
+        textSliderView.image(R.drawable.catalog2).setScaleType(BaseSliderView.ScaleType.Fit).setOnSliderClickListener(this);
+        slider.addSlider(textSliderView);
+
+        textSliderView = new DefaultSliderView(getActivity());
+        textSliderView.image(R.drawable.catalog3).setScaleType(BaseSliderView.ScaleType.Fit).setOnSliderClickListener(this);
+        slider.addSlider(textSliderView);
+
+        textSliderView = new DefaultSliderView(getActivity());
+        textSliderView.image(R.drawable.catalog4).setScaleType(BaseSliderView.ScaleType.Fit).setOnSliderClickListener(this);
+        slider.addSlider(textSliderView);
+    }
+
+    private List<CatalogTable> getCatalogFromDB(){
+        NameAlias nameAlias = NameAlias.builder("index").withTable("CatalogTable").build();
+        List<CatalogTable> catalogTables = new Select().from(CatalogTable.class).orderBy(nameAlias, true).queryList();
+        Log.d("CatalogFragment", "Retrieved catalog table = " + catalogTables);
+        return catalogTables;
+    }
+
+    private boolean catalogHasBeenSynced(List<CatalogTable> catalogTables) {
+        ContextWrapper cw = new ContextWrapper(getContext().getApplicationContext());
+        File directory = cw.getDir("catalog", Context.MODE_PRIVATE);
+        for (CatalogTable catalogTable: catalogTables){
+            File file = new File(directory, catalogTable.getId() + "/" + catalogTable.getFullImageName());
+            if (!file.exists()){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
