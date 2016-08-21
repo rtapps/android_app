@@ -64,7 +64,7 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
         file_maps.put("1",R.drawable.catalog1);
         file_maps.put("2",R.drawable.catalog2);
         file_maps.put("3", R.drawable.catalog3);
-        file_maps.put("3", R.drawable.catalog4);
+        file_maps.put("4", R.drawable.catalog4);
 
         for(String name : file_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(getActivity());//new TextSliderView(getActivity());

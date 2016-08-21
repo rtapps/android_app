@@ -2,6 +2,8 @@ package rtapps.app.network;
 
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
 import retrofit.http.Body;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.Header;
@@ -12,6 +14,7 @@ import retrofit.http.Field;
 import retrofit.http.Query;
 import rtapps.app.network.responses.AllMessagesResponse;
 import retrofit.http.GET;
+import rtapps.app.network.responses.CatalogImage;
 import rtapps.app.network.responses.PushToken;
 
 
@@ -37,6 +40,10 @@ public interface AppAPI {
                               @Field("pushTokenId")String pushTokenId,
                               @Field("osType")String osType,
                               @Field("deviceModelType")String deviceModelType);
+
+    @GET("/catalog")
+    List<CatalogImage> getCatalog(@Query("applicationId") String applicationId);
+
 
 
 }

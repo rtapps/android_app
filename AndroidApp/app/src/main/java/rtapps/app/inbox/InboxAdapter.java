@@ -78,6 +78,8 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageContentActivity.class);
                 intent.putExtra(MessageContentActivity.EXTRA_FILE_NAME, message.getFullImageName());
+                intent.putExtra(MessageContentActivity.EXTRA_ID, message.getId());
+
                 context.startActivity(intent);
             }
         });
@@ -133,8 +135,8 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 // Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
                 ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
                 // path to /data/data/yourapp/app_data/imageDir
-                File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-                File file = new File(directory, message.getFullImageName());
+                File directory = cw.getDir("messages", Context.MODE_PRIVATE);
+                File file = new File(directory, message.getId() + "/" + message.getFullImageName());
                 Bitmap b = null;
                 try {
                     b = BitmapFactory.decodeStream(new FileInputStream(file));
@@ -166,15 +168,15 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private void setImageBitmap(MessagesTable message, String imageName, ImageView image) {
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-        File file = new File(directory, imageName);
+        File directory = cw.getDir("messages", Context.MODE_PRIVATE);
+        File file = new File(directory,message.getId() + "/" +imageName);
 
         Log.d("InboxAdapter", "Load Image from" + file.getPath());
 
 
         if (file.exists()) {
             Log.d("InboxAdapter", "file exist load from internal storage");
-            loadImageFromStoragePicasso(imageName, image);
+            loadImageFromStoragePicasso(message.getId(), imageName, image);
         } else {
             Log.d("InboxAdapter", "file not exist load from network" + file.getPath());
             loadFromNetwork(message, image);
@@ -198,11 +200,11 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //    }
 
 
-    private void loadImageFromStoragePicasso(final String imageName, final ImageView image) {
+    private void loadImageFromStoragePicasso(String messageId, final String imageName, final ImageView image) {
         try {
             ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
-            File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-            File file = new File(directory, imageName);
+            File directory = cw.getDir("messages", Context.MODE_PRIVATE);
+            File file = new File(directory, messageId + "/" +imageName);
 
             Picasso.with(context).load(file).placeholder(R.drawable.animal_king_logo).fit().into(image);
             //Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));

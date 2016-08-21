@@ -9,27 +9,49 @@ import java.util.concurrent.Executors;
 
 import rtapps.app.databases.MessagesTable;
 import rtapps.app.network.responses.AllMessagesResponse;
+import rtapps.app.network.responses.CatalogImage;
+
+import static android.os.SystemClock.sleep;
 
 /**
  * Created by tazo on 19/08/2016.
  */
 public class SyncDataThreadPool {
 
-    public static void downloadAndSaveAllImages(List<MessagesTable> messageList, Context context) {
+    public static void downloadAndSaveAllMessageImages(List<MessagesTable> messageList, Context context) {
 
-        ExecutorService executor = Executors.newFixedThreadPool(5);
+        ExecutorService executor = Executors.newFixedThreadPool(2);
 
         for (MessagesTable message : messageList) {
             //Download regular image
-            LoadImageAndSaveThread downloadImageThread = new LoadImageAndSaveThread(message.getId(), message.getFileServerHost(), message.getFullImageName(), context);
+            LoadImageAndSaveThread downloadImageThread = new LoadImageAndSaveThread(message.getId(), message.getFileServerHost(), "messages", message.getFullImageName(), context);
             executor.execute(downloadImageThread);
             //Download preview image
-            LoadImageAndSaveThread downloadImagePreviewThread = new LoadImageAndSaveThread(message.getId(), message.getFileServerHost(), message.getPreviewImageName(), context);
+            LoadImageAndSaveThread downloadImagePreviewThread = new LoadImageAndSaveThread(message.getId(), message.getFileServerHost(),"messages", message.getPreviewImageName(), context);
             executor.execute(downloadImagePreviewThread);
             Log.d("SyncDataThreadPool", "SyncDataThreadPool- Download nad save message:" + message.toString());
         }
         executor.shutdown();
 
-        while (!executor.isShutdown()) ;
+        while (!executor.isShutdown()){
+            sleep(1000);
+        }
+    }
+
+    public static void downloadAndSaveAllCatalogImages(List<CatalogImage> catalogImages, Context context) {
+
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+
+        for (CatalogImage catalogImage: catalogImages) {
+            //Download regular image
+            LoadImageAndSaveThread downloadImageThread = new LoadImageAndSaveThread(catalogImage.getId(), catalogImage.getFileServerHost(), "catalog", catalogImage.getFullImageName(), context);
+            executor.execute(downloadImageThread);
+            Log.d("SyncDataThreadPool", "SyncDataThreadPool- Download nad save message:" + catalogImage.toString());
+        }
+        executor.shutdown();
+
+        while (!executor.isShutdown()){
+            sleep(1000);
+        }
     }
 }

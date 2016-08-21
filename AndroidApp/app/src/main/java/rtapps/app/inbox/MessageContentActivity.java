@@ -41,6 +41,7 @@ public class MessageContentActivity extends AppCompatActivity {
     PhotoViewAttacher mAttacher;
 
     public static final String EXTRA_FILE_NAME = "extraFileName";
+    public static final String EXTRA_ID = "extraId";
 
 
     @Override
@@ -51,10 +52,11 @@ public class MessageContentActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String filename = intent.getExtras().getString(MessageContentActivity.EXTRA_FILE_NAME);
+        String id = intent.getExtras().getString(MessageContentActivity.EXTRA_ID);
 
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-        File file = new File(directory, filename);
+        File directory = cw.getDir("messages", Context.MODE_PRIVATE);
+        File file = new File(directory, id +"/" +filename);
 
         GestureImageView fimg =(GestureImageView)findViewById(R.id.g_image);
 

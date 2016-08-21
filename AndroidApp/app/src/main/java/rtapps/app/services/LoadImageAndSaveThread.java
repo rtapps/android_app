@@ -1,15 +1,21 @@
 package rtapps.app.services;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
@@ -19,15 +25,17 @@ import rtapps.app.network.responses.AllMessagesResponse;
  * Created by tazo on 19/08/2016.
  */
 public class LoadImageAndSaveThread implements Runnable {
-    String messageId;
+    String id;
     String fileServerHost;
     Context context;
     String imageName;
+    String internalDirectory;
 
-    public LoadImageAndSaveThread(String messageId, String fileServerHost ,String imageName , Context context) {
-        this.messageId = messageId;
+    public LoadImageAndSaveThread(String id, String fileServerHost, String internalDirectory, String imageName , Context context) {
+        this.id = id;
         this.imageName = imageName;
         this.fileServerHost = fileServerHost;
+        this.internalDirectory = internalDirectory;
         this.context = context;
     }
 
@@ -35,36 +43,91 @@ public class LoadImageAndSaveThread implements Runnable {
     public void run() {
         if (!isImageExist(imageName)) {
             try {
-                Bitmap b = loadImageFromNetwork(messageId, fileServerHost , imageName);
-                saveToInternalStorage(b, imageName);
+                Bitmap bitmap = loadImageFromNetwork();
+                saveToInternalStorage(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
 
     }
 
     private boolean isImageExist(String imageName) {
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
-        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-        File file = new File(directory, imageName);
+        File directory = cw.getDir(internalDirectory, Context.MODE_PRIVATE);
+        File file = new File(directory, id +"/"+ imageName);
         return file.exists();
     }
 
-    private Bitmap loadImageFromNetwork(String fileName, String fileServerHost , String imageName) throws IOException {
-        final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + fileName + "/" + imageName;
+    private Bitmap loadImageFromNetwork() throws IOException {
+        final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + id + "/" + imageName;
         Log.d("load image", "loading image from url - !!! " + imageUrl);
         Bitmap bitmap = Picasso.with(context).load(imageUrl).get();
         Log.d("load image", "downloaded!!! #Byte: " + bitmap.getByteCount());
         return bitmap;
     }
 
-    private String saveToInternalStorage(Bitmap bitmapImage, String imageName) throws IOException {
+//
+//    private void loadImageFromNetwork(){
+//        try {
+//
+//            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+//
+//            File directory = context.getApplicationContext().getDir(internalDirectory, Context.MODE_PRIVATE);
+//            // Create imageDir
+//
+//            File f = new File(directory, "messages/"+id);
+//            Log.d("saveToInternalStorage", "create directory" + f.mkdirs());
+//
+//            File file = new File(f, imageName);
+//
+//            final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + id + "/" + imageName;
+//
+//            DownloadManager mgr = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+//
+//            Uri downloadUri = Uri.parse(imageUrl);
+//            DownloadManager.Request request = new DownloadManager.Request(
+//                    downloadUri);
+//
+//
+//
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//
+//            String buffer;
+//            URLConnection conn = new URL(imageUrl).openConnection();
+//            conn.setUseCaches(false);
+//            conn.connect();
+//            InputStreamReader isr = new InputStreamReader(conn.getInputStream());
+//            BufferedReader br = new BufferedReader(isr);
+//
+//            FileOutputStream fos = new FileOutputStream(file);
+//
+//            while ((buffer = br.readLine()) != null) {
+//                fos.write(buffer.getBytes());
+//            }
+//
+//            fos.close();
+//            br.close();
+//            isr.close();
+//
+//        } catch (IOException ioe) {
+//
+//        }
+//    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage) throws IOException {
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
 
-        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
+         File directory = context.getDir(internalDirectory, Context.MODE_PRIVATE);
         // Create imageDir
-        File file = new File(directory, imageName);
+
+        File f = new File(directory, id);
+        Log.d("saveToInternalStorage", "create directory" + f.mkdirs());
+
+        File file = new File(f, imageName);
 
         Log.d("saveToInternalStorage", "Save image to" + file);
 
