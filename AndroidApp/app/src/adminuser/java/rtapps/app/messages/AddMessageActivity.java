@@ -66,9 +66,9 @@ public class AddMessageActivity extends Activity{
             public void onCropperCallback(ImageCropper.CropperResult result, File srcFile, File outFile) {
                 if (result == ImageCropper.CropperResult.success) {
                     File compressedCroppedImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
-//                    File compressedOriginalImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
+                    File compressedOriginalImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(srcFile);
 
-                    uploadMessage(srcFile, compressedCroppedImage);
+                    uploadMessage(compressedOriginalImage, compressedCroppedImage);
 
                 } else if (result == ImageCropper.CropperResult.error_illegal_input_file) {
 

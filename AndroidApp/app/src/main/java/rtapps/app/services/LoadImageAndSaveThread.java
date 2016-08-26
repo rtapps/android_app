@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashSet;
+import java.util.Set;
 
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
@@ -31,6 +33,8 @@ public class LoadImageAndSaveThread implements Runnable {
     String imageName;
     String internalDirectory;
 
+    public static Set<String> downloadedItems = new HashSet<>();
+
     public LoadImageAndSaveThread(String id, String fileServerHost, String internalDirectory, String imageName , Context context) {
         this.id = id;
         this.imageName = imageName;
@@ -42,11 +46,21 @@ public class LoadImageAndSaveThread implements Runnable {
     @Override
     public void run() {
         if (!isImageExist(imageName)) {
-            try {
-                Bitmap bitmap = loadImageFromNetwork();
-                saveToInternalStorage(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+            final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + id + "/" + imageName;
+            if (!downloadedItems.contains(imageUrl)) {
+                downloadedItems.add(imageUrl);
+
+                try {
+                    Bitmap bitmap = loadImageFromNetwork(imageUrl);
+                    saveToInternalStorage(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                downloadedItems.remove(imageUrl);
+            }
+            else{
+                Log.d("LoadImageAndSaveThread", "Image is already being downloaded: " + imageUrl);
             }
 
         }
@@ -60,15 +74,15 @@ public class LoadImageAndSaveThread implements Runnable {
         return file.exists();
     }
 
-    private Bitmap loadImageFromNetwork() throws IOException {
-        final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + id + "/" + imageName;
+    private Bitmap loadImageFromNetwork(String imageUrl) throws IOException {
+
         Log.d("load image", "loading image from url - !!! " + imageUrl);
         Bitmap bitmap = Picasso.with(context).load(imageUrl).get();
         Log.d("load image", "downloaded!!! #Byte: " + bitmap.getByteCount());
         return bitmap;
     }
 
-//
+
 //    private void loadImageFromNetwork(){
 //        try {
 //
@@ -77,24 +91,13 @@ public class LoadImageAndSaveThread implements Runnable {
 //            File directory = context.getApplicationContext().getDir(internalDirectory, Context.MODE_PRIVATE);
 //            // Create imageDir
 //
-//            File f = new File(directory, "messages/"+id);
+//            File f = new File(directory, id);
+//            f.mkdirs();
 //            Log.d("saveToInternalStorage", "create directory" + f.mkdirs());
 //
 //            File file = new File(f, imageName);
 //
 //            final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + id + "/" + imageName;
-//
-//            DownloadManager mgr = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-//
-//            Uri downloadUri = Uri.parse(imageUrl);
-//            DownloadManager.Request request = new DownloadManager.Request(
-//                    downloadUri);
-//
-//
-//
-//            if (file.exists()) {
-//                file.delete();
-//            }
 //
 //            String buffer;
 //            URLConnection conn = new URL(imageUrl).openConnection();
@@ -102,7 +105,8 @@ public class LoadImageAndSaveThread implements Runnable {
 //            conn.connect();
 //            InputStreamReader isr = new InputStreamReader(conn.getInputStream());
 //            BufferedReader br = new BufferedReader(isr);
-//
+//            Log.d("LoadImageAndSaveThread", "Downloading file to:" + file.getAbsolutePath());
+//            Log.d("LoadImageAndSaveThread", "Downloading file to:" + file.getCanonicalPath());
 //            FileOutputStream fos = new FileOutputStream(file);
 //
 //            while ((buffer = br.readLine()) != null) {
