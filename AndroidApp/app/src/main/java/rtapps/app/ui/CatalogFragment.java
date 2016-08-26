@@ -71,10 +71,12 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
 
         List <CatalogTable> catalogTables = getCatalogFromDB();
 
-        if (catalogTables == null || !catalogHasBeenSynced(catalogTables)){
+        if (catalogTables == null || catalogTables.isEmpty() || !catalogHasBeenSynced(catalogTables)){
+            Log.d("CatalogFragment", "Set default slider ");
             setDefaultSlider();
         }
         else{
+            Log.d("CatalogFragment", "Set slider from catalog");
             setSliderFromCatalog(catalogTables);
         }
 
@@ -134,6 +136,7 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
         for (CatalogTable catalogTable: catalogTables){
             File file = new File(directory, catalogTable.getId() + "/" + catalogTable.getFullImageName());
             if (!file.exists()){
+                Log.d("CatalogFragment", "Retrieved file doesn't exist = " + file.getName());
                 return false;
             }
         }

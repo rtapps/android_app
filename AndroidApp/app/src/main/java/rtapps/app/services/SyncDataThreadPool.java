@@ -20,7 +20,7 @@ public class SyncDataThreadPool {
 
     public static void downloadAndSaveAllMessageImages(List<MessagesTable> messageList, Context context) {
 
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
 
         for (MessagesTable message : messageList) {
             //Download regular image
@@ -33,14 +33,14 @@ public class SyncDataThreadPool {
         }
         executor.shutdown();
 
-        while (!executor.isShutdown()){
+        while (!executor.isTerminated()){
             sleep(1000);
         }
     }
 
     public static void downloadAndSaveAllCatalogImages(List<CatalogImage> catalogImages, Context context) {
 
-        ExecutorService executor = Executors.newFixedThreadPool(1);
+        ExecutorService executor = Executors.newFixedThreadPool(2);
 
         for (CatalogImage catalogImage: catalogImages) {
             //Download regular image
@@ -50,7 +50,7 @@ public class SyncDataThreadPool {
         }
         executor.shutdown();
 
-        while (!executor.isShutdown()){
+        while (!executor.isTerminated()){
             sleep(1000);
         }
     }
