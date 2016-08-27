@@ -1,47 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/send_push"
-        android:background="#ffffff"
-        android:text="Should Send Push"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:id="@+id/message_tag"
-        android:hint="Message Tag"
-        android:textColorHint="#F8F8FF"
-        />
+    <!--<CheckBox-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/send_push"-->
+        <!--android:background="#ffffff"-->
+        <!--android:text="Should Send Push"-->
+        <!--/>-->
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:id="@+id/message_tag"-->
+        <!--android:hint="Message Tag"-->
+        <!--android:textColorHint="#F8F8FF"-->
+        <!--/>-->
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:id="@+id/message_header"
-        android:hint="Message Header"
-        android:textColorHint="#F8F8FF"
-        />
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:id="@+id/message_header"-->
+        <!--android:hint="Message Header"-->
+        <!--android:textColorHint="#F8F8FF"-->
+        <!--/>-->
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:id="@+id/message_body"
-        android:hint="Message Body"
-        android:textColorHint="#F8F8FF"
-        />
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:id="@+id/message_body"-->
+        <!--android:hint="Message Body"-->
+        <!--android:textColorHint="#F8F8FF"-->
+        <!--/>-->
 
-    <Button
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Choose Photo"-->
+        <!--android:id="@+id/activity_add_message_image_picker"-->
+        <!--/>-->
+
+    <FrameLayout
+        android:id="@+id/new_message_fragment_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose Photo"
-        android:id="@+id/activity_add_message_image_picker"
-        />
+        android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
 </LinearLayout>

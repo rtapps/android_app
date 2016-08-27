@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="edit_cell_hint_title">הכנס כותרת</string>
+    <string name="edit_cell_hint_body">הכנס את גוף ההודעה</string>
+
+</resources>

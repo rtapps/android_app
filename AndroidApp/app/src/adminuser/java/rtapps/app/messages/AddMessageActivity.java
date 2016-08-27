@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,33 +27,34 @@ import rtapps.app.config.Configurations;
 import rtapps.app.messages.network.AddMessageAPI;
 import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
 import rtapps.app.network.AccessToken;
+import rtapps.app.ui.NewMessageFragment;
 
 /**
  * Created by rtichauer on 8/13/16.
  */
-public class AddMessageActivity extends Activity{
+public class AddMessageActivity extends FragmentActivity{
 
-    ImageFileSelector mImageFileSelector;
-    ImageCropper mImageCropper;
+    public ImageFileSelector mImageFileSelector;
+    public ImageCropper mImageCropper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_message);
-        button = (Button)findViewById(R.id.activity_add_message_image_picker);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mImageFileSelector.selectImage(AddMessageActivity.this);
-            }
-        });
+//        button = null;//(Button)findViewById(R.id.activity_add_message_image_picker);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mImageFileSelector.selectImage(AddMessageActivity.this);
+//            }
+//        });
         mImageFileSelector = new ImageFileSelector(AddMessageActivity.this);
-
+//
         mImageFileSelector.setCallback(new ImageFileSelector.Callback() {
             @Override
             public void onSuccess(final String file) {
-                cropImage(file);
+   //             cropImage(file);
+                Log.d("sd" , "file " + file);
             }
 
             @Override
@@ -60,23 +63,30 @@ public class AddMessageActivity extends Activity{
             }
         });
 
-        mImageCropper = new ImageCropper(this);
-        mImageCropper.setCallback(new ImageCropper.ImageCropperCallback() {
-            @Override
-            public void onCropperCallback(ImageCropper.CropperResult result, File srcFile, File outFile) {
-                if (result == ImageCropper.CropperResult.success) {
-                    File compressedCroppedImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
-                    File compressedOriginalImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(srcFile);
 
-                    uploadMessage(compressedOriginalImage, compressedCroppedImage);
+//        mImageCropper = new ImageCropper(this);
+//        mImageCropper.setCallback(new ImageCropper.ImageCropperCallback() {
+//            @Override
+//            public void onCropperCallback(ImageCropper.CropperResult result, File srcFile, File outFile) {
+//                if (result == ImageCropper.CropperResult.success) {
+//                    File compressedCroppedImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
+////                    File compressedOriginalImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
+//
+//                    uploadMessage(srcFile, compressedCroppedImage);
+//
+//                } else if (result == ImageCropper.CropperResult.error_illegal_input_file) {
+//
+//                } else if (result == ImageCropper.CropperResult.error_illegal_out_file) {
+//
+//                }
+//            }
+//        });
 
-                } else if (result == ImageCropper.CropperResult.error_illegal_input_file) {
 
-                } else if (result == ImageCropper.CropperResult.error_illegal_out_file) {
+        NewMessageFragment nmf  = new NewMessageFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.new_message_fragment_placeholder, nmf).commit();
+>>>>>>> updated add new message activity
 
-                }
-            }
-        });
     }
 
     private void uploadMessage(File fullImage, File compressedCroppedImage) {
@@ -84,10 +94,10 @@ public class AddMessageActivity extends Activity{
         TypedFile typedFullImage = new TypedFile("multipart/form-data", fullImage);
         TypedFile typedCompressedCroppedImage = new TypedFile("multipart/form-data", compressedCroppedImage);
 
-        String messageTag = ((EditText)findViewById(R.id.message_tag)).getText().toString();
-        String messageHeader = ((EditText)findViewById(R.id.message_header)).getText().toString();
-        String messageBody = ((EditText)findViewById(R.id.message_body)).getText().toString();
-        boolean sendPush = ((CheckBox)findViewById(R.id.send_push)).isChecked();
+        String messageTag = "";//((EditText)findViewById(R.id.message_tag)).getText().toString();
+        String messageHeader = "";//((EditText)findViewById(R.id.message_header)).getText().toString();
+        String messageBody = "";//((EditText)findViewById(R.id.message_body)).getText().toString();
+        boolean sendPush = true;//((CheckBox)findViewById(R.id.send_push)).isChecked();
 
 
 
@@ -158,7 +168,7 @@ public class AddMessageActivity extends Activity{
         mImageFileSelector.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    Button button;
+  //  Button button;
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, AddMessageActivity.class);
@@ -167,11 +177,11 @@ public class AddMessageActivity extends Activity{
 
     }
 
-    private void cropImage(final String file){
-
-        mImageCropper.setOutPutAspect(2, 1);
-        mImageCropper.setOutPut(0, 180);
-        mImageCropper.setScale(true);
-        mImageCropper.cropImage(new File(file));
-    }
+//    private void cropImage(final String file){
+//
+//        mImageCropper.setOutPutAspect(2, 1);
+//        mImageCropper.setOutPut(0, 180);
+//        mImageCropper.setScale(true);
+//        mImageCropper.cropImage(new File(file));
+//    }
 }

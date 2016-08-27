@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="right"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="שלח עם התראה"/>
+
+    <CheckBox
+        android:id="@+id/inbox_edit_send_push"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:background="#ffffff" />
+
+
+    <Button
+        android:id="@+id/inbox_edit_send_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="שלח"/>
+
+
+</LinearLayout>
