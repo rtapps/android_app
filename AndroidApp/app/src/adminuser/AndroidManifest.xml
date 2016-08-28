@@ -11,6 +11,10 @@
         <activity
             android:name="rtapps.app.messages.AddMessageActivity"
             android:theme="@style/RTTransparent"></activity>
+
+        <activity
+            android:name="rtapps.app.catalog.UpdateCatalogActivity"
+            android:theme="@style/RTTransparent"></activity>
     </application>
 
 </manifest>

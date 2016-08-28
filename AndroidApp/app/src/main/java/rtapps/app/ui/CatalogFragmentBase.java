@@ -40,7 +40,7 @@ import rtapps.app.network.responses.AllMessagesResponse;
 /**
  * Created by tazo on 29/07/2016.
  */
-public class CatalogFragment extends Fragment implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+public abstract class CatalogFragmentBase extends Fragment implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
     public static int i = 0;
     private SliderLayout slider;
@@ -60,9 +60,6 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
 
         initSlider();
 
-
-
-
         return v;
     }
 
@@ -79,18 +76,7 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
             Log.d("CatalogFragment", "Set slider from catalog");
             setSliderFromCatalog(catalogTables);
         }
-
         slider.startAutoCycle(1500,1500,true);
-//        slider.setPresetTransformer(SliderLayout.Transformer.Default);
-//        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-//
-////        slider.setCustomIndicator((PagerIndicator) v.findViewById(R.id.custom_indicator));
-//
-//
-//        slider.setCustomAnimation(new DescriptionAnimation());
-//        slider.setDuration(2000);
-//        slider.addOnPageChangeListener(this);
-
     }
 
     private void setSliderFromCatalog(List<CatalogTable> catalogTables) {
@@ -123,7 +109,7 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
         slider.addSlider(textSliderView);
     }
 
-    private List<CatalogTable> getCatalogFromDB(){
+    protected List<CatalogTable> getCatalogFromDB(){
         NameAlias nameAlias = NameAlias.builder("index").withTable("CatalogTable").build();
         List<CatalogTable> catalogTables = new Select().from(CatalogTable.class).orderBy(nameAlias, true).queryList();
         Log.d("CatalogFragment", "Retrieved catalog table = " + catalogTables);
@@ -145,23 +131,7 @@ public class CatalogFragment extends Fragment implements BaseSliderView.OnSlider
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.action_custom_indicator:
-//                slider.setCustomIndicator((PagerIndicator) v.findViewById(R.id.custom_indicator));
-//                break;
-//            case R.id.action_custom_child_animation:
-//                slider.setCustomAnimation(new ChildAnimationExample());
-//                break;
-//            case R.id.action_restore_default:
-//                slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-//                slider.setCustomAnimation(new DescriptionAnimation());
-//                break;
-//            case R.id.action_github:
-////                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/daimajia/AndroidImageSlider"));
-////                startActivity(browserIntent);
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
+
         return true;
     }
 
