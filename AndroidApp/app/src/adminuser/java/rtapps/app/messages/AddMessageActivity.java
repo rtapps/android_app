@@ -85,7 +85,7 @@ public class AddMessageActivity extends FragmentActivity{
 
         NewMessageFragment nmf  = new NewMessageFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.new_message_fragment_placeholder, nmf).commit();
->>>>>>> updated add new message activity
+
 
     }
 
