@@ -7,6 +7,7 @@
 
 
     <TextView
+        android:id="@+id/inbox_edit_checkbox_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="שלח עם התראה"/>
@@ -21,6 +22,7 @@
 
     <Button
         android:id="@+id/inbox_edit_send_button"
+        android:enabled="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="שלח"/>
