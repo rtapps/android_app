@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="show_preview">תצוגה מקדימה</string>
+
+    <string name="add_tag_label">תגית</string>
+
+
+    <string name="add_title_label">כותרת</string>
+    <string name="add_title_hint">הכנס כותרת</string>
+
+    <string name="add_body_label">גוף ההודעה</string>
+    <string name="add_body_hint">הכנס את גוף ההודעה</string>
+
+
+    <string name="add_body_send">  שלח </string>
+    <string name="add_body_notify_check">  שלח עם התראה </string>
+
+
+    <string name="add_image">  תמונה </string>
+</resources>
