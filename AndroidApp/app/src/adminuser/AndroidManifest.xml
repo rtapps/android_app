@@ -7,16 +7,19 @@
         <activity
             android:name="rtapps.app.ui.LoginActivity"
             android:theme="@style/AppThemeRTApps"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_login"/>
 
         <activity
             android:name="rtapps.app.messages.AddMessageActivity"
             android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
             android:parentActivityName="rtapps.app.ui.MainActivity"
             android:theme="@style/AppThemeRTApps.NoActionBar"/>
 
         <activity
             android:name="rtapps.app.catalog.UpdateCatalogActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/RTTransparent"/>
     </application>
 
