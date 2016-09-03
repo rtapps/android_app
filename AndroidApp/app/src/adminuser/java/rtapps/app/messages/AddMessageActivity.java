@@ -88,7 +88,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             @Override
             public void onClick(View v) {
                 Intent intent =  new Intent(AddMessageActivity.this , SelectTagActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, SelectTagActivity.SELECT_TAG);
             }
         });
 
@@ -260,6 +260,12 @@ public class AddMessageActivity extends Activity implements TextWatcher {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == SelectTagActivity.SELECT_TAG){
+            //int tagIndex = data.getIntExtra(SelectTagActivity.SELECTED_INDEX,0);
+            int drawId = Configurations.tagCollection[resultCode].getTagId();
+            addTagButton.setImageResource(drawId);
+            return;
+        }
         super.onActivityResult(requestCode, resultCode, data);
         mImageFileSelector.onActivityResult(requestCode, resultCode, data);
         mImageCropper.onActivityResult(requestCode, resultCode, data);

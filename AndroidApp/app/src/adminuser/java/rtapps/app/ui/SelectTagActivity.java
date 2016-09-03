@@ -13,6 +13,8 @@ import rtapps.app.inbox.ImageAdapter;
  */
 public class SelectTagActivity extends AppCompatActivity {
 
+    public static final int SELECT_TAG = 100;
+    public static final String SELECTED_INDEX = "SELECTED_INDEX";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
