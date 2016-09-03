@@ -21,6 +21,12 @@
             android:name="rtapps.app.catalog.UpdateCatalogActivity"
             android:screenOrientation="portrait"
             android:theme="@style/RTTransparent"/>
+
+
+        <activity
+            android:name="rtapps.app.ui.SelectTagActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeRTApps.NoActionBar"/>
     </application>
 
 </manifest>

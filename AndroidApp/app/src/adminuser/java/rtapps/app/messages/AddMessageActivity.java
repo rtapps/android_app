@@ -1,5 +1,6 @@
 package rtapps.app.messages;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,15 +31,17 @@ import rtapps.app.config.Configurations;
 import rtapps.app.messages.network.AddMessageAPI;
 import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
 import rtapps.app.network.AccessToken;
+import rtapps.app.ui.SelectTagActivity;
 
 /**
  * Created by rtichauer on 8/13/16.
  */
-public class AddMessageActivity extends AppCompatActivity implements TextWatcher{
+public class AddMessageActivity extends Activity implements TextWatcher {
 
     public ImageFileSelector mImageFileSelector;
     public ImageCropper mImageCropper;
     private EditText messageHeaderEditText;
+    private ImageView addTagButton;
     private EditText messageTagEditText;
     private EditText messageBodyEditText;
     private CheckBox sendPushCheckBox;
@@ -68,6 +71,7 @@ public class AddMessageActivity extends AppCompatActivity implements TextWatcher
         messageBodyEditText = (EditText) findViewById(R.id.inbox_edit_item_content);
         sendPushCheckBox = (CheckBox) findViewById(R.id.inbox_edit_send_push);
         sendButton = (Button) findViewById(R.id.inbox_edit_send_button);
+        addTagButton = (ImageView) findViewById(R.id.add_tag_image);
 
         messageBodyEditText.addTextChangedListener(this);
 
@@ -76,6 +80,15 @@ public class AddMessageActivity extends AppCompatActivity implements TextWatcher
             @Override
             public void onClick(View v) {
                 sendPushCheckBox.toggle();
+            }
+        });
+
+
+        addTagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(AddMessageActivity.this , SelectTagActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -131,10 +144,6 @@ public class AddMessageActivity extends AppCompatActivity implements TextWatcher
                 finish();
             }
         });
-
-
-
-
 
 
 //        mImageCropper = new ImageCropper(this);
@@ -216,7 +225,7 @@ public class AddMessageActivity extends AppCompatActivity implements TextWatcher
 //
 //    }
 
-    private static class UploadNewMessageTask extends AsyncTask<Void, Void, Void>{
+    private static class UploadNewMessageTask extends AsyncTask<Void, Void, Void> {
 
         AccessToken accessToken;
         String messageHeader;
@@ -226,7 +235,7 @@ public class AddMessageActivity extends AppCompatActivity implements TextWatcher
         Context context;
         boolean isPush;
 
-        public UploadNewMessageTask(Context context, AccessToken accessToken, String messageHeader, String messageBody,boolean isPush, TypedFile typedFullImage, TypedFile typedCompressedCroppedImage){
+        public UploadNewMessageTask(Context context, AccessToken accessToken, String messageHeader, String messageBody, boolean isPush, TypedFile typedFullImage, TypedFile typedCompressedCroppedImage) {
             this.context = context;
             this.accessToken = accessToken;
             this.messageHeader = messageHeader;
@@ -239,13 +248,13 @@ public class AddMessageActivity extends AppCompatActivity implements TextWatcher
         @Override
         protected Void doInBackground(Void... params) {
             AddMessageAPI addMessageAPI = AuthFileUploadServiceGenerator.createService(AddMessageAPI.class, accessToken);
-            addMessageAPI.putMessage(Configurations.APPLICATION_ID, this.messageHeader, this.messageBody,this.isPush, this.typedFullImage, this.typedCompressedCroppedImage);
+            addMessageAPI.putMessage(Configurations.APPLICATION_ID, this.messageHeader, this.messageBody, this.isPush, this.typedFullImage, this.typedCompressedCroppedImage);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void v) {
-            ((AddMessageActivity)context).finish();
+            ((AddMessageActivity) context).finish();
         }
     }
 
@@ -277,7 +286,7 @@ public class AddMessageActivity extends AppCompatActivity implements TextWatcher
         mImageFileSelector.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-  //  Button button;
+    //  Button button;
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, AddMessageActivity.class);
@@ -292,8 +301,6 @@ public class AddMessageActivity extends AppCompatActivity implements TextWatcher
         mImageCropper.cropImage(new File(file));
 
     }
-
-
 
 
 }
