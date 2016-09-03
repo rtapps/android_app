@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,8 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     private File compressedCroppedImage;
     private int tagIndex = -1;
 
+    public  static ImageView previewImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +73,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         });
 
 
-        final ImageView previewImage = (ImageView) findViewById(R.id.inbox_edit_item_image);
+        previewImage = (ImageView) findViewById(R.id.inbox_edit_item_image);
         messageHeaderEditText = (EditText) findViewById(R.id.inbox_edit_item_title);
         messageBodyEditText = (EditText) findViewById(R.id.inbox_edit_item_content);
         sendPushCheckBox = (CheckBox) findViewById(R.id.inbox_edit_send_push);
@@ -86,6 +90,8 @@ public class AddMessageActivity extends Activity implements TextWatcher {
                 intent.putExtra("1" , tagIndex);
                 intent.putExtra("2" , messageHeaderEditText.getText().toString());
                 intent.putExtra("3" , messageBodyEditText.getText().toString());
+//                Bitmap bitmap = ((BitmapDrawable)previewImage.getDrawable()).getBitmap();
+//                intent.putExtra("3" , bitmap);
                 //intent.putExtra("4" , tagIndex);
                 startActivity(intent);
             }
