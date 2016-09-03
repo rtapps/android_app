@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rtapps.kingofthejungle.R;
@@ -31,6 +32,7 @@ import rtapps.app.config.Configurations;
 import rtapps.app.messages.network.AddMessageAPI;
 import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
 import rtapps.app.network.AccessToken;
+import rtapps.app.ui.ActivityPreviewMessage;
 import rtapps.app.ui.SelectTagActivity;
 
 /**
@@ -42,12 +44,13 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     public ImageCropper mImageCropper;
     private EditText messageHeaderEditText;
     private ImageView addTagButton;
-    private EditText messageTagEditText;
+    private LinearLayout selectTagButton;
     private EditText messageBodyEditText;
     private CheckBox sendPushCheckBox;
     private Button sendButton;
     private File fullImage;
     private File compressedCroppedImage;
+    private int tagIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,21 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         sendPushCheckBox = (CheckBox) findViewById(R.id.inbox_edit_send_push);
         sendButton = (Button) findViewById(R.id.inbox_edit_send_button);
         addTagButton = (ImageView) findViewById(R.id.add_tag_image);
+        selectTagButton = (LinearLayout) findViewById(R.id.show_preview_button);
+
+
+        selectTagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent =  new Intent(AddMessageActivity.this , ActivityPreviewMessage.class);
+                intent.putExtra("1" , tagIndex);
+                intent.putExtra("2" , messageHeaderEditText.getText().toString());
+                intent.putExtra("3" , messageBodyEditText.getText().toString());
+                //intent.putExtra("4" , tagIndex);
+                startActivity(intent);
+            }
+        });
 
         messageBodyEditText.addTextChangedListener(this);
 

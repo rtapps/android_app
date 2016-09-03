@@ -8,13 +8,6 @@
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:text="@string/add_tag_label"
-        android:visibility="gone" />
-
     <ImageView
         android:id="@+id/add_tag_image"
         android:layout_width="wrap_content"
