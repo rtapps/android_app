@@ -7,18 +7,13 @@ import retrofit.mime.TypedFile;
  */
 public class NewCatalogImage{
     private int index;
-    private TypedFile fullImage;
 
-    public NewCatalogImage(int index, TypedFile fullImage){
+    public NewCatalogImage(int index){
         this.index = index;
-        this.fullImage = fullImage;
     }
 
     public int getIndex(){
         return this.index;
     }
 
-    public TypedFile getFullImage(){
-        return this.fullImage;
-    }
 }

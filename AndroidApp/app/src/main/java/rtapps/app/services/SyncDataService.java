@@ -67,11 +67,32 @@ public class SyncDataService extends IntentService {
         List<CatalogImage> catalogImages = yourUsersApi.getCatalog(Configurations.APPLICATION_ID);
         Log.d("syncCatalog", "catalogResponse=" + catalogImages);
         SyncDataThreadPool.downloadAndSaveAllCatalogImages(catalogImages, this);
+
+        List<CatalogTable> allCatalogTables = new Select().from(CatalogTable.class).queryList();
+
+
+
+        for (CatalogTable catalogTable: allCatalogTables){
+            if (!isStillExists(catalogTable, catalogImages)){
+                catalogTable.delete();
+                //TODO delete the old catalog image
+            }
+        }
         for (CatalogImage catalogImage: catalogImages){
             CatalogTable newCatalogEntry = new CatalogTable(catalogImage);
             newCatalogEntry.save();
             Log.d("syncCatalog", "new catalog entry: "  + newCatalogEntry);
         }
+
+    }
+
+    private boolean isStillExists(CatalogTable oldCatalogTable, List<CatalogImage> catalogImages) {
+        for (CatalogImage catalogImage: catalogImages){
+            if (catalogImage.getId().equals(oldCatalogTable.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void syncAllMessages() {

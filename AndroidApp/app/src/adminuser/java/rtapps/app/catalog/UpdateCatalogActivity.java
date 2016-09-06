@@ -18,10 +18,12 @@ import com.woxthebox.draglistview.DragListView;
 import java.security.PublicKey;
 import java.util.ArrayList;
 
+import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedFile;
 import rtapps.app.account.AccountManager;
 import rtapps.app.account.user.User;
-import rtapps.app.catalog.network.ExistingCatalogImage;
+import rtapps.app.catalog.network.ExistingCatalogImages;
+import rtapps.app.catalog.network.ExistingCatalogImages.ExistingCatalogImage;
 import rtapps.app.catalog.network.NewCatalogImage;
 import rtapps.app.catalog.network.UpdateCatalogAPI;
 import rtapps.app.config.Configurations;
@@ -139,22 +141,26 @@ public class UpdateCatalogActivity extends Activity{
     }
 
     private void commitChanges() {
-        ArrayList<ExistingCatalogImage> existingCatalogImages = new ArrayList<>();
-        ArrayList<NewCatalogImage> newCatalogImages = new ArrayList<>();
+        ArrayList<ExistingCatalogImage> existingCatalogImageList = new ArrayList<>();
+        ArrayList<Integer> newCatalogImages = new ArrayList<>();
+        TypedFile [] newCatalogImageFiles = new TypedFile [7];
 
         for (int i=0; i< catalogImageItems.size(); i++){
             CatalogImageItem catalogImageItem = catalogImageItems.get(i);
             if (catalogImageItem.isNew()){
                 TypedFile typedFile = new TypedFile("multipart/form-data", catalogImageItem.getImage());
-                newCatalogImages.add(new NewCatalogImage(i, typedFile));
+                newCatalogImageFiles[newCatalogImages.size()] = typedFile;
+                newCatalogImages.add(i);
             }
             else if (!catalogImageItem.isAddNew()){
-                existingCatalogImages.add(new ExistingCatalogImage(catalogImageItem.getImageId(), i));
+                existingCatalogImageList.add(new ExistingCatalogImage(catalogImageItem.getImageId(), i));
             }
         }
+
+        ExistingCatalogImages existingCatalogImages = new ExistingCatalogImages(existingCatalogImageList);
         User user = AccountManager.get().getUser();
 
-        UpdateCatalogTask  uploadCatalogTask = new UpdateCatalogTask (this, user.getAccessToken(), Configurations.APPLICATION_ID, existingCatalogImages, newCatalogImages);
+        UpdateCatalogTask  uploadCatalogTask = new UpdateCatalogTask (this, user.getAccessToken(), Configurations.APPLICATION_ID, existingCatalogImages, newCatalogImages, newCatalogImageFiles);
 
         uploadCatalogTask.execute();
     }
@@ -164,21 +170,31 @@ public class UpdateCatalogActivity extends Activity{
         private Context context;
         private AccessToken accessToken;
         private String applicationId;
-        private ArrayList<ExistingCatalogImage> existingCatalogImages;
-        private ArrayList<NewCatalogImage> newCatalogImages;
+        private ExistingCatalogImages existingCatalogImages;
+        private ArrayList<Integer> newCatalogImages;
+        private TypedFile [] newCatalogImageFiles;
 
-        public UpdateCatalogTask(Context context, AccessToken accessToken, String applicationId, ArrayList<ExistingCatalogImage> existingCatalogImages, ArrayList<NewCatalogImage> newCatalogImages){
+        public UpdateCatalogTask(Context context, AccessToken accessToken, String applicationId, ExistingCatalogImages existingCatalogImages, ArrayList<Integer> newCatalogImages, TypedFile [] newCatalogImageFiles){
             this.context = context;
             this.accessToken = accessToken;
             this.applicationId = applicationId;
             this.existingCatalogImages = existingCatalogImages;
             this.newCatalogImages = newCatalogImages;
+            this.newCatalogImageFiles = newCatalogImageFiles;
         }
 
         @Override
         protected Object doInBackground(Object[] params) {
             UpdateCatalogAPI updateCatalogAPI = AuthFileUploadServiceGenerator.createService(UpdateCatalogAPI.class, accessToken);
-            updateCatalogAPI.updateCatalog(this.applicationId, this.newCatalogImages, this.existingCatalogImages);
+            updateCatalogAPI.updateCatalog(this.applicationId, this.existingCatalogImages, this.newCatalogImages,
+                    this.newCatalogImageFiles[0],
+                    this.newCatalogImageFiles[1],
+                    this.newCatalogImageFiles[2],
+                    this.newCatalogImageFiles[3],
+                    this.newCatalogImageFiles[4],
+                    this.newCatalogImageFiles[5],
+                    this.newCatalogImageFiles[6]);
+//            updateCatalogAPI.updateCatalog1(existingCatalogImages.get(0));
             return null;
         }
 
