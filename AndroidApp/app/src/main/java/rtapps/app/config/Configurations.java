@@ -25,11 +25,15 @@ public class Configurations {
 
 
     public static final Tag[] tagCollection = {
-            new Tag(R.drawable.tag_ic,"10_percent"),
-            new Tag(R.drawable.tag_ic,"20_percent"),
-            new Tag(R.drawable.tag_ic,"30_percent"),
-            new Tag(R.drawable.tag_ic,"40_percent"),
-            new Tag(R.drawable.tag_ic,"50_percent"),
+            new Tag(R.drawable.tag_10,"10_percent"),
+            new Tag(R.drawable.tag_20,"20_percent"),
+            new Tag(R.drawable.tag_30,"30_percent"),
+            new Tag(R.drawable.tag_40,"40_percent"),
+            new Tag(R.drawable.tag_50,"50_percent"),
+            new Tag(R.drawable.tag_60,"60_percent"),
+            new Tag(R.drawable.tag_70,"70_percent"),
+            new Tag(R.drawable.tag_80,"80_percent"),
+            new Tag(R.drawable.tag_90,"90_percent"),
     };
 
 //    public static final Map<Tag> tagCollection = new HashMap<Tag>() {{

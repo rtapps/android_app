@@ -50,6 +50,7 @@
         android:layout_height="180dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:scaleType="centerCrop"
         android:layout_marginTop="10dp"
         android:background="@color/businessMainColor"
         android:src="@drawable/add_image_ph" />

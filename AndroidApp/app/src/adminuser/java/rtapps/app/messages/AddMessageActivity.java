@@ -3,16 +3,20 @@ package rtapps.app.messages;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,6 +30,8 @@ import com.sw926.imagefileselector.ImageCropper;
 import com.sw926.imagefileselector.ImageFileSelector;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import id.zelory.compressor.Compressor;
 import retrofit.mime.TypedFile;
@@ -54,7 +60,8 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     private File compressedCroppedImage;
     private int tagIndex = -1;
 
-    public  static ImageView previewImage;
+    public static ImageView previewImage;
+    public static final int SELECT_PHOTO = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +93,10 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             @Override
             public void onClick(View v) {
 
-                Intent intent =  new Intent(AddMessageActivity.this , ActivityPreviewMessage.class);
-                intent.putExtra("1" , tagIndex);
-                intent.putExtra("2" , messageHeaderEditText.getText().toString());
-                intent.putExtra("3" , messageBodyEditText.getText().toString());
+                Intent intent = new Intent(AddMessageActivity.this, ActivityPreviewMessage.class);
+                intent.putExtra("1", tagIndex);
+                intent.putExtra("2", messageHeaderEditText.getText().toString());
+                intent.putExtra("3", messageBodyEditText.getText().toString());
 //                Bitmap bitmap = ((BitmapDrawable)previewImage.getDrawable()).getBitmap();
 //                intent.putExtra("3" , bitmap);
                 //intent.putExtra("4" , tagIndex);
@@ -111,7 +118,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         addTagButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =  new Intent(AddMessageActivity.this , SelectTagActivity.class);
+                Intent intent = new Intent(AddMessageActivity.this, SelectTagActivity.class);
                 startActivityForResult(intent, SelectTagActivity.SELECT_TAG);
             }
         });
@@ -128,13 +135,17 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             @Override
             public void onError() {
 
+                Log.d("AddMessageActivity", "error on loading message");
             }
         });
 
         previewImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mImageFileSelector.selectImage(AddMessageActivity.this);
+                // mImageFileSelector.selectImage(AddMessageActivity.this);
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
             }
         });
 
@@ -154,9 +165,10 @@ public class AddMessageActivity extends Activity implements TextWatcher {
                     //uploadMessage(srcFile, compressedCroppedImage);
 
                 } else if (result == ImageCropper.CropperResult.error_illegal_input_file) {
+                    Log.d("s", "s");
 
                 } else if (result == ImageCropper.CropperResult.error_illegal_out_file) {
-
+                    Log.d("s", "s");
                 }
             }
         });
@@ -283,16 +295,41 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == SelectTagActivity.SELECT_TAG){
-            //int tagIndex = data.getIntExtra(SelectTagActivity.SELECTED_INDEX,0);
-            int drawId = Configurations.tagCollection[resultCode].getTagId();
-            addTagButton.setImageResource(drawId);
-            return;
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        switch (requestCode) {
+            case SELECT_PHOTO:
+//                try {
+                if(resultCode != 0){
+                    final Uri imageUri = intent.getData();
+//                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+//                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+//                    previewImage.setImageBitmap(selectedImage);
+                    String filePath = (getRealPathFromURI(imageUri));
+                    cropImage(filePath);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+                }
+                return;
+            case SelectTagActivity.SELECT_TAG:
+                int drawId = Configurations.tagCollection[resultCode].getTagId();
+                addTagButton.setImageResource(drawId);
+                return;
+            default:
+                mImageCropper.onActivityResult(requestCode, resultCode, intent);
+                return;
         }
-        super.onActivityResult(requestCode, resultCode, data);
-        mImageFileSelector.onActivityResult(requestCode, resultCode, data);
-        mImageCropper.onActivityResult(requestCode, resultCode, data);
+
+        // mImageFileSelector.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
     }
 
     @Override
@@ -324,12 +361,10 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     }
 
     private void cropImage(final String file) {
-
         mImageCropper.setOutPutAspect(2, 1);
         mImageCropper.setOutPut(0, 180);
         mImageCropper.setScale(true);
         mImageCropper.cropImage(new File(file));
-
     }
 
 
