@@ -60,6 +60,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     private File compressedCroppedImage;
     private int tagIndex = -1;
 
+    private Boolean imageSelected = false;
     public static ImageView previewImage;
     public static final int SELECT_PHOTO = 200;
 

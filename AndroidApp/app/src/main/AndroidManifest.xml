@@ -38,7 +38,7 @@
         <activity
             android:name="rtapps.app.ui.MainActivity"
             android:launchMode= "singleTop"
-            android:label="@string/store_name"
+            android:label=""
             android:theme="@style/AppThemeRTApps.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

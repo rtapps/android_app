@@ -209,7 +209,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             File directory = cw.getDir("messages", Context.MODE_PRIVATE);
             File file = new File(directory, messageId + "/" +imageName);
 
-            Picasso.with(context).load(file).placeholder(R.drawable.animal_king_logo).fit().into(image);
+            Picasso.with(context).load(file).fit().into(image);
             //Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
             //    image.setImageBitmap(b);
         } catch (Exception e) {
