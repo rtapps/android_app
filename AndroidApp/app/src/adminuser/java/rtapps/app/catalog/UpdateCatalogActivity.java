@@ -2,12 +2,15 @@ package rtapps.app.catalog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.sql.language.Update;
@@ -32,6 +35,8 @@ import rtapps.app.messages.network.AddMessageAPI;
 import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
 import rtapps.app.network.AccessToken;
 import rtapps.app.network.responses.CatalogImage;
+import rtapps.app.services.CatalogSynchronizer;
+import rtapps.app.services.SyncDataService;
 
 /**
  * Created by rtichauer on 8/26/16.
@@ -118,6 +123,8 @@ public class UpdateCatalogActivity extends Activity{
         mImageFileSelector.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    ProgressDialog mProgressDialog;
+
 
     @Override
     public void onBackPressed() {
@@ -127,6 +134,11 @@ public class UpdateCatalogActivity extends Activity{
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 commitChanges();
+                                mProgressDialog = new ProgressDialog(UpdateCatalogActivity.this);
+                                mProgressDialog.setMessage("Updating...");
+                                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                mProgressDialog.setCancelable(false);
+                                mProgressDialog.show();
                             }
                         }
                 )
@@ -194,7 +206,9 @@ public class UpdateCatalogActivity extends Activity{
                     this.newCatalogImageFiles[4],
                     this.newCatalogImageFiles[5],
                     this.newCatalogImageFiles[6]);
-//            updateCatalogAPI.updateCatalog1(existingCatalogImages.get(0));
+
+            CatalogSynchronizer catalogSynchronizer = new CatalogSynchronizer(context);
+            catalogSynchronizer.syncCatalog();
             return null;
         }
 

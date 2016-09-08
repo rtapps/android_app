@@ -20,6 +20,7 @@ import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.rtapps.kingofthejungle.R;
+import com.squareup.otto.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ import rtapps.app.databases.MessagesTable;
 import rtapps.app.gcm.NotificationsManager;
 
 import rtapps.app.databases.DataBaseHelper;
+import rtapps.app.infrastructure.BusHolder;
 import rtapps.app.network.responses.AllMessagesResponse;
-
-
+import rtapps.app.services.CatalogUpdatedEvent;
 
 
 /**
@@ -61,6 +62,25 @@ public abstract class CatalogFragmentBase extends Fragment implements BaseSlider
         initSlider();
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initSlider();
+
+        BusHolder.get().getBus().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusHolder.get().getBus().unregister(this);
+    }
+
+    @Subscribe
+    public void catalogUpdated(CatalogUpdatedEvent event) {
+        initSlider();
     }
 
     private void initSlider(){

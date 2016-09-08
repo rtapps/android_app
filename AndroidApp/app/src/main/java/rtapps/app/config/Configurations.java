@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class Configurations {
 
-    public static final String BASE_URL = "http://54.175.240.176:8080";
+    public static final String BASE_URL = "http://10.0.0.4:8080";
 
     public static final String APPLICATION_ID = "1234";
 

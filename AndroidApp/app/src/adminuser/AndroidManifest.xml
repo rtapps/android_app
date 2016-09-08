@@ -20,7 +20,7 @@
         <activity
             android:name="rtapps.app.catalog.UpdateCatalogActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/RTTransparent"/>
+            android:theme="@style/AppThemeRTApps.NoActionBar"/>
 
 
         <activity

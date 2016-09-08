@@ -16,6 +16,8 @@ import com.woxthebox.draglistview.DragItemAdapter;
 import java.io.File;
 import java.util.ArrayList;
 
+import rtapps.app.network.responses.CatalogImage;
+
 public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.ViewHolder> {
 
     private final int mLayoutId;
@@ -40,12 +42,9 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
             public void onSuccess(final String file) {
                 CatalogImageItem catalogImageItem = new CatalogImageItem(mItemList.size(), null, mItemList.size(), new File(file), true, false );
                 addItem(mItemList.size() -1, catalogImageItem);
-
                 if (mItemList.size() == 8){
                     removeItem(mItemList.size() -1);
                 }
-
-
             }
             @Override
             public void onError() {
@@ -64,17 +63,18 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
-        CatalogImageItem catalogImageItem = mItemList.get(position);
+        final CatalogImageItem catalogImageItem = mItemList.get(position);
 
         holder.itemView.setTag(position);
 
         if(catalogImageItem.isAddNew()) {
             holder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.plus));
             holder.imageView.setOnClickListener(new View.OnClickListener() {
-                int imagePosition = position;
+                CatalogImageItem mCatalogImageItem = catalogImageItem;
+
                 @Override
                 public void onClick(View v) {
-                    if ( mItemList.get(imagePosition).isAddNew()){
+                    if ( mCatalogImageItem.isAddNew()){
                         mImageFileSelector.selectImage((Activity)context);
                     }
                 }
@@ -85,10 +85,17 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
         holder.deleteImage.setVisibility(View.VISIBLE);
         holder.deleteImage.setOnClickListener(new View.OnClickListener() {
 
-            int pos = position;
+            CatalogImageItem mCatalogImageItem = catalogImageItem;
             @Override
             public void onClick(View v) {
-                removeItem(pos);
+                for (int i=0; i< mItemList.size(); i++){
+                    if (mItemList.get(i) == mCatalogImageItem){
+                        removeItem(i);
+                    }
+                    if (!mItemList.get(mItemList.size() - 1).isAddNew()){
+                        addItem(mItemList.size(), new CatalogImageItem(8, null, -1, null, false, true));
+                    }
+                }
             }
         });
         File file = mItemList.get(position).getImage();
