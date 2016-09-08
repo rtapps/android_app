@@ -60,7 +60,7 @@ public class MessageContentActivity extends AppCompatActivity {
 
         GestureImageView fimg =(GestureImageView)findViewById(R.id.g_image);
 
-        Picasso.with(this).load(file).placeholder(R.drawable.animal_king_logo).into(fimg);
+        Picasso.with(this).load(file).into(fimg);
     }
 
 

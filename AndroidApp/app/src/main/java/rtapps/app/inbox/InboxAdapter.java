@@ -92,9 +92,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ((InboxViewHolder) holder).setMessageId(message.getId());
 
 
-        image.setImageResource(R.drawable.animal_king_logo);
-
-
 //        SharePhotoContent content = new SharePhotoContent.Builder()
 //                .addPhoto(photo)
 //                .build();
@@ -222,7 +219,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private void loadFromNetwork(MessagesTable message, final ImageView image) {
         final String imageName = message.getId();
         final String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + imageName + "/" + message.getPreviewImageName();
-        Picasso.with(context).load(imageUrl).placeholder(R.drawable.animal_king_logo).into(image);
+        Picasso.with(context).load(imageUrl).into(image);
     }
 
     public void setMockData(InboxViewHolder holder) {
