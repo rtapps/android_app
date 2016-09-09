@@ -26,12 +26,18 @@ android {
             dimension 'main'
         }
 
-        adminuser{
+        manager{
             dimension 'main'
+        }
+
+        adminuser{
+            dimension 'customer'
+            applicationId ="com.rtapps.adminuser"
         }
 
         pessy{
             dimension 'customer'
+            applicationId ="com.rtapps.kingofthejungle"
         }
 
     }
