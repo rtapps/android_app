@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="add_message_activity_title">פרסום הודעה חדשה ללקוחות</string>
     <string name="show_preview">תצוגה מקדימה</string>
 
     <string name="add_tag_label">תגית</string>

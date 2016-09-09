@@ -12,11 +12,21 @@
         android:layout_height="58dp"
         android:id="@+id/my_toolbar"
         >
-        <ImageView
-            android:layout_width="wrap_content"
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/tool_bar_title"/>-->
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/tool_bar_title"/>
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:textSize="16sp"
+            android:text="@string/add_message_activity_title"
+            android:fontFamily="sens-serif-medium"
+            />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
