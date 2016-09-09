@@ -27,7 +27,7 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return Configurations.tagCollection.length;
+        return Tag.tagCollection.length;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ImageAdapter extends BaseAdapter {
             }
         });
 
-        imageView.setImageResource(Configurations.tagCollection[position].getTagId());
+        imageView.setImageResource(Tag.tagCollection[position].getTagId());
         return imageView;
     }
 

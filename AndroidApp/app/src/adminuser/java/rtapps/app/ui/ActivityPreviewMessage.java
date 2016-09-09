@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.config.Configurations;
+import rtapps.app.inbox.Tag;
 import rtapps.app.messages.AddMessageActivity;
 
 /**
@@ -36,7 +37,7 @@ public class ActivityPreviewMessage extends AppCompatActivity {
         
         image.setImageBitmap(bitmap);
         if (tagIndex != -1) {
-            imageTag.setImageResource(Configurations.tagCollection[tagIndex].getTagId());
+            imageTag.setImageResource(Tag.tagCollection[tagIndex].getTagId());
         }
     }
 }

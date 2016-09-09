@@ -37,6 +37,7 @@ import id.zelory.compressor.Compressor;
 import retrofit.mime.TypedFile;
 import rtapps.app.account.AccountManager;
 import rtapps.app.config.Configurations;
+import rtapps.app.inbox.Tag;
 import rtapps.app.messages.network.AddMessageAPI;
 import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
 import rtapps.app.network.AccessToken;
@@ -315,7 +316,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
                 }
                 return;
             case SelectTagActivity.SELECT_TAG:
-                int drawId = Configurations.tagCollection[resultCode].getTagId();
+                int drawId = Tag.tagCollection[resultCode].getTagId();
                 addTagButton.setImageResource(drawId);
                 return;
             default:
