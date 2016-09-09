@@ -22,7 +22,6 @@ import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.gcm.GcmPrefrences;
 import rtapps.app.gcm.RegistrationIntentService;
-import rtapps.app.inbox.AsyncGetAllMessages;
 import rtapps.app.services.SyncDataService;
 
 

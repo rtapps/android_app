@@ -33,7 +33,6 @@ import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.services.SyncDataService;
 import rtapps.app.ui.MainActivity;
-import rtapps.app.inbox.AsyncGetAllMessages;
 
 public class MyGcmListenerService extends GcmListenerService {
 

@@ -31,7 +31,14 @@ public class CatalogSynchronizer {
     }
 
     public void syncCatalog() {
-        List<CatalogImage> catalogImages = appAPI.getCatalog(ApplicationConfigs.getApplicationId());
+        List<CatalogImage> catalogImages = null;
+        try {
+            catalogImages = appAPI.getCatalog(ApplicationConfigs.getApplicationId());
+        }catch (Exception e){
+            Log.e("syncCatalog", "get catalog failed:");
+            e.printStackTrace();
+            return;
+        }
         Log.d("syncCatalog", "catalogResponse=" + catalogImages);
         SyncDataThreadPool.downloadAndSaveAllCatalogImages(catalogImages, context);
 

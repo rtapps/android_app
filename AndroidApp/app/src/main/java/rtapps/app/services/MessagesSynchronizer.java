@@ -40,7 +40,15 @@ public class MessagesSynchronizer {
         SharedPreferences sharedPref = context.getSharedPreferences(APP_PREFS, Context.MODE_PRIVATE);
         Long lastUpdatedTime = sharedPref.getLong(LAST_UPDATED_TIME, 0);
 
-        AllMessagesResponse allMessagesResponse = yourUsersApi.getAllMessages(ApplicationConfigs.getApplicationId(), lastUpdatedTime);
+
+        AllMessagesResponse allMessagesResponse = null;
+        try {
+            allMessagesResponse = yourUsersApi.getAllMessages(ApplicationConfigs.getApplicationId(), lastUpdatedTime);
+        }catch (Exception e){
+            Log.e("syncCatalog", "get all messages failed: " );
+            e.printStackTrace();
+            return;
+        }
 
         Log.d("AsyncGetAllMessages", "Current preference LastUpdateTime is: " + lastUpdatedTime);
         List<AllMessagesResponse.Message> messagesList = allMessagesResponse.getMessagesList();
