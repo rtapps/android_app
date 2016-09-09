@@ -4,6 +4,7 @@
 
 
     <string name="store_name"> פסי בוטיק</string>
+    <string name="store_name_admin">פסי בוטיק - מנהל</string>
 
     <string name="tab_sales">הטבות</string>
     <string name="tab_store_info">מידע</string>

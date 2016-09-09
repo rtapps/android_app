@@ -23,6 +23,7 @@ public class MainActivity extends MainActivityBase {
             return;
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        toolbar.setTitle("מנהל");
         setSupportActionBar(toolbar);
     }
 
