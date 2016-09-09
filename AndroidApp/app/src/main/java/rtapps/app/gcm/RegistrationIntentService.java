@@ -30,6 +30,7 @@ import com.rtapps.kingofthejungle.R;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import retrofit.RestAdapter;
 import rtapps.app.config.ApplicationConfigs;
@@ -109,22 +110,23 @@ public class RegistrationIntentService extends IntentService {
                 .build();
 
         final AppAPI yourUsersApi = restAdapter.create(AppAPI.class);
-
-        PushToken pushToken;
-        String pushTokenId = sharedPreferences.getString(GcmPrefrences.PUSH_TOKEN_ID,null);
-        if (pushTokenId == null){
-            pushToken = yourUsersApi.updatePushToken(ApplicationConfigs.getApplicationId(), token, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
-            if (pushToken != null) {
-                sharedPreferences.edit().putString(GcmPrefrences.PUSH_TOKEN_ID, pushToken.getId()).apply();
+        try {
+            PushToken pushToken;
+            String pushTokenId = sharedPreferences.getString(GcmPrefrences.PUSH_TOKEN_ID, null);
+            if (pushTokenId == null) {
+                pushToken = yourUsersApi.updatePushToken(ApplicationConfigs.getApplicationId(), token, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
+                if (pushToken != null) {
+                    sharedPreferences.edit().putString(GcmPrefrences.PUSH_TOKEN_ID, pushToken.getId()).apply();
+                }
+            } else {
+                yourUsersApi.updatePushToken(ApplicationConfigs.getApplicationId(), token, pushTokenId, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
             }
+            sharedPreferences.edit().putLong(GcmPrefrences.LAST_REFRESH_TOKEN_UPDATE, now.getTime()).apply();
+            sharedPreferences.edit().putString(GcmPrefrences.PUSH_TOKEN, token).apply();
+        }catch(Exception e){
+            Log.e("RegistrationIntentService", "Failed to upload push token");
+            e.printStackTrace();
         }
-        else{
-            yourUsersApi.updatePushToken(ApplicationConfigs.getApplicationId(), token, pushTokenId, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
-        }
-
-        sharedPreferences.edit().putLong(GcmPrefrences.LAST_REFRESH_TOKEN_UPDATE, now.getTime()).apply();
-        sharedPreferences.edit().putString(GcmPrefrences.PUSH_TOKEN,token).apply();
-
     }
 
     /**
