@@ -7,7 +7,6 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.rtapps.kingofthejungle"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
@@ -37,7 +36,7 @@ android {
 
         pessy{
             dimension 'customer'
-            applicationId ="com.rtapps.kingofthejungle"
+            applicationId ="com.rtapps.pessy"
         }
 
     }

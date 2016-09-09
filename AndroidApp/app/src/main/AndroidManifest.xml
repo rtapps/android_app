@@ -92,11 +92,6 @@
             android:name="rtapps.app.services.SyncDataService"
             android:exported="false"/>
 
-
-
-        <provider android:authorities="com.facebook.app.FacebookContentProvider278572082518954"
-            android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
     </application>
 
 

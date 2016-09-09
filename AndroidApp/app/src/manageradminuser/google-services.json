@@ -1,12 +1,12 @@
 {
   "project_info": {
-    "project_number": "456127659478",
-    "project_id": "king-of-the-jungle-2fa36"
+    "project_number": "272885538726",
+    "project_id": "firebase-admin-user"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:456127659478:android:569184c6c4f59502",
+        "mobilesdk_app_id": "1:272885538726:android:81e0e598cdb8c202",
         "android_client_info": {
           "package_name": "com.rtapps.adminuser"
         }
@@ -14,7 +14,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAqweJgletcKmVaLapnVtWq0LH0kf6nGxU"
+          "current_key": "AIzaSyBpPFwk7ttB4VkHWoDOZ6KtxDZ1HlTnSLg"
         }
       ],
       "services": {

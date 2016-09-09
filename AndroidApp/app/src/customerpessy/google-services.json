@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "456127659478",
-    "project_id": "king-of-the-jungle-2fa36"
+    "project_number": "765623690504",
+    "project_id": "firebase-pessy"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:456127659478:android:569184c6c4f59502",
+        "mobilesdk_app_id": "1:765623690504:android:7167825e385223c7",
         "android_client_info": {
-          "package_name": "com.rtapps.kingofthejungle"
+          "package_name": "com.rtapps.pessy"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAqweJgletcKmVaLapnVtWq0LH0kf6nGxU"
+          "current_key": "AIzaSyAvXLXg0T8SEth4JWLcMQBFIq-GJ5cjs44"
         }
       ],
       "services": {

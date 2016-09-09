@@ -7,6 +7,10 @@ import rtapps.app.account.AccountManager;
  */
 public class ApplicationConfigs {
 
+
+    //Server API key: AIzaSyAabthlTclWBLXDrebQKufnCUlPJE-tJs0
+    //Sender ID:765623690504
+
     public static String getApplicationId(){
         return "1234";
     }
