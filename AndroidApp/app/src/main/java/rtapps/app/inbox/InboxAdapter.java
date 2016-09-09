@@ -40,6 +40,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
 import rtapps.app.network.responses.AllMessagesResponse;
@@ -91,38 +92,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         final ImageView image = ((InboxViewHolder) holder).image;
         ((InboxViewHolder) holder).setMessageId(message.getId());
 
-
-//        SharePhotoContent content = new SharePhotoContent.Builder()
-//                .addPhoto(photo)
-//                .build();
-
-
-        //   ShareLinkContent content = new ShareLinkContent.Builder().setContentUrl(Uri.parse("http://xn--8dbcficln6h.co.il/default.aspx")).build();
-
-
-        // ((InboxViewHolder) holder).fbShareButton.setShareContent(shareContent);
-
-
         final String imageName = message.getPreviewImageName();
-
-        //String root = Environment.getExternalStorageDirectory().toString();
-
-
-//        ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
-//        // path to /data/data/yourapp/app_data/imageDir
-//        File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-//        File file = new File(directory, imageName);
-//
-//        Log.d("InboxAdapter", "Load Image from" + file.getPath());
-//
-//
-//        if (file.exists()) {
-//            Log.d("InboxAdapter", "file exist load from internal storage");
-//            loadImageFromStoragePicasso(imageName, image);
-//        } else {
-//            Log.d("InboxAdapter", "file not exist load from network" + file.getPath());
-//            loadFromNetwork(message, image);
-//        }
 
         setImageBitmap(message, imageName, image);
 
@@ -130,7 +100,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ((InboxViewHolder) holder).shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
                 ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
                 // path to /data/data/yourapp/app_data/imageDir
                 File directory = cw.getDir("messages", Context.MODE_PRIVATE);
@@ -147,12 +116,12 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 //                    final SharePhotoContent shareContent = new SharePhotoContent.Builder()
 //                            .addPhoto(photo).build();
-                    final String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + message.getId() + "/" + message.getFullImageName();
+                    final String imageUrl = message.getFileServerHost() + ApplicationConfigs.getApplicationId() + "/" + message.getId() + "/" + message.getFullImageName();
                     Uri myUri = Uri.parse(imageUrl);
                     ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
                             .setContentTitle(message.getHeader())
                             .setContentDescription(message.getBody())
-                            .setContentUrl(Uri.parse(Configurations.STORE_FACEBOOK_PAGE_URL))
+                            .setContentUrl(Uri.parse(ApplicationConfigs.getFacebookUrl()))
                             .setImageUrl(myUri)
                             .build();
 
@@ -183,22 +152,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-//    private void loadImageFromStorage(final String imageName, final ImageView image)
-//    {
-//        try {
-//            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
-//            File directory = cw.getDir(Configurations.IMAGE_LIBRARY_PATH, Context.MODE_PRIVATE);
-//            File file =new File(directory, imageName);
-//            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
-//            image.setImageBitmap(b);
-//        }
-//        catch (FileNotFoundException e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//    }
-
 
     private void loadImageFromStoragePicasso(String messageId, final String imageName, final ImageView image) {
         try {
@@ -207,8 +160,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             File file = new File(directory, messageId + "/" +imageName);
 
             Picasso.with(context).load(file).fit().into(image);
-            //Bitmap b = BitmapFactory.decodeStream(new FileInputStream(file));
-            //    image.setImageBitmap(b);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -218,32 +169,8 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void loadFromNetwork(MessagesTable message, final ImageView image) {
         final String imageName = message.getId();
-        final String imageUrl = message.getFileServerHost() + Configurations.APPLICATION_ID + "/" + imageName + "/" + message.getPreviewImageName();
+        final String imageUrl = message.getFileServerHost() + ApplicationConfigs.getApplicationId() + "/" + imageName + "/" + message.getPreviewImageName();
         Picasso.with(context).load(imageUrl).into(image);
-    }
-
-    public void setMockData(InboxViewHolder holder) {
-
-        String title = "קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב 50% הנחה!";
-        String content = "שימו לב חברות יקרות!\n" +
-                "נא לפתוח יומנים ולרשום בגדול-\n" +
-                "בעוד שבוע זה קורה והולך להיות מטורף!!\n" +
-                "לקראת החלפת הקולקצייה ובואה של קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב50% הנחה!!\n" +
-                "באופן חד פעמי ולשלושה ימים בלבד!\n" +
-                "\uD83C\uDF1Fרביעי-שישי 28-30/10";
-
-        String content2 = "שימו לב חברות יקרות!\n" +
-                "נא לפתוח יומנים ולרשום בגדול-\n" +
-                "בעוד שבוע זה קורה והולך להיות מטורף!!\n" +
-                "לקראת החלפת הקולקצייה ובואה של קולקציית ערב חדשה מבחר גדול של שמלות, חצאיות וגופיות ערב ב50% הנחה!!\n" +
-                "באופן חד פעמי ולשלושה ימים בלבד!\n" +
-                "\uD83C\uDF1Fרביעי-שישי 28-30/10";
-
-        holder.title.setText(title);
-        holder.content.setText(content);
-        holder.image.setImageResource(R.drawable.msg2);
-
-
     }
 
     @Override

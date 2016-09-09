@@ -19,6 +19,7 @@ import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.Set;
 
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
 import rtapps.app.network.responses.AllMessagesResponse;
@@ -46,7 +47,7 @@ public class LoadImageAndSaveThread implements Runnable {
     @Override
     public void run() {
         if (!isImageExist(imageName)) {
-            final String imageUrl = fileServerHost + Configurations.APPLICATION_ID + "/" + id + "/" + imageName;
+            final String imageUrl = fileServerHost + ApplicationConfigs.getApplicationId() + "/" + id + "/" + imageName;
             if (!downloadedItems.contains(imageUrl)) {
                 downloadedItems.add(imageUrl);
 

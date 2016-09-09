@@ -16,6 +16,7 @@ import com.rtapps.kingofthejungle.R;
 
 import java.util.logging.Logger;
 
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 
 
@@ -64,7 +65,7 @@ public class StoreInfoFragment extends Fragment {
         LikeView likeView = (LikeView)v.findViewById(R.id.like_view);
         likeView.setLikeViewStyle(LikeView.Style.STANDARD);
         likeView.setObjectIdAndType(
-                Configurations.STORE_FACEBOOK_PAGE_URL,
+                ApplicationConfigs.getFacebookUrl(),
                 LikeView.ObjectType.PAGE);
 
 

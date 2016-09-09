@@ -36,6 +36,7 @@ import java.io.InputStream;
 import id.zelory.compressor.Compressor;
 import retrofit.mime.TypedFile;
 import rtapps.app.account.AccountManager;
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.inbox.Tag;
 import rtapps.app.messages.network.AddMessageAPI;
@@ -286,7 +287,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         @Override
         protected Void doInBackground(Void... params) {
             AddMessageAPI addMessageAPI = AuthFileUploadServiceGenerator.createService(AddMessageAPI.class, accessToken);
-            addMessageAPI.putMessage(Configurations.APPLICATION_ID, this.messageHeader, this.messageBody, this.isPush, this.typedFullImage, this.typedCompressedCroppedImage);
+            addMessageAPI.putMessage(ApplicationConfigs.getApplicationId(), this.messageHeader, this.messageBody, this.isPush, this.typedFullImage, this.typedCompressedCroppedImage);
             return null;
         }
 

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.CatalogTable;
 import rtapps.app.databases.MessagesTable;
@@ -33,8 +34,6 @@ import rtapps.app.network.responses.CatalogImage;
  * Created by tazo on 16/08/2016.
  */
 public class SyncDataService extends IntentService {
-    final private static String APP_PREFS = "appPref";
-    final private static String LAST_UPDATED_TIME = "lastUpdatedTime";
 
     final AppAPI yourUsersApi = new RestAdapter.Builder()
             .setEndpoint(Configurations.BASE_URL)
@@ -68,39 +67,7 @@ public class SyncDataService extends IntentService {
     }
 
     private void syncAllMessages() {
-
-        SharedPreferences sharedPref = getSharedPreferences(APP_PREFS, Context.MODE_PRIVATE);
-        Long lastUpdatedTime = sharedPref.getLong(LAST_UPDATED_TIME, 0);
-
-        AllMessagesResponse allMessagesResponse = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID, lastUpdatedTime);
-
-        Log.d("AsyncGetAllMessages", "Current preference LastUpdateTime is: " + lastUpdatedTime);
-        List<AllMessagesResponse.Message> messagesList = allMessagesResponse.getMessagesList();
-        Log.d("AsyncGetAllMessages", "Syncing " + messagesList.size() + " messages");
-
-        for (int i = 0; i < messagesList.size(); i++) {
-            AllMessagesResponse.Message curMessage = messagesList.get(i);
-            MessagesTable newEntry = new MessagesTable(curMessage);
-
-            if (curMessage.getExist()) {
-                newEntry.save();
-                Log.d("AsyncGetAllMessages", "Added Message id = " + curMessage.toString());
-            } else {
-                newEntry.delete();
-                Log.d("AsyncGetAllMessages", "Deleted Message id = " + curMessage.toString());
-            }
-        }
-
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putLong(LAST_UPDATED_TIME, allMessagesResponse.getLastUpdateTime());
-        editor.commit();
-        Log.d("AsyncGetAllMessages", "update preference LastUpdateTime to: " + allMessagesResponse.getLastUpdateTime());
-        // Get preview Images
-
-        // Get  All Images - read all messages from DB, and download Image if not exist
-        NameAlias nameAlias = NameAlias.builder("creationDate").withTable("MessagesTable").build();
-        List<MessagesTable> allMessages = new Select().from(MessagesTable.class).orderBy(nameAlias, false).queryList();
-        SyncDataThreadPool.downloadAndSaveAllMessageImages(allMessages, this);
-
+        MessagesSynchronizer messagesSynchronizer = new MessagesSynchronizer(this.getApplicationContext());
+        messagesSynchronizer.syncAllMessages();
     }
 }

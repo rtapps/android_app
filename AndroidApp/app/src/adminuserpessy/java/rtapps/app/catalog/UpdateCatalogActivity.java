@@ -29,6 +29,7 @@ import rtapps.app.catalog.network.ExistingCatalogImages;
 import rtapps.app.catalog.network.ExistingCatalogImages.ExistingCatalogImage;
 import rtapps.app.catalog.network.NewCatalogImage;
 import rtapps.app.catalog.network.UpdateCatalogAPI;
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.inbox.MessageContentActivity;
 import rtapps.app.messages.network.AddMessageAPI;
@@ -172,7 +173,7 @@ public class UpdateCatalogActivity extends Activity{
         ExistingCatalogImages existingCatalogImages = new ExistingCatalogImages(existingCatalogImageList);
         User user = AccountManager.get().getUser();
 
-        UpdateCatalogTask  uploadCatalogTask = new UpdateCatalogTask (this, user.getAccessToken(), Configurations.APPLICATION_ID, existingCatalogImages, newCatalogImages, newCatalogImageFiles);
+        UpdateCatalogTask  uploadCatalogTask = new UpdateCatalogTask (this, user.getAccessToken(), ApplicationConfigs.getApplicationId(), existingCatalogImages, newCatalogImages, newCatalogImageFiles);
 
         uploadCatalogTask.execute();
     }

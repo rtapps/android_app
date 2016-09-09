@@ -19,15 +19,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions 'main', 'customer'
 
     productFlavors {
         customer{
-//            applicationId="com.rtapps.kingofthejungle"
+            dimension 'main'
         }
 
-        adminuser {
-//            applicationId="com.rtapps.adminuser"
+        adminuser{
+            dimension 'main'
         }
+
+        pessy{
+            dimension 'customer'
+        }
+
     }
 }
 repositories {

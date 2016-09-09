@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import retrofit.RestAdapter;
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.network.AppAPI;
 import rtapps.app.network.responses.PushToken;
@@ -112,13 +113,13 @@ public class RegistrationIntentService extends IntentService {
         PushToken pushToken;
         String pushTokenId = sharedPreferences.getString(GcmPrefrences.PUSH_TOKEN_ID,null);
         if (pushTokenId == null){
-            pushToken = yourUsersApi.updatePushToken(Configurations.APPLICATION_ID, token, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
+            pushToken = yourUsersApi.updatePushToken(ApplicationConfigs.getApplicationId(), token, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
             if (pushToken != null) {
                 sharedPreferences.edit().putString(GcmPrefrences.PUSH_TOKEN_ID, pushToken.getId()).apply();
             }
         }
         else{
-            yourUsersApi.updatePushToken(Configurations.APPLICATION_ID, token, pushTokenId, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
+            yourUsersApi.updatePushToken(ApplicationConfigs.getApplicationId(), token, pushTokenId, Configurations.OS_TYPE, Configurations.DEVICE_MODEL_TYPE);
         }
 
         sharedPreferences.edit().putLong(GcmPrefrences.LAST_REFRESH_TOKEN_UPDATE, now.getTime()).apply();

@@ -29,6 +29,7 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.rtapps.kingofthejungle.R;
 
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.services.SyncDataService;
 import rtapps.app.ui.MainActivity;
@@ -95,7 +96,7 @@ public class MyGcmListenerService extends GcmListenerService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 //TODO set small icon
                 .setSmallIcon(R.drawable.ic_stat_image_tag_faces)
-                .setContentTitle(Configurations.APPLICATION_NAME)
+                .setContentTitle(ApplicationConfigs.getBusinessName())
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "456127659478",
+    "project_id": "king-of-the-jungle-2fa36"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456127659478:android:569184c6c4f59502",
+        "android_client_info": {
+          "package_name": "com.rtapps.kingofthejungle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqweJgletcKmVaLapnVtWq0LH0kf6nGxU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

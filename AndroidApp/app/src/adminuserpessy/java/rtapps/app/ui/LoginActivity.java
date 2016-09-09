@@ -37,6 +37,8 @@ import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.account.AccountManager;
 import rtapps.app.account.user.User;
+import rtapps.app.services.CatalogSynchronizer;
+import rtapps.app.services.MessagesSynchronizer;
 
 /**
  * A login screen that offers login via email/password.
@@ -138,7 +140,7 @@ public class LoginActivity extends AppCompatActivity  {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
+            mAuthTask = new UserLoginTask(this, username, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -203,10 +205,12 @@ public class LoginActivity extends AppCompatActivity  {
 
         private final String mUsername;
         private final String mPassword;
+        private final Context context;
 
-        UserLoginTask(String username, String password) {
-            mUsername = username;
-            mPassword = password;
+        UserLoginTask(Context context, String username, String password) {
+            this.mUsername = username;
+            this.mPassword = password;
+            this.context = context;
         }
 
         @Override
@@ -215,6 +219,13 @@ public class LoginActivity extends AppCompatActivity  {
             User user;
             try {
                 user = AccountManager.get().loginSync(mUsername, mPassword);
+
+                MessagesSynchronizer messagesSynchronizer = new MessagesSynchronizer(this.context);
+                messagesSynchronizer.syncAllMessages();
+
+                CatalogSynchronizer catalogSynchronizer = new CatalogSynchronizer(this.context);
+                catalogSynchronizer.syncCatalog();
+
             }
             catch (Exception e){
                 return false;

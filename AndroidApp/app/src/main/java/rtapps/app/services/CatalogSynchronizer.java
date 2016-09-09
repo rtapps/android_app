@@ -8,6 +8,7 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.CatalogTable;
 import rtapps.app.infrastructure.BusHolder;
@@ -30,7 +31,7 @@ public class CatalogSynchronizer {
     }
 
     public void syncCatalog() {
-        List<CatalogImage> catalogImages = appAPI.getCatalog(Configurations.APPLICATION_ID);
+        List<CatalogImage> catalogImages = appAPI.getCatalog(ApplicationConfigs.getApplicationId());
         Log.d("syncCatalog", "catalogResponse=" + catalogImages);
         SyncDataThreadPool.downloadAndSaveAllCatalogImages(catalogImages, context);
 

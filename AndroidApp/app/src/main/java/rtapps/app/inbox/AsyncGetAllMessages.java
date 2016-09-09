@@ -9,6 +9,7 @@ import java.util.List;
 
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
 import rtapps.app.infrastructure.BusHolder;
@@ -47,7 +48,7 @@ public class AsyncGetAllMessages extends AsyncTask<Context, Void, Void> {
         Log.d("AsyncGetAllMessages", "Current preference LastUpdateTime is: " + lastUpdatedTime);
 
         try {
-            AllMessagesResponse allMessagesResponse = yourUsersApi.getAllMessages(Configurations.APPLICATION_ID, lastUpdatedTime);
+            AllMessagesResponse allMessagesResponse = yourUsersApi.getAllMessages(ApplicationConfigs.getApplicationId(), lastUpdatedTime);
             List<AllMessagesResponse.Message> messagesList = allMessagesResponse.getMessagesList();
             Log.d("AsyncGetAllMessages", "Syncing " + messagesList.size() + " messages");
 
