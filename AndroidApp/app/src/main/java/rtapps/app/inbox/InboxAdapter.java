@@ -43,7 +43,6 @@ import java.util.List;
 import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
-import rtapps.app.network.responses.AllMessagesResponse;
 
 
 /**
@@ -89,6 +88,10 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         ((InboxViewHolder) holder).title.setText(message.getHeader());
         ((InboxViewHolder) holder).content.setText(message.getBody());
+
+        int tagResourceId = getTagImageResourceId(message.getTag());
+        ((InboxViewHolder) holder).tagIcon.setImageResource(tagResourceId);
+
         final ImageView image = ((InboxViewHolder) holder).image;
         ((InboxViewHolder) holder).setMessageId(message.getId());
 
@@ -132,6 +135,20 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             }
         });
+    }
+
+    private int getTagImageResourceId(String tagName){
+        if (tagName == null || tagName == ""){
+            return R.drawable.tag_ic;
+        }
+
+        for(Tag curTag : Tag.tagCollection){
+            if(curTag.tagName().equals(tagName)){
+                return curTag.getTagId();
+            }
+        }
+
+        return R.drawable.tag_ic;
     }
 
     private void setImageBitmap(MessagesTable message, String imageName, ImageView image) {

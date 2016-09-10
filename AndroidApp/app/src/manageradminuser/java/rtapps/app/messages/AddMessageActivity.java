@@ -56,6 +56,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     private ImageView addTagButton;
     private LinearLayout selectTagButton;
     private EditText messageBodyEditText;
+    private String messageTag;
     private CheckBox sendPushCheckBox;
     private Button sendButton;
     private File fullImage;
@@ -106,6 +107,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
                 startActivity(intent);
             }
         });
+
 
         messageBodyEditText.addTextChangedListener(this);
 
@@ -215,12 +217,12 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         TypedFile typedFullImage = new TypedFile("multipart/form-data", fullImage);
         TypedFile typedCompressedCroppedImage = new TypedFile("multipart/form-data", compressedCroppedImage);
 
-        String messageTag = messageBodyEditText.getText().toString();
+        //String messageTag = messageBodyEditText.getText().toString();
         String messageHeader = messageHeaderEditText.getText().toString();
         String messageBody = messageBodyEditText.getText().toString();
         boolean sendPush = sendPushCheckBox.isChecked();
 
-        UploadNewMessageTask uploadNewMessageTask = new UploadNewMessageTask(AddMessageActivity.this, accessToken, messageHeader, messageBody, sendPush, typedFullImage, typedCompressedCroppedImage);
+        UploadNewMessageTask uploadNewMessageTask = new UploadNewMessageTask(AddMessageActivity.this, accessToken, messageHeader, messageBody, sendPush, messageTag , typedFullImage, typedCompressedCroppedImage);
         uploadNewMessageTask.execute();
 
     }
@@ -269,17 +271,19 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         AccessToken accessToken;
         String messageHeader;
         String messageBody;
+        String messageTag;
         TypedFile typedFullImage;
         TypedFile typedCompressedCroppedImage;
         Context context;
         boolean isPush;
 
-        public UploadNewMessageTask(Context context, AccessToken accessToken, String messageHeader, String messageBody, boolean isPush, TypedFile typedFullImage, TypedFile typedCompressedCroppedImage) {
+        public UploadNewMessageTask(Context context, AccessToken accessToken, String messageHeader, String messageBody, boolean isPush,String messageTag, TypedFile typedFullImage, TypedFile typedCompressedCroppedImage) {
             this.context = context;
             this.accessToken = accessToken;
             this.messageHeader = messageHeader;
             this.messageBody = messageBody;
             this.isPush = isPush;
+            this.messageTag = messageTag;
             this.typedFullImage = typedFullImage;
             this.typedCompressedCroppedImage = typedCompressedCroppedImage;
         }
@@ -287,7 +291,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         @Override
         protected Void doInBackground(Void... params) {
             AddMessageAPI addMessageAPI = AuthFileUploadServiceGenerator.createService(AddMessageAPI.class, accessToken);
-            addMessageAPI.putMessage(ApplicationConfigs.getApplicationId(), this.messageHeader, this.messageBody, this.isPush, this.typedFullImage, this.typedCompressedCroppedImage);
+            addMessageAPI.putMessage(ApplicationConfigs.getApplicationId(), this.messageHeader, this.messageBody, this.isPush, this.messageTag, this.typedFullImage, this.typedCompressedCroppedImage);
             return null;
         }
 
@@ -319,6 +323,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             case SelectTagActivity.SELECT_TAG:
                 int drawId = Tag.tagCollection[resultCode].getTagId();
                 addTagButton.setImageResource(drawId);
+                messageTag = Tag.tagCollection[resultCode].tagName();
                 return;
             default:
                 mImageCropper.onActivityResult(requestCode, resultCode, intent);

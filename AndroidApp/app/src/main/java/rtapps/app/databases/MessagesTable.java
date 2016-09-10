@@ -18,6 +18,7 @@ public class MessagesTable extends BaseModel {
     @Column
     String header;
 
+
     @Column
     String applicationId;
 
@@ -37,6 +38,9 @@ public class MessagesTable extends BaseModel {
     Long creationDate;
 
     @Column
+    String tag;
+
+    @Column
     Long lastUpdateDate;
 
     @Column
@@ -54,6 +58,7 @@ public class MessagesTable extends BaseModel {
         this.body = message.getBody();
         this.fileServerHost = message.getFileServerHost();
         this.fullImageName = message.getFullImageName();
+        this.tag = message.getTag();
         this.previewImageName = message.getPreviewImageName();
         this.creationDate = message.getCreationDate();
         this.lastUpdateDate = message.getLastUpdateDate();
@@ -95,6 +100,9 @@ public class MessagesTable extends BaseModel {
         return creationDate;
     }
 
+    public String getTag() {
+        return tag;
+    }
 
     public Long getLastUpdateDate() {
         return lastUpdateDate;
@@ -114,6 +122,7 @@ public class MessagesTable extends BaseModel {
                         applicationId + " " +
                         body + " " +
                         header + " " +
+                        tag + " " +
                         fileServerHost + "  " +
                         fullImageName + " " +
                         previewImageName + " " +

@@ -23,6 +23,7 @@ public class AllMessagesResponse {
         private String applicationId;
         private String header;
         private String body;
+        private String tag;
         private String fullImageName;
         private String previewImageName;
         private String fileServerHost;
@@ -77,6 +78,8 @@ public class AllMessagesResponse {
             return lastUpdateDate;
         }
 
+        public String getTag(){return tag;}
+
         public Long getCreationDate() {
             return creationDate;
         }
@@ -94,6 +97,7 @@ public class AllMessagesResponse {
                             "applicationId-" + applicationId + " " +
                             "header-" + header + " " +
                             "body-" + body + " " +
+                            "tag-" + tag + " " +
                             "fullImageName-" + fullImageName + " " +
                             "previewImageName-" + previewImageName + " " +
                             "lastUpdateDate-" + lastUpdateDate + " " +

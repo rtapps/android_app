@@ -14,6 +14,7 @@ public abstract class InboxViewHolderBase extends RecyclerView.ViewHolder {
     public final TextView title;
     public final TextView content;
     public final ImageView image;
+    public final ImageView tagIcon;
     public final LinearLayout shareButton;
     public final View button;
 
@@ -25,6 +26,7 @@ public abstract class InboxViewHolderBase extends RecyclerView.ViewHolder {
         title = (TextView) view.findViewById(R.id.inbox_item_title);
         content = (TextView) view.findViewById(R.id.inbox_item_content);
         image = (ImageView) view.findViewById(R.id.inbox_item_image);
+        tagIcon = (ImageView)view.findViewById(R.id.inbox_item_tag);
         button = view.findViewById(R.id.inbox_cell_button);
         shareButton = (LinearLayout)view.findViewById(R.id.share_button);
 

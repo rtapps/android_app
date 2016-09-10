@@ -28,7 +28,7 @@ import java.io.File;
 
 import rtapps.app.config.Configurations;
 import rtapps.app.network.AppAPI;
-import rtapps.app.network.responses.AllMessagesResponse;
+
 
 import retrofit.RestAdapter;
 import uk.co.senab.photoview.PhotoViewAttacher;

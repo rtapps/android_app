@@ -21,6 +21,7 @@ public interface AddMessageAPI {
                                    @Part("messageHeader") String messageHeader,
                                    @Part("messageBody") String messageBody,
                                    @Part("sendPush") boolean sendPush,
+                                  @Part("messageTag") String messageTag,
                                    @Part("fullImage") TypedFile fullImage,
                                    @Part("previewImage") TypedFile previewImage
     );
