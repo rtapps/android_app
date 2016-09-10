@@ -22,6 +22,9 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
+        android:paddingRight="40dp"
+        android:paddingLeft="40dp"
         android:layout_height="match_parent">
 
         <LinearLayout
