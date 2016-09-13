@@ -8,6 +8,8 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.OkClient;
+import rtapps.app.account.authentication.network.BasicErrorHandler;
+import rtapps.app.account.authentication.network.throwables.Error401;
 import rtapps.app.config.Configurations;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -39,13 +41,7 @@ public class BasicAuthorizationServiceGenerator {
                 }
             });
         }
-
-        builder.setErrorHandler(new ErrorHandler() {
-            @Override
-            public Throwable handleError(RetrofitError cause) {
-                return null;
-            }
-        });
+        builder.setErrorHandler(new BasicErrorHandler());
 
         RestAdapter adapter = builder.build();
         return adapter.create(serviceClass);

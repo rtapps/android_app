@@ -8,6 +8,7 @@ import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedFile;
+import rtapps.app.account.authentication.network.throwables.NetworkError;
 import rtapps.app.messages.network.AddMessageResponse;
 
 /**
@@ -27,7 +28,7 @@ public interface UpdateCatalogAPI {
                                         @Part("newCatalogImageFile5") TypedFile newCatalogImageFile5,
                                         @Part("newCatalogImageFile6") TypedFile newCatalogImageFile6,
                                         @Part("newCatalogImageFile7") TypedFile newCatalogImageFile7
-    );
+    ) throws NetworkError;
 
 
 }

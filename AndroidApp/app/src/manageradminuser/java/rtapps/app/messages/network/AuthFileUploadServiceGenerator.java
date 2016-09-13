@@ -9,6 +9,7 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.OkClient;
+import rtapps.app.account.authentication.network.BasicErrorHandler;
 import rtapps.app.config.Configurations;
 import rtapps.app.network.AccessToken;
 
@@ -46,13 +47,7 @@ public class AuthFileUploadServiceGenerator {
             });
         }
 
-        builder.setErrorHandler(new ErrorHandler() {
-            @Override
-            public Throwable handleError(RetrofitError cause) {
-                //Todo: deal with expired tokens
-                return null;
-            }
-        });
+        builder.setErrorHandler(new BasicErrorHandler());
 
         RestAdapter adapter = builder.build();
         return adapter.create(serviceClass);

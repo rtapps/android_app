@@ -7,11 +7,16 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import rtapps.app.account.authentication.OAuthClient;
+import retrofit.RetrofitError;
 import rtapps.app.account.authentication.BasicAuthorizationServiceGenerator;
 import rtapps.app.account.authentication.network.OauthService;
 import rtapps.app.account.authentication.network.responses.OAuthTokenResponse;
+import rtapps.app.account.authentication.network.throwables.Error400;
+import rtapps.app.account.authentication.network.throwables.Error401;
+import rtapps.app.account.authentication.network.throwables.NetworkError;
 import rtapps.app.account.user.User;
 import rtapps.app.account.user.UserClient;
 import rtapps.app.account.user.network.AdminUserAPI;
@@ -47,36 +52,11 @@ public class AccountManager {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public interface LoginCallback{
-        void onLoginSuccess(User user);
-
-        void onLoginFail();
-    }
-
-    public interface AdminUserFromServerCallback{
-        void onAdminUserFromServerSuccess(User user);
-    }
-
-    public void login(final String username, String password, final LoginCallback loginCallback){
-        OAuthClient oAuthClient = new OAuthClient();
-        oAuthClient.getAccessToken(username, password, new OAuthClient.GetAccessTokenCallback() {
-            @Override
-            public void onAccessTokenResponse(OAuthTokenResponse oAuthTokenResponse) {
-                AccessToken accessToken = getAccessTokenFromOAuthResponse(oAuthTokenResponse);
-                getAdminUserFromServer(accessToken, username, new AdminUserFromServerCallback() {
-                    @Override
-                    public void onAdminUserFromServerSuccess(User user) {
-                        loginCallback.onLoginSuccess(user);
-                    }
-                });
-            }
-        });
-    }
-
-    public User loginSync(String username ,String password){
+    public User loginSync(String username ,String password) throws NetworkError {
         OauthService oauthService = BasicAuthorizationServiceGenerator.createService(OauthService.class, "app", "appsecret");
         OAuthTokenResponse oAuthTokenResponse = oauthService.getAccessToken("password", username, password);
         AccessToken accessToken = getAccessTokenFromOAuthResponse(oAuthTokenResponse);
+        savePass(password);
         return getAdminUserFromServerSync(accessToken, username);
     }
 
@@ -92,18 +72,6 @@ public class AccountManager {
         AdminUserResponse adminUserResponse = adminUserAPI.getAdminUserData(username);
         User user = saveUserFromResponse(adminUserResponse, accessToken);
         return user;
-    }
-
-    private void getAdminUserFromServer (final AccessToken accessToken, final String username, final AdminUserFromServerCallback adminUserFromServerCallback){
-        UserClient userClient = new UserClient();
-        userClient.getAdminUser(username, accessToken, new UserClient.GetAdminUserCallBack() {
-            @Override
-            public void onGetAdminUserResponse(AdminUserResponse adminUserResponse) {
-                User user = saveUserFromResponse(adminUserResponse, accessToken);
-                Log.d("AccountManager", "Returned user=" + user);
-                adminUserFromServerCallback.onAdminUserFromServerSuccess(user);
-            }
-        });
     }
 
     private User saveUserFromResponse(AdminUserResponse adminUserResponse, AccessToken accessToken){
@@ -132,23 +100,52 @@ public class AccountManager {
         Gson gson = new Gson();
         final User user = gson.fromJson(userString, User.class);
 
-
         if (!user.getAccessToken().getExpirationDate().after(new Date())){
             return;
         }
-        OAuthClient oAuthClient = new OAuthClient();
-        oAuthClient.refreshAccessToken(user.getAccessToken().getRefreshToken(), new OAuthClient.GetAccessTokenCallback() {
+        refreshTokenAsync();
+    }
+
+    private String getPass() {
+        return sharedPreferences.getString(AccountConfiguration.PASS, null);
+    }
+
+    private void savePass(String password) {
+        sharedPreferences.edit().putString(AccountConfiguration.PASS, password).apply();
+    }
+
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    public void refreshTokenAsync() {
+        if (AccountManager.get().getUser() == null) {
+            Log.d("AccountManager", "Not logged in. No refresh done.");
+            return;
+        }
+        executorService.execute(new Runnable() {
             @Override
-            public void onAccessTokenResponse(OAuthTokenResponse oAuthTokenResponse) {
-                AccessToken accessToken = getAccessTokenFromOAuthResponse(oAuthTokenResponse);
-                getAdminUserFromServer(accessToken, user.getUsername(), new AdminUserFromServerCallback() {
-                    @Override
-                    public void onAdminUserFromServerSuccess(User user) {
-                        Log.d("AccountManager", "Refresh token completed. User=" + user);
+            public void run() {
+                final User user = getUser();
+                try {
+                    OauthService oauthService = BasicAuthorizationServiceGenerator.createService(OauthService.class, "app", "appsecret");
+                    OAuthTokenResponse oAuthTokenResponse = oauthService.getAccessToken("refresh_token", user.getAccessToken().getRefreshToken());
+                    Log.d("AccountManager", "auth token response=" + oAuthTokenResponse);
+                    AccessToken accessToken = getAccessTokenFromOAuthResponse(oAuthTokenResponse);
+                    getAdminUserFromServerSync(accessToken, user.getUsername());
+                }catch (Error400 error400){
+                    try {
+                        loginSync(user.getUsername(), getPass());
                     }
-                });
+                    catch (Error401 e1){
+                        sharedPreferences.edit().putString(AccountConfiguration.USER, null).apply();
+                    }
+                    catch (NetworkError networkError){
+                        Log.d("AccountManager", "Error while logging in");
+                    }
+                }
+                catch (NetworkError networkError){
+                    Log.d("AccountManager", "Error while logging in");
+                }
             }
         });
     }
-
 }

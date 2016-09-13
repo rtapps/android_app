@@ -8,6 +8,7 @@ import retrofit.http.PUT;
 import retrofit.http.Part;
 import retrofit.http.Query;
 import retrofit.mime.TypedFile;
+import rtapps.app.account.authentication.network.throwables.NetworkError;
 import rtapps.app.network.responses.AllMessagesResponse;
 
 /**
@@ -24,5 +25,5 @@ public interface AddMessageAPI {
                                   @Part("messageTag") String messageTag,
                                    @Part("fullImage") TypedFile fullImage,
                                    @Part("previewImage") TypedFile previewImage
-    );
+    ) throws NetworkError;
 }

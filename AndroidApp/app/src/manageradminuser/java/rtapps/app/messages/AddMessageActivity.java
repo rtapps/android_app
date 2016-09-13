@@ -1,18 +1,16 @@
 package rtapps.app.messages;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,18 +28,17 @@ import com.sw926.imagefileselector.ImageCropper;
 import com.sw926.imagefileselector.ImageFileSelector;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 import id.zelory.compressor.Compressor;
 import retrofit.mime.TypedFile;
 import rtapps.app.account.AccountManager;
+import rtapps.app.account.authentication.network.throwables.NetworkError;
 import rtapps.app.config.ApplicationConfigs;
-import rtapps.app.config.Configurations;
 import rtapps.app.inbox.Tag;
 import rtapps.app.messages.network.AddMessageAPI;
 import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
 import rtapps.app.network.AccessToken;
+import rtapps.app.services.MessagesSynchronizer;
 import rtapps.app.ui.ActivityPreviewMessage;
 import rtapps.app.ui.SelectTagActivity;
 
@@ -59,13 +56,14 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     private String messageTag;
     private CheckBox sendPushCheckBox;
     private Button sendButton;
-    private File fullImage;
+    private File compressedfullImage;
     private File compressedCroppedImage;
     private int tagIndex = -1;
 
     private Boolean imageSelected = false;
     public static ImageView previewImage;
     public static final int SELECT_PHOTO = 200;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +159,9 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             public void onCropperCallback(ImageCropper.CropperResult result, File srcFile, File outFile) {
                 if (result == ImageCropper.CropperResult.success) {
                     compressedCroppedImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
-                    fullImage = srcFile;
+                    compressedfullImage = new Compressor.Builder(AddMessageActivity.this).setMaxWidth(1920).setMaxHeight(1920).setQuality(95).build().compressToFile(srcFile);
+
+
                     //Set image for preview
                     Bitmap myBitmap = BitmapFactory.decodeFile(compressedCroppedImage.getAbsolutePath());
                     previewImage.setImageBitmap(myBitmap);
@@ -182,7 +182,6 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             @Override
             public void onClick(View v) {
                 uploadMessage();
-                finish();
             }
         });
 
@@ -213,8 +212,15 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     }
 
     private void uploadMessage() {
+        mProgressDialog = new ProgressDialog(AddMessageActivity.this);
+        mProgressDialog.setMessage("Uploading...");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+
+
         AccessToken accessToken = AccountManager.get().getUser().getAccessToken();
-        TypedFile typedFullImage = new TypedFile("multipart/form-data", fullImage);
+        TypedFile typedCompressedImage = new TypedFile("multipart/form-data", compressedfullImage);
         TypedFile typedCompressedCroppedImage = new TypedFile("multipart/form-data", compressedCroppedImage);
 
         //String messageTag = messageBodyEditText.getText().toString();
@@ -222,7 +228,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         String messageBody = messageBodyEditText.getText().toString();
         boolean sendPush = sendPushCheckBox.isChecked();
 
-        UploadNewMessageTask uploadNewMessageTask = new UploadNewMessageTask(AddMessageActivity.this, accessToken, messageHeader, messageBody, sendPush, messageTag , typedFullImage, typedCompressedCroppedImage);
+        UploadNewMessageTask uploadNewMessageTask = new UploadNewMessageTask(AddMessageActivity.this, accessToken, messageHeader, messageBody, sendPush, messageTag , typedCompressedImage, typedCompressedCroppedImage);
         uploadNewMessageTask.execute();
 
     }
@@ -248,9 +254,9 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         sendButton.setEnabled(enableSendButton);
     }
 
-//    private void uploadMessage(File fullImage, File compressedCroppedImage) {
+//    private void uploadMessage(File compressedfullImage, File compressedCroppedImage) {
 //        AccessToken accessToken = AccountManager.get().getUser().getAccessToken();
-//        TypedFile typedFullImage = new TypedFile("multipart/form-data", fullImage);
+//        TypedFile typedFullImage = new TypedFile("multipart/form-data", compressedfullImage);
 //        TypedFile typedCompressedCroppedImage = new TypedFile("multipart/form-data", compressedCroppedImage);
 //
 //        String messageTag = "";//((EditText)findViewById(R.id.message_tag)).getText().toString();
@@ -272,26 +278,34 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         String messageHeader;
         String messageBody;
         String messageTag;
-        TypedFile typedFullImage;
+        TypedFile typedCompressedFullImage;
         TypedFile typedCompressedCroppedImage;
         Context context;
         boolean isPush;
 
-        public UploadNewMessageTask(Context context, AccessToken accessToken, String messageHeader, String messageBody, boolean isPush,String messageTag, TypedFile typedFullImage, TypedFile typedCompressedCroppedImage) {
+        public UploadNewMessageTask(Context context, AccessToken accessToken, String messageHeader, String messageBody, boolean isPush,String messageTag, TypedFile typedCompressedFullImage, TypedFile typedCompressedCroppedImage) {
             this.context = context;
             this.accessToken = accessToken;
             this.messageHeader = messageHeader;
             this.messageBody = messageBody;
             this.isPush = isPush;
             this.messageTag = messageTag;
-            this.typedFullImage = typedFullImage;
+            this.typedCompressedFullImage = typedCompressedFullImage;
             this.typedCompressedCroppedImage = typedCompressedCroppedImage;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             AddMessageAPI addMessageAPI = AuthFileUploadServiceGenerator.createService(AddMessageAPI.class, accessToken);
-            addMessageAPI.putMessage(ApplicationConfigs.getApplicationId(), this.messageHeader, this.messageBody, this.isPush, this.messageTag, this.typedFullImage, this.typedCompressedCroppedImage);
+            try {
+                addMessageAPI.putMessage(ApplicationConfigs.getApplicationId(), this.messageHeader, this.messageBody, this.isPush, this.messageTag, this.typedCompressedFullImage, this.typedCompressedCroppedImage);
+            }
+            catch (NetworkError networkError){
+                networkError.printStackTrace();
+            }
+
+            MessagesSynchronizer messagesSynchronizer = new MessagesSynchronizer(this.context.getApplicationContext());
+            messagesSynchronizer.syncAllMessages();
             return null;
         }
 

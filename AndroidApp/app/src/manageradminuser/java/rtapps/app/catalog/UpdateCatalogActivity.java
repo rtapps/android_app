@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedFile;
 import rtapps.app.account.AccountManager;
+import rtapps.app.account.authentication.network.throwables.NetworkError;
 import rtapps.app.account.user.User;
 import rtapps.app.catalog.network.ExistingCatalogImages;
 import rtapps.app.catalog.network.ExistingCatalogImages.ExistingCatalogImage;
@@ -199,7 +201,8 @@ public class UpdateCatalogActivity extends Activity{
         @Override
         protected Object doInBackground(Object[] params) {
             UpdateCatalogAPI updateCatalogAPI = AuthFileUploadServiceGenerator.createService(UpdateCatalogAPI.class, accessToken);
-            updateCatalogAPI.updateCatalog(this.applicationId, this.existingCatalogImages, this.newCatalogImages,
+            try {
+                updateCatalogAPI.updateCatalog(this.applicationId, this.existingCatalogImages, this.newCatalogImages,
                     this.newCatalogImageFiles[0],
                     this.newCatalogImageFiles[1],
                     this.newCatalogImageFiles[2],
@@ -207,7 +210,10 @@ public class UpdateCatalogActivity extends Activity{
                     this.newCatalogImageFiles[4],
                     this.newCatalogImageFiles[5],
                     this.newCatalogImageFiles[6]);
-
+            }catch (NetworkError networkError){
+                Log.e("UpdateCalatogActivity","Received network error: " + networkError.getErrorCode());
+                networkError.printStackTrace();
+            }
             CatalogSynchronizer catalogSynchronizer = new CatalogSynchronizer(context);
             catalogSynchronizer.syncCatalog();
             return null;

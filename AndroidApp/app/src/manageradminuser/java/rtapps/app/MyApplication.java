@@ -21,9 +21,12 @@ public class MyApplication extends Application {
 //        startService(new Intent(this, SyncDataService.class));
         FlowManager.init(new FlowConfig.Builder(this).build());
         AccountManager.get().init(PreferenceManager.getDefaultSharedPreferences(this));
+        AccountManager.get().refreshTokenAsync();
 
         //initial Facebook SDK
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+
     }
 }

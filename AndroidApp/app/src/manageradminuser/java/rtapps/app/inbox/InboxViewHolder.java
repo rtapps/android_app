@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 
 import rtapps.app.account.AccountManager;
+import rtapps.app.account.authentication.network.throwables.NetworkError;
 import rtapps.app.config.Configurations;
 import rtapps.app.messages.network.DeleteMessageAPI;
 import rtapps.app.network.authentication.TokenServiceGenerator;
@@ -52,7 +54,13 @@ public class InboxViewHolder extends InboxViewHolderBase{
         @Override
         protected Void doInBackground(Void... params) {
             DeleteMessageAPI deleteMessageAPI = TokenServiceGenerator.createService(DeleteMessageAPI.class, AccountManager.get().getUser().getAccessToken());
-            deleteMessageAPI.deleteMessage(AccountManager.get().getUser().getApplicationId(), this.messageId);
+            try {
+                deleteMessageAPI.deleteMessage(AccountManager.get().getUser().getApplicationId(), this.messageId);
+            }
+            catch (NetworkError networkError){
+                Log.d("InboxViewHolder", "Delete failed with network error:" + networkError.getErrorCode());
+                networkError.printStackTrace();
+            }
             return null;
         }
     }

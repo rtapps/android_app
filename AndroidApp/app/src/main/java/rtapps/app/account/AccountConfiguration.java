@@ -6,4 +6,6 @@ package rtapps.app.account;
 public class AccountConfiguration {
 
     public static String USER = "USER";
+
+    public static String PASS = "PASS";
 }
