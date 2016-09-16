@@ -68,10 +68,6 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
-//        if (position == 0) {
-//            setMockData((ViewHolder) holder);
-//            return;
-//        }
         final MessagesTable message = messagesList.get(position);
 
         ((InboxViewHolder) holder).button.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +135,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private int getTagImageResourceId(String tagName){
         if (tagName == null || tagName == ""){
-            return R.drawable.tag_ic;
+            return Tag.tagCollection[0].getTagId();
         }
 
         for(Tag curTag : Tag.tagCollection){
@@ -148,7 +144,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
 
-        return R.drawable.tag_ic;
+        return Tag.tagCollection[0].getTagId();
     }
 
     private void setImageBitmap(MessagesTable message, String imageName, ImageView image) {
@@ -182,6 +178,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
     }
+
 
 
     private void loadFromNetwork(MessagesTable message, final ImageView image) {
