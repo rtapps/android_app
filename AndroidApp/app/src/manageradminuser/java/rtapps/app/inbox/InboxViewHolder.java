@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+
+import com.rtapps.kingofthejungle.R;
 
 import rtapps.app.account.AccountManager;
 import rtapps.app.account.authentication.network.throwables.NetworkError;
@@ -17,29 +21,32 @@ import rtapps.app.network.authentication.TokenServiceGenerator;
  * Created by rtichauer on 8/19/16.
  */
 public class InboxViewHolder extends InboxViewHolderBase{
+    public Button deleteMessageButton;
     public InboxViewHolder(final View view, final Context context) {
         super(view);
+        deleteMessageButton = (Button)view.findViewById(R.id.inbox_item_delete_button);
 
-        view.setOnLongClickListener(new View.OnLongClickListener() {
+        deleteMessageButton.setVisibility(View.VISIBLE);
+        deleteMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 new AlertDialog.Builder(context)
-                        .setTitle("Delete entry")
-                        .setMessage("Are you sure you want to delete this entry?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setTitle("מחיקת הודעה")
+                        .setMessage("האם למחוק הודעה זו?")
+                        .setPositiveButton("מחק", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 DeleteMessageTask deleteMessageTask = new DeleteMessageTask(messageId);
                                 deleteMessageTask.execute();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // do nothing
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
+
                         .show();
-                return false;
             }
         });
     }
