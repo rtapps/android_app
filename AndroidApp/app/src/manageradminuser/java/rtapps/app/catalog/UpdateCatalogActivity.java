@@ -59,10 +59,13 @@ public class UpdateCatalogActivity extends Activity{
 
         mImageFileSelector = new ImageFileSelector(this);
         mDragListView = (DragListView) findViewById(R.id.update_catalog_list_view);
+
         mDragListView.setDragListListener(new DragListView.DragListListener() {
             @Override
             public void onItemDragStarted(int position) {
-                Toast.makeText(UpdateCatalogActivity.this, "Start - position: " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(UpdateCatalogActivity.this, "Start - position: " + position, Toast.LENGTH_SHORT).show();
+
+
             }
 
             @Override
@@ -73,13 +76,28 @@ public class UpdateCatalogActivity extends Activity{
             @Override
             public void onItemDragEnded(int fromPosition, int toPosition) {
                 if (fromPosition != toPosition) {
-                    Toast.makeText(UpdateCatalogActivity.this, "End - position: " + toPosition, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(UpdateCatalogActivity.this, "End - position: " + toPosition, Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+
         Intent intent = getIntent();
         catalogImageItems = intent.getExtras().getParcelableArrayList(UpdateCatalogActivity.EXTRA_CATALOG_IMAGES);
+
+        mDragListView.setDragListCallback(new DragListView.DragListCallbackAdapter() {
+            @Override
+            public boolean canDragItemAtPosition(int dragPosition) {
+                // Can not drag the last item
+                return dragPosition != catalogImageItems.size() - 1;
+            }
+
+            @Override
+            public boolean canDropItemAtPosition(int dropPosition) {
+                // Can not drop item at the End
+                return dropPosition != catalogImageItems.size() - 1;
+            }
+        });
 
         if (catalogImageItems.size() < 7) {
             catalogImageItems.add(new CatalogImageItem(10, null, -1, null, false, true));
@@ -91,7 +109,7 @@ public class UpdateCatalogActivity extends Activity{
 
 
         mDragListView.setAdapter(listAdapter, false);
-        mDragListView.setCanDragHorizontally(false);
+      //  mDragListView.setCanDragHorizontally(false);
     }
 
     public static void startActivity(Context context, ArrayList<CatalogImageItem> catalogImageItems) {
