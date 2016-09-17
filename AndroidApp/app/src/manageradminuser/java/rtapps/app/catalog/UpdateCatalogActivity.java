@@ -175,7 +175,7 @@ public class UpdateCatalogActivity extends Activity{
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 commitChanges();
                                 mProgressDialog = new ProgressDialog(UpdateCatalogActivity.this);
-                                mProgressDialog.setMessage("Updating...");
+                                mProgressDialog.setMessage("מעדכן קטלוג...");
                                 mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                 mProgressDialog.setCancelable(false);
                                 mProgressDialog.show();

@@ -2,9 +2,11 @@ package rtapps.app.ui;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,13 +24,19 @@ import com.squareup.otto.Subscribe;
 import java.util.List;
 
 import rtapps.app.databases.MessagesTable;
-import rtapps.app.inbox.AsyncGetAllMessages.MessagesSyncEvent;
 import rtapps.app.inbox.InboxAdapter;
 import rtapps.app.infrastructure.BusHolder;
+import rtapps.app.services.MessagesSynchronizer;
+import rtapps.app.services.MessagesSynchronizer.MessagesSyncEvent;
 
 
 public abstract class InboxFragmentBase extends Fragment {
     protected RecyclerView recyclerView;
+
+    private InboxAdapter inboxAdapter;
+
+    private List<MessagesTable> allMessages;
+
 
 
     public InboxFragmentBase() {
@@ -38,13 +46,13 @@ public abstract class InboxFragmentBase extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BusHolder.get().getBus().register(this);
+//        BusHolder.get().getBus().register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BusHolder.get().getBus().unregister(this);
+//        BusHolder.get().getBus().unregister(this);
     }
 
     @Override
@@ -69,7 +77,6 @@ public abstract class InboxFragmentBase extends Fragment {
         return v;
     }
 
-
     public class ReadMessagesFromDb extends AsyncTask<Void, Void, List<MessagesTable>> {
 
         @Override
@@ -82,16 +89,18 @@ public abstract class InboxFragmentBase extends Fragment {
         @Override
         protected void onPostExecute(List<MessagesTable> newMessagesList) {
             super.onPostExecute(newMessagesList);
+            allMessages = newMessagesList;
+            Parcelable recyclerViewState;
+            recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+            if (inboxAdapter == null) {
+                recyclerView.setAdapter(new InboxAdapter(getActivity(), newMessagesList));
+            }
+            else{
+                inboxAdapter.setMessageList(newMessagesList);
+            }
 
-            //messagesList = newMessagesList;
-            recyclerView.setAdapter(new InboxAdapter(getActivity(), newMessagesList));
+            recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
         }
-    }
-
-
-    @Subscribe
-    public void onMessagesSync(MessagesSyncEvent event) {
-        new ReadMessagesFromDb().execute();
     }
 }
 

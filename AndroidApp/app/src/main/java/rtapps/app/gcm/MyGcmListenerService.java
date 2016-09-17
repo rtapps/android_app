@@ -57,27 +57,10 @@ public class MyGcmListenerService extends GcmListenerService {
         } else {
             // normal downstream message.
         }
-
-        // [START_EXCLUDE]
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
-
-        /**
-         * In some cases it may be useful to show a notification indicating to the user
-         * that a message was received.
-         */
         sendNotification(message);
-
-
         startService(new Intent(this, SyncDataService.class));
-      //  new AsyncGetAllMessages().execute(getApplicationContext());todo what to do???
-        // [END_EXCLUDE]
+
     }
-    // [END receive_message]
 
     /**
      * Create and show a simple
@@ -88,6 +71,7 @@ public class MyGcmListenerService extends GcmListenerService {
     private void sendNotification(String message) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("Notification", true);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

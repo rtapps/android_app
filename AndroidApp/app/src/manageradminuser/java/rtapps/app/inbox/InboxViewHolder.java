@@ -1,6 +1,7 @@
 package rtapps.app.inbox;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -16,14 +17,19 @@ import rtapps.app.account.authentication.network.throwables.NetworkError;
 import rtapps.app.config.Configurations;
 import rtapps.app.messages.network.DeleteMessageAPI;
 import rtapps.app.network.authentication.TokenServiceGenerator;
+import rtapps.app.services.MessagesSynchronizer;
 
 /**
  * Created by rtichauer on 8/19/16.
  */
 public class InboxViewHolder extends InboxViewHolderBase{
     public Button deleteMessageButton;
+
+
     public InboxViewHolder(final View view, final Context context) {
         super(view);
+
+
         deleteMessageButton = (Button)view.findViewById(R.id.inbox_item_delete_button);
 
         deleteMessageButton.setVisibility(View.VISIBLE);
@@ -35,7 +41,7 @@ public class InboxViewHolder extends InboxViewHolderBase{
                         .setMessage("האם למחוק הודעה זו?")
                         .setPositiveButton("מחק", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                DeleteMessageTask deleteMessageTask = new DeleteMessageTask(messageId);
+                                DeleteMessageTask deleteMessageTask = new DeleteMessageTask(context, messageId);
                                 deleteMessageTask.execute();
                             }
                         })
@@ -52,10 +58,24 @@ public class InboxViewHolder extends InboxViewHolderBase{
     }
 
     private static class DeleteMessageTask extends AsyncTask<Void, Void, Void>{
-        String messageId;
+        private String messageId;
+        private Context context;
+        private ProgressDialog mProgressDialog;
 
-        public DeleteMessageTask(String messageId){
+
+        public DeleteMessageTask(Context context, String messageId){
+            this.context = context;
             this.messageId = messageId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setMessage("מבצע מחיקה...");
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
         }
 
         @Override
@@ -63,12 +83,20 @@ public class InboxViewHolder extends InboxViewHolderBase{
             DeleteMessageAPI deleteMessageAPI = TokenServiceGenerator.createService(DeleteMessageAPI.class, AccountManager.get().getUser().getAccessToken());
             try {
                 deleteMessageAPI.deleteMessage(AccountManager.get().getUser().getApplicationId(), this.messageId);
+                MessagesSynchronizer messagesSynchronizer = new MessagesSynchronizer(context);
+                messagesSynchronizer.syncAllMessages();
             }
             catch (NetworkError networkError){
                 Log.d("InboxViewHolder", "Delete failed with network error:" + networkError.getErrorCode());
                 networkError.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mProgressDialog.hide();
         }
     }
 }

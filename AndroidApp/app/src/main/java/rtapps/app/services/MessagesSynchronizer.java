@@ -2,6 +2,8 @@ package rtapps.app.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
@@ -13,6 +15,7 @@ import retrofit.RestAdapter;
 import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.databases.MessagesTable;
+import rtapps.app.infrastructure.BusHolder;
 import rtapps.app.network.AppAPI;
 import rtapps.app.network.responses.AllMessagesResponse;
 
@@ -77,6 +80,20 @@ public class MessagesSynchronizer {
         NameAlias nameAlias = NameAlias.builder("creationDate").withTable("MessagesTable").build();
         List<MessagesTable> allMessages = new Select().from(MessagesTable.class).orderBy(nameAlias, false).queryList();
         SyncDataThreadPool.downloadAndSaveAllMessageImages(allMessages, context);
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("MessageSynchronizer", "Posting messages sync event on the UI thread");
+                BusHolder.get().getBus().post(new MessagesSyncEvent());
+            }
+        });
+
+    }
+
+
+    public static class MessagesSyncEvent
+    {
 
     }
 }

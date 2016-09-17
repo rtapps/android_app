@@ -37,6 +37,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     Activity context;
     List<MessagesTable> messagesList;
+    private List<MessagesTable> messageList;
 
     public InboxAdapter(Activity c, List<MessagesTable> newMessagesList) {
         this.context = c;
@@ -181,4 +182,8 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
+    public void setMessageList(List<MessagesTable> messageList) {
+        this.messageList = messageList;
+        notifyDataSetChanged();
+    }
 }

@@ -132,4 +132,17 @@ public class MessagesTable extends BaseModel {
         return allMessagesString;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        MessagesTable messagesTable = (MessagesTable) o;
+        return this.id.equals(messagesTable.id)&&
+                this.previewImageName.equals(messagesTable.previewImageName) &&
+                this.isExists.equals(messagesTable.isExists) &&
+                this.creationDate.equals(messagesTable.creationDate) &&
+                this.applicationId.equals(messagesTable.applicationId) &&
+                this.header.equals(messagesTable.header) &&
+                this.body.equals(messagesTable.body)&&
+                this.lastUpdateDate.equals(messagesTable.lastUpdateDate) &&
+                this.fileServerHost.equals(fileServerHost);
+    }
 }
