@@ -29,7 +29,9 @@
         android:paddingLeft="2dp"
         android:drawableLeft="@drawable/photo_ic"
         android:text="עריכה"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        android:visibility="gone"
+        />
 
 
     <!--<com.daimajia.slider.library.Indicators.PagerIndicator-->

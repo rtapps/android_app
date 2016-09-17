@@ -41,6 +41,7 @@ public class CatalogFragment extends CatalogFragmentBase {
 
 
         Button editButton = (Button) v.findViewById(R.id.catalog_edit_button);
+        editButton.setVisibility(View.VISIBLE);
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
