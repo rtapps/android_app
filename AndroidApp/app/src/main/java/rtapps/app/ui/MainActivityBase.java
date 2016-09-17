@@ -52,6 +52,11 @@ public abstract class MainActivityBase extends AppCompatActivity {
 
         bottomBar.selectTabAtPosition(1, false);
 
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra("Notification", false)){
+            bottomBar.selectTabAtPosition(0, false);
+        }
+
         bottomBar.setActiveTabColor(0xff090909);
 
 
@@ -79,8 +84,7 @@ public abstract class MainActivityBase extends AppCompatActivity {
 
         if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(this, RegistrationIntentService.class);
-            startService(intent);
+            startService(new Intent(this, RegistrationIntentService.class));
         }
 
 
