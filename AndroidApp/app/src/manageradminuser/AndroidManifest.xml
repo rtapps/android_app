@@ -36,7 +36,7 @@
         <activity
             android:name="rtapps.app.catalog.UpdateCatalogActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeRTApps.NoActionBar"/>
+            android:theme="@style/AppThemeRTApps.NoActionBar.admin.updateCatalog"/>
 
 
         <activity

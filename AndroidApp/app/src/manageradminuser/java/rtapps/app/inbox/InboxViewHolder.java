@@ -36,7 +36,8 @@ public class InboxViewHolder extends InboxViewHolderBase{
         deleteMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(context)
+
+                new AlertDialog.Builder(context ,R.style.AlertDialogCustom)
                         .setTitle("מחיקת הודעה")
                         .setMessage("האם למחוק הודעה זו?")
                         .setPositiveButton("מחק", new DialogInterface.OnClickListener() {
@@ -51,7 +52,6 @@ public class InboxViewHolder extends InboxViewHolderBase{
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
-
                         .show();
             }
         });
