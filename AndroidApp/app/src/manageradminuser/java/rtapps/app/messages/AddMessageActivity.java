@@ -54,6 +54,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     private LinearLayout selectTagButton;
     private EditText messageBodyEditText;
     private String messageTag;
+    private int messageTagId = -1;
     private CheckBox sendPushCheckBox;
     private Button sendButton;
     private File compressedfullImage;
@@ -96,7 +97,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             public void onClick(View v) {
 
                 Intent intent = new Intent(AddMessageActivity.this, ActivityPreviewMessage.class);
-                intent.putExtra("1", tagIndex);
+                intent.putExtra("1", messageTagId);
                 intent.putExtra("2", messageHeaderEditText.getText().toString());
                 intent.putExtra("3", messageBodyEditText.getText().toString());
 //                Bitmap bitmap = ((BitmapDrawable)previewImage.getDrawable()).getBitmap();
@@ -335,8 +336,8 @@ public class AddMessageActivity extends Activity implements TextWatcher {
                 }
                 return;
             case SelectTagActivity.SELECT_TAG:
-                int drawId = Tag.tagCollection[resultCode].getTagId();
-                addTagButton.setImageResource(drawId);
+                messageTagId = Tag.tagCollection[resultCode].getTagId();
+                addTagButton.setImageResource(messageTagId);
                 messageTag = Tag.tagCollection[resultCode].tagName();
                 return;
             default:

@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:background="@color/businessMainColor"
+            android:background="@drawable/rect_round_tag"
             android:src="@drawable/tag_10" />
 
     </LinearLayout>

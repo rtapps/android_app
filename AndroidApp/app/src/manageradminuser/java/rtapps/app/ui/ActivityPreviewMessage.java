@@ -34,10 +34,26 @@ public class ActivityPreviewMessage extends AppCompatActivity {
 
         ImageView image = (ImageView) findViewById(R.id.inbox_item_image);
         Bitmap bitmap = ((BitmapDrawable)AddMessageActivity.previewImage.getDrawable()).getBitmap();
-        
         image.setImageBitmap(bitmap);
-        if (tagIndex != -1) {
-            imageTag.setImageResource(Tag.tagCollection[tagIndex].getTagId());
+
+        if(tagIndex >= 0){
+            imageTag.setImageResource(tagIndex);
         }
+
+
+    }
+
+    private int getTagImageResourceId(String tagName){
+        if (tagName == null || tagName == ""){
+            return Tag.tagCollection[0].getTagId();
+        }
+
+        for(Tag curTag : Tag.tagCollection){
+            if(curTag.tagName().equals(tagName)){
+                return curTag.getTagId();
+            }
+        }
+
+        return Tag.tagCollection[0].getTagId();
     }
 }
