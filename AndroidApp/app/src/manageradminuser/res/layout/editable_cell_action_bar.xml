@@ -15,6 +15,7 @@
     <CheckBox
         android:id="@+id/inbox_edit_send_push"
         android:layout_width="wrap_content"
+        android:checked="true"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:background="#ffffff" />

@@ -43,17 +43,4 @@ public class ActivityPreviewMessage extends AppCompatActivity {
 
     }
 
-    private int getTagImageResourceId(String tagName){
-        if (tagName == null || tagName == ""){
-            return Tag.tagCollection[0].getTagId();
-        }
-
-        for(Tag curTag : Tag.tagCollection){
-            if(curTag.tagName().equals(tagName)){
-                return curTag.getTagId();
-            }
-        }
-
-        return Tag.tagCollection[0].getTagId();
-    }
 }

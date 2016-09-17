@@ -59,9 +59,12 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     private Button sendButton;
     private File compressedfullImage;
     private File compressedCroppedImage;
+    private Boolean tagSelected = false;
+    private Boolean imageSelected = false;
+
     private int tagIndex = -1;
 
-    private Boolean imageSelected = false;
+
     public static ImageView previewImage;
     public static final int SELECT_PHOTO = 200;
     private ProgressDialog mProgressDialog;
@@ -92,6 +95,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         selectTagButton = (LinearLayout) findViewById(R.id.show_preview_button);
 
 
+        sendButton.setAlpha(0.3f);
         selectTagButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +113,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
 
 
         messageBodyEditText.addTextChangedListener(this);
+        messageHeaderEditText.addTextChangedListener(this);
 
         TextView label = (TextView) findViewById(R.id.inbox_edit_checkbox_label);
         label.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +173,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
                     previewImage.setImageBitmap(myBitmap);
 //                    File compressedOriginalImage = Compressor.getDefault(AddMessageActivity.this).compressToFile(outFile);
 
+                    setSendButtonStatus();
                     //uploadMessage(srcFile, compressedCroppedImage);
 
                 } else if (result == ImageCropper.CropperResult.error_illegal_input_file) {
@@ -248,11 +254,23 @@ public class AddMessageActivity extends Activity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
+        setSendButtonStatus();
+    }
+
+
+    private void setSendButtonStatus(){
         boolean enableSendButton;
         enableSendButton = !messageHeaderEditText.getText().toString().equals("");
         enableSendButton &= !messageBodyEditText.getText().toString().equals("");
+        enableSendButton &= tagSelected;
+        enableSendButton &= imageSelected;
 
         sendButton.setEnabled(enableSendButton);
+        if(enableSendButton){
+            sendButton.setAlpha(1f);
+        }else{
+            sendButton.setAlpha(0.3f);
+        }
     }
 
 //    private void uploadMessage(File compressedfullImage, File compressedCroppedImage) {
@@ -324,6 +342,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             case SELECT_PHOTO:
 //                try {
                 if(resultCode != 0){
+                    imageSelected = true;
                     final Uri imageUri = intent.getData();
 //                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
 //                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
@@ -336,9 +355,11 @@ public class AddMessageActivity extends Activity implements TextWatcher {
                 }
                 return;
             case SelectTagActivity.SELECT_TAG:
+                tagSelected = true;
                 messageTagId = Tag.tagCollection[resultCode].getTagId();
                 addTagButton.setImageResource(messageTagId);
                 messageTag = Tag.tagCollection[resultCode].tagName();
+                setSendButtonStatus();
                 return;
             default:
                 mImageCropper.onActivityResult(requestCode, resultCode, intent);
