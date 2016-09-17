@@ -1,46 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#ffffff"
     android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:padding="15dp"
     tools:context="com.daimajia.slider.demo.MainActivity">
 
     <com.daimajia.slider.library.SliderLayout
-        android:padding="7dp"
-        android:layout_margin="15dp"
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        custom:pager_animation="Default"
+        android:layout_height="600dp"
+        android:padding="7dp"
         custom:auto_cycle="true"
         custom:indicator_visibility="invisible"
-        custom:pager_animation_span="1100"
-        android:layout_height="600dp"/>
+        custom:pager_animation="Default"
+        custom:pager_animation_span="1100" />
+
+    <Button
+        android:id="@+id/catalog_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="7dp"
+        android:layout_marginLeft="7dp"
+        android:background="#aaffffff"
+        android:paddingLeft="2dp"
+        android:drawableLeft="@drawable/photo_ic"
+        android:text="עריכה"
+        android:textColor="#000000" />
+
 
     <!--<com.daimajia.slider.library.Indicators.PagerIndicator-->
-        <!--android:id="@+id/custom_indicator"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:gravity="center"-->
-        <!--custom:selected_color="#0095BF"-->
-        <!--custom:unselected_color="#55333333"-->
-        <!--custom:shape="rect"-->
-        <!--custom:selected_padding_left="5dp"-->
-        <!--custom:selected_padding_right="5dp"-->
-        <!--custom:unselected_padding_left="5dp"-->
-        <!--custom:unselected_padding_right="5dp"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--custom:selected_width="6dp"-->
-        <!--custom:selected_height="6dp"-->
-        <!--custom:unselected_width="6dp"-->
-        <!--custom:unselected_height="6dp"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--/>-->
-
-
+    <!--android:id="@+id/custom_indicator"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--custom:selected_color="#0095BF"-->
+    <!--custom:unselected_color="#55333333"-->
+    <!--custom:shape="rect"-->
+    <!--custom:selected_padding_left="5dp"-->
+    <!--custom:selected_padding_right="5dp"-->
+    <!--custom:unselected_padding_left="5dp"-->
+    <!--custom:unselected_padding_right="5dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--custom:selected_width="6dp"-->
+    <!--custom:selected_height="6dp"-->
+    <!--custom:unselected_width="6dp"-->
+    <!--custom:unselected_height="6dp"-->
+    <!--android:layout_marginBottom="20dp"-->
+    <!--/>-->
 
 
 </RelativeLayout>

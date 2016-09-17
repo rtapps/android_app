@@ -12,14 +12,18 @@
     <!--android:layout_width="fill_parent"-->
     <!--android:layout_height="fill_parent">-->
 
-    <ImageView
+    <ImageButton
         android:id="@+id/catalog_item_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/com_facebook_close" />
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_gravity="left"
+        android:padding="5dp"
+        android:background="#00ffffff"
+        android:scaleType="fitXY"
+        android:src="@drawable/delete_image_ic_2" />
 
     <ImageView
+        android:background="@color/businessMainColor"
         android:id="@+id/catalog_item_image"
         android:layout_width="120dp"
         android:layout_height="160dp"

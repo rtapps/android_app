@@ -57,6 +57,8 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(mLayoutId, parent, false);
 
+
+
         return new ViewHolder(view);
     }
 
@@ -68,7 +70,7 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
         holder.itemView.setTag(position);
 
         if(catalogImageItem.isAddNew()) {
-            holder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.plus));
+            holder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.add_image_ph));
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 CatalogImageItem mCatalogImageItem = catalogImageItem;
 
@@ -79,7 +81,7 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
                     }
                 }
             });
-            holder.deleteImage.setVisibility(View.GONE);
+            holder.deleteImage.setVisibility(View.INVISIBLE);
             return;
         }
         holder.deleteImage.setVisibility(View.VISIBLE);

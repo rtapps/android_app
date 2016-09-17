@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -60,6 +62,17 @@ public class UpdateCatalogActivity extends Activity{
         mImageFileSelector = new ImageFileSelector(this);
         mDragListView = (DragListView) findViewById(R.id.update_catalog_list_view);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.btn_back_black);
+        toolbar.setNavigationContentDescription("CLOSE");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCloseUpdateCatalog();
+            }
+        });
+
         mDragListView.setDragListListener(new DragListView.DragListListener() {
             @Override
             public void onItemDragStarted(int position) {
@@ -102,7 +115,8 @@ public class UpdateCatalogActivity extends Activity{
         if (catalogImageItems.size() < 7) {
             catalogImageItems.add(new CatalogImageItem(10, null, -1, null, false, true));
         }
-        mDragListView.setLayoutManager(new LinearLayoutManager(UpdateCatalogActivity.this));
+        mDragListView.setLayoutManager(new GridLayoutManager(UpdateCatalogActivity.this , 2) );
+
 
 
         ItemAdapter listAdapter = new ItemAdapter(mImageFileSelector, this, catalogImageItems, R.layout.uptate_catalog_item, R.id.catalog_item_image, true);
@@ -149,9 +163,14 @@ public class UpdateCatalogActivity extends Activity{
 
     @Override
     public void onBackPressed() {
+        onCloseUpdateCatalog();
+    }
+
+    private void onCloseUpdateCatalog(){
         new AlertDialog.Builder(this)
-                .setTitle("Save Changes")
-                .setPositiveButton("Save",
+                .setTitle("שמירה")
+                .setMessage("האם לשמור את השינויים?")
+                .setPositiveButton("שמור",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 commitChanges();
@@ -163,7 +182,7 @@ public class UpdateCatalogActivity extends Activity{
                             }
                         }
                 )
-                .setNegativeButton("Cancel",
+                .setNegativeButton("בטל",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 finish();
@@ -172,7 +191,6 @@ public class UpdateCatalogActivity extends Activity{
                 )
                 .show();
     }
-
     private void commitChanges() {
         ArrayList<ExistingCatalogImage> existingCatalogImageList = new ArrayList<>();
         ArrayList<Integer> newCatalogImages = new ArrayList<>();

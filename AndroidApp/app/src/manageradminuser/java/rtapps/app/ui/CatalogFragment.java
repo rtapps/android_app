@@ -3,9 +3,14 @@ package rtapps.app.ui;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.rtapps.kingofthejungle.R;
 
@@ -29,11 +34,29 @@ public class CatalogFragment extends CatalogFragmentBase {
         setHasOptionsMenu(true);
     }
 
+    @Nullable
     @Override
-    public void onCreateOptionsMenu(
-            Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.catalog_fragment_update_catalog_item_detail, menu);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+
+
+        Button editButton = (Button) v.findViewById(R.id.catalog_edit_button);
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<CatalogImageItem> catalogImageItems = getCataLogImageItems();
+                UpdateCatalogActivity.startActivity(getContext(), catalogImageItems);
+            }
+        });
+        return v;
     }
+
+//    @Override
+//    public void onCreateOptionsMenu(
+//            Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.catalog_fragment_update_catalog_item_detail, menu);
+//    }
 
     private ArrayList<CatalogImageItem> getCataLogImageItems(){
         ArrayList<CatalogImageItem> catalogImageItems = new ArrayList<>();
@@ -52,17 +75,17 @@ public class CatalogFragment extends CatalogFragmentBase {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // handle item selection
-        switch (item.getItemId()) {
-            case R.id.update_catalog:
-                ArrayList<CatalogImageItem> catalogImageItems = getCataLogImageItems();
-                UpdateCatalogActivity.startActivity(getContext(), catalogImageItems);
-                // do s.th.
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // handle item selection
+//        switch (item.getItemId()) {
+//            case R.id.update_catalog:
+//                ArrayList<CatalogImageItem> catalogImageItems = getCataLogImageItems();
+//                UpdateCatalogActivity.startActivity(getContext(), catalogImageItems);
+//                // do s.th.
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 }
