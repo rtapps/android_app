@@ -16,6 +16,9 @@ public class BasicErrorHandler implements ErrorHandler{
 
     @Override
     public Throwable handleError(RetrofitError cause) {
+        if (cause == null || cause.getResponse() == null){
+            return new ErrorUnknown();
+        }
         switch (cause.getResponse().getStatus()){
             case 400:
                 return new Error400();

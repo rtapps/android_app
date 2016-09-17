@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rtapps.buisnessapp.R;
 import com.sw926.imagefileselector.ImageCropper;
@@ -305,7 +303,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
 //
 //    }
 
-    private static class UploadNewMessageTask extends AsyncTask<Void, Void, Void> {
+    private static class UploadNewMessageTask extends AsyncTask<Void, Void, Boolean> {
 
         AccessToken accessToken;
         String messageHeader;
@@ -328,22 +326,28 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             AddMessageAPI addMessageAPI = AuthFileUploadServiceGenerator.createService(AddMessageAPI.class, accessToken);
             try {
                 addMessageAPI.putMessage(ApplicationConfigs.getApplicationId(), this.messageHeader, this.messageBody, this.isPush, this.messageTag, this.typedCompressedFullImage, this.typedCompressedCroppedImage);
             }
             catch (NetworkError networkError){
+                Log.d("AddMessageActivity", "Failed to add message");
+
                 networkError.printStackTrace();
+                return false;
             }
 
             MessagesSynchronizer messagesSynchronizer = new MessagesSynchronizer(this.context.getApplicationContext());
             messagesSynchronizer.syncAllMessages();
-            return null;
+            return true;
         }
 
         @Override
-        protected void onPostExecute(Void v) {
+        protected void onPostExecute(Boolean v) {
+            if (!v){
+                Toast.makeText(context, "חלה שגיאה! אנא בדקו את חיבור האינטרנט", Toast.LENGTH_LONG).show();
+            }
             ((AddMessageActivity) context).finish();
         }
     }

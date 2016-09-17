@@ -217,7 +217,7 @@ public class UpdateCatalogActivity extends Activity{
         uploadCatalogTask.execute();
     }
 
-    private static class UpdateCatalogTask extends AsyncTask{
+    private static class UpdateCatalogTask extends AsyncTask<Void, Void, Boolean>{
 
         private Context context;
         private AccessToken accessToken;
@@ -236,29 +236,33 @@ public class UpdateCatalogActivity extends Activity{
         }
 
         @Override
-        protected Object doInBackground(Object[] params) {
+        protected Boolean doInBackground(Void ... params) {
             UpdateCatalogAPI updateCatalogAPI = AuthFileUploadServiceGenerator.createService(UpdateCatalogAPI.class, accessToken);
             try {
                 updateCatalogAPI.updateCatalog(this.applicationId, this.existingCatalogImages, this.newCatalogImages,
-                    this.newCatalogImageFiles[0],
-                    this.newCatalogImageFiles[1],
-                    this.newCatalogImageFiles[2],
-                    this.newCatalogImageFiles[3],
-                    this.newCatalogImageFiles[4],
-                    this.newCatalogImageFiles[5],
-                    this.newCatalogImageFiles[6]);
-            }catch (NetworkError networkError){
-                Log.e("UpdateCalatogActivity","Received network error: " + networkError.getErrorCode());
+                        this.newCatalogImageFiles[0],
+                        this.newCatalogImageFiles[1],
+                        this.newCatalogImageFiles[2],
+                        this.newCatalogImageFiles[3],
+                        this.newCatalogImageFiles[4],
+                        this.newCatalogImageFiles[5],
+                        this.newCatalogImageFiles[6]);
+            } catch (NetworkError networkError) {
+                Log.e("UpdateCalatogActivity", "Received network error: " + networkError.getErrorCode());
                 networkError.printStackTrace();
+                return false;
             }
             CatalogSynchronizer catalogSynchronizer = new CatalogSynchronizer(context);
             catalogSynchronizer.syncCatalog();
-            return null;
+            return true;
         }
 
         @Override
-        protected void onPostExecute(Object o) {
+        protected void onPostExecute(Boolean o) {
             super.onPostExecute(o);
+            if (!o){
+                Toast.makeText(context, "חלה שגיאה! אנא בדקו את חיבור האינטרנט", Toast.LENGTH_LONG).show();
+            }
             ((Activity)context).finish();
         }
     }
