@@ -26,6 +26,7 @@ import com.squareup.picasso.Target;
 
 import java.io.File;
 
+import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 import rtapps.app.network.AppAPI;
 
@@ -42,6 +43,7 @@ public class MessageContentActivity extends AppCompatActivity {
 
     public static final String EXTRA_FILE_NAME = "extraFileName";
     public static final String EXTRA_ID = "extraId";
+    public static final String EXTRA_FILE_SERVER_HOST = "extraFileServerHost";
 
 
     @Override
@@ -53,14 +55,24 @@ public class MessageContentActivity extends AppCompatActivity {
 
         String filename = intent.getExtras().getString(MessageContentActivity.EXTRA_FILE_NAME);
         String id = intent.getExtras().getString(MessageContentActivity.EXTRA_ID);
+        String fileServerHost = intent.getExtras().getString(MessageContentActivity.EXTRA_FILE_SERVER_HOST);
 
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("messages", Context.MODE_PRIVATE);
         File file = new File(directory, id +"/" +filename);
 
         GestureImageView fimg =(GestureImageView)findViewById(R.id.g_image);
+        if (file.exists()) {
+            Log.d("MessageContentActivity", "file exist load from internal storage");
+            Picasso.with(this).load(file).into(fimg);
+        } else {
+            Log.d("MessageContentActivity", "file not exist load from network" + file.getPath());
+            final String imageUrl = fileServerHost + ApplicationConfigs.getApplicationId() + "/" + id + "/" + filename;
+            Picasso.with(this).load(imageUrl).into(fimg);
+        }
 
-        Picasso.with(this).load(file).into(fimg);
+
+
     }
 
 

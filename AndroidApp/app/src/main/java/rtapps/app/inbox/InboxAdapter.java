@@ -62,7 +62,7 @@ public class InboxAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 Intent intent = new Intent(context, MessageContentActivity.class);
                 intent.putExtra(MessageContentActivity.EXTRA_FILE_NAME, message.getFullImageName());
                 intent.putExtra(MessageContentActivity.EXTRA_ID, message.getId());
-
+                intent.putExtra(MessageContentActivity.EXTRA_FILE_SERVER_HOST, message.getFileServerHost());
                 context.startActivity(intent);
             }
         });
