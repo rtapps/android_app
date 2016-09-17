@@ -34,6 +34,7 @@ import retrofit.mime.TypedFile;
 import rtapps.app.account.AccountManager;
 import rtapps.app.account.authentication.network.throwables.NetworkError;
 import rtapps.app.config.ApplicationConfigs;
+import rtapps.app.imageSelection.ImageSelector;
 import rtapps.app.inbox.Tag;
 import rtapps.app.messages.network.AddMessageAPI;
 import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
@@ -62,6 +63,8 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     private Boolean tagSelected = false;
     private Boolean imageSelected = false;
 
+    private ImageSelector imageSelector;
+
     private int tagIndex = -1;
 
 
@@ -82,6 +85,20 @@ public class AddMessageActivity extends Activity implements TextWatcher {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        imageSelector = new ImageSelector(this, SELECT_PHOTO);
+        imageSelector.setCallback(new ImageSelector.Callback() {
+            @Override
+            public void onSuccess(String file) {
+                imageSelected = true;
+                cropImage(file);
+            }
+
+            @Override
+            public void onFail() {
+
             }
         });
 
@@ -151,10 +168,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
         previewImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // mImageFileSelector.selectImage(AddMessageActivity.this);
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+                imageSelector.startImageSelection();
             }
         });
 
@@ -337,23 +351,10 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        imageSelector.onActivityResult(requestCode, resultCode, intent);
+        mImageCropper.onActivityResult(requestCode, resultCode, intent);
 
         switch (requestCode) {
-            case SELECT_PHOTO:
-//                try {
-                if(resultCode != 0){
-                    imageSelected = true;
-                    final Uri imageUri = intent.getData();
-//                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-//                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-//                    previewImage.setImageBitmap(selectedImage);
-                    String filePath = (getRealPathFromURI(imageUri));
-                    cropImage(filePath);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-                }
-                return;
             case SelectTagActivity.SELECT_TAG:
                 tagSelected = true;
                 messageTagId = Tag.tagCollection[resultCode].getTagId();
@@ -362,18 +363,10 @@ public class AddMessageActivity extends Activity implements TextWatcher {
                 setSendButtonStatus();
                 return;
             default:
-                mImageCropper.onActivityResult(requestCode, resultCode, intent);
                 return;
         }
 
         // mImageFileSelector.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
     }
 
     @Override
@@ -394,7 +387,7 @@ public class AddMessageActivity extends Activity implements TextWatcher {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        mImageFileSelector.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        imageSelector.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     //  Button button;

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         tools:replace="android:label"
         android:label="@string/store_name_admin"

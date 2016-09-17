@@ -16,6 +16,8 @@ import com.woxthebox.draglistview.DragItemAdapter;
 import java.io.File;
 import java.util.ArrayList;
 
+import id.zelory.compressor.Compressor;
+import rtapps.app.imageSelection.ImageSelector;
 import rtapps.app.network.responses.CatalogImage;
 
 public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.ViewHolder> {
@@ -26,9 +28,9 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
 
     private final Context context;
 
-    ImageFileSelector mImageFileSelector;
+    ImageSelector mImageFileSelector;
 
-    public ItemAdapter(ImageFileSelector imageFileSelector, Context context, ArrayList<CatalogImageItem> list, int layoutId, int grabHandleId, boolean dragOnLongPress) {
+    public ItemAdapter(ImageSelector imageFileSelector, final Context context, ArrayList<CatalogImageItem> list, int layoutId, int grabHandleId, boolean dragOnLongPress) {
         super(dragOnLongPress);
         this.mImageFileSelector = imageFileSelector;
         this.context = context;
@@ -37,17 +39,20 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
         setHasStableIds(true);
         setItemList(list);
 
-        mImageFileSelector.setCallback(new ImageFileSelector.Callback() {
+        mImageFileSelector.setCallback(new ImageSelector.Callback() {
             @Override
-            public void onSuccess(final String file) {
-                CatalogImageItem catalogImageItem = new CatalogImageItem(mItemList.size(), null, mItemList.size(), new File(file), true, false );
+            public void onSuccess(String file) {
+                File compressedImage = new Compressor.Builder(context).setMaxWidth(1920).setMaxHeight(1920).setQuality(95).build().compressToFile(new File(file));
+
+                CatalogImageItem catalogImageItem = new CatalogImageItem(mItemList.size(), null, mItemList.size(), compressedImage, true, false );
                 addItem(mItemList.size() -1, catalogImageItem);
                 if (mItemList.size() == 8){
                     removeItem(mItemList.size() -1);
                 }
             }
+
             @Override
-            public void onError() {
+            public void onFail() {
 
             }
         });
@@ -77,7 +82,7 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
                 @Override
                 public void onClick(View v) {
                     if ( mCatalogImageItem.isAddNew()){
-                        mImageFileSelector.selectImage((Activity)context);
+                        mImageFileSelector.startImageSelection();
                     }
                 }
             });
@@ -124,7 +129,7 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
             Toast.makeText(view.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
             int position = (int) view.getTag();
             if ( mItemList.get(position).isAddNew()){
-                mImageFileSelector.selectImage((Activity)context);
+                mImageFileSelector.startImageSelection();
             }
         }
 

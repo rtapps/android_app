@@ -35,6 +35,7 @@ import rtapps.app.catalog.network.NewCatalogImage;
 import rtapps.app.catalog.network.UpdateCatalogAPI;
 import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
+import rtapps.app.imageSelection.ImageSelector;
 import rtapps.app.inbox.MessageContentActivity;
 import rtapps.app.messages.network.AddMessageAPI;
 import rtapps.app.messages.network.AuthFileUploadServiceGenerator;
@@ -52,14 +53,16 @@ public class UpdateCatalogActivity extends Activity{
     DragListView mDragListView;
 
     ArrayList<CatalogImageItem> catalogImageItems;
-    ImageFileSelector mImageFileSelector;
+    ImageSelector mImageFileSelector;
+    private static int SELECT_IMAGE = 200;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_catalog);
 
-        mImageFileSelector = new ImageFileSelector(this);
+        mImageFileSelector = new ImageSelector(this, SELECT_IMAGE);
         mDragListView = (DragListView) findViewById(R.id.update_catalog_list_view);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -142,13 +145,11 @@ public class UpdateCatalogActivity extends Activity{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mImageFileSelector.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mImageFileSelector.onRestoreInstanceState(savedInstanceState);
     }
 
     // Android 6.0的动态权限
