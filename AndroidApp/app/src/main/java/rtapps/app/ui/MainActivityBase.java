@@ -18,7 +18,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarFragment;
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 import rtapps.app.gcm.GcmPrefrences;
 import rtapps.app.gcm.RegistrationIntentService;

@@ -20,7 +20,7 @@ import com.alexvasilkov.gestures.views.GestureImageView;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 

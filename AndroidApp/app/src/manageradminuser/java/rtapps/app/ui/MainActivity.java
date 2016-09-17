@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 import rtapps.app.account.AccountManager;
 

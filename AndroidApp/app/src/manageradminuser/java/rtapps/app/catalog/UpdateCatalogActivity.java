@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.sql.language.Update;
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 import com.sw926.imagefileselector.ImageFileSelector;
 import com.woxthebox.draglistview.DragListView;
 

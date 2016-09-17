@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 import rtapps.app.config.Configurations;
 

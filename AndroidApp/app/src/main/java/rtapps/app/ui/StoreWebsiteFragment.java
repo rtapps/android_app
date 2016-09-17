@@ -10,7 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebViewFragment;
 
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 
 public class StoreWebsiteFragment extends WebViewFragment {

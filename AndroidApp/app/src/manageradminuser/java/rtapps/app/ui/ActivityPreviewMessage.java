@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 import rtapps.app.config.Configurations;
 import rtapps.app.inbox.Tag;

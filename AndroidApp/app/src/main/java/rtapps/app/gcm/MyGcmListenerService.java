@@ -27,7 +27,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;

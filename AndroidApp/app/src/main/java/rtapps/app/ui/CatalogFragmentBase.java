@@ -19,7 +19,7 @@ import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;

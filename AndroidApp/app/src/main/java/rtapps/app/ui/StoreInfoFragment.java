@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.share.widget.LikeView;
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 import java.util.logging.Logger;
 

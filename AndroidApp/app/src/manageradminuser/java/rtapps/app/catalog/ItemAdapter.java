@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 import com.squareup.picasso.Picasso;
 import com.sw926.imagefileselector.ImageFileSelector;
 import com.woxthebox.draglistview.DragItemAdapter;

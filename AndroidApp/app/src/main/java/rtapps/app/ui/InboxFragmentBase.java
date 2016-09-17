@@ -16,7 +16,7 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;

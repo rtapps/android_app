@@ -1,10 +1,5 @@
 package rtapps.app.config;
 
-import com.rtapps.kingofthejungle.R;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by rtichauer on 7/26/16.

@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.share.widget.ShareButton;
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 //Contacts View holder class
 public abstract class InboxViewHolderBase extends RecyclerView.ViewHolder {

@@ -1,6 +1,6 @@
 package rtapps.app.inbox;
 
-import com.rtapps.kingofthejungle.R;
+import com.rtapps.buisnessapp.R;
 
 public class Tag{
 
