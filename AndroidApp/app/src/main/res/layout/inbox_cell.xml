@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
-            android:background="#f90000"
+            android:background="#99f90000"
             android:drawableLeft="@drawable/delete_white_ic"
             android:padding="10dp"
             android:text="מחיקה"

@@ -61,6 +61,8 @@
                 android:background="#a0a0a0" />
 
             <ImageView
+                android:id="@+id/info_button_facebook"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/facebook_logo" />
@@ -127,9 +129,15 @@
             android:layout_height="wrap_content">
 
             <com.facebook.share.widget.LikeView
+
                 android:id="@+id/like_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"></View>
 
             <TextView
                 android:id="@+id/store_info_phone_number"
@@ -142,10 +150,14 @@
                 tools:text="04-825-1881" />
 
             <ImageView
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:id="@+id/button_phone"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/phone" />
         </LinearLayout>
+
+
 
 
     </LinearLayout>
