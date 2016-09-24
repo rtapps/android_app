@@ -55,7 +55,8 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 
-    compile "com.google.android.gms:play-services-gcm:9.2.0"
+    compile "com.google.android.gms:play-services-gcm:9.6.0"
+    compile "com.google.android.gms:play-services-maps:9.6.0"
 
     compile "com.android.support:support-v4:+"
     compile 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'

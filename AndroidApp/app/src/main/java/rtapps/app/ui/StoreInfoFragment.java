@@ -1,9 +1,15 @@
 package rtapps.app.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.share.widget.LikeView;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.rtapps.buisnessapp.R;
 
 import java.util.logging.Logger;
@@ -23,7 +31,15 @@ import rtapps.app.config.ApplicationConfigs;
 import rtapps.app.config.Configurations;
 
 
-public class StoreInfoFragment extends Fragment {
+import android.support.v4.app.FragmentActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class StoreInfoFragment extends Fragment implements OnMapReadyCallback{
 
     public static StoreInfoFragment newInstance(String param1) {
         StoreInfoFragment fragment = new StoreInfoFragment();
@@ -34,9 +50,83 @@ public class StoreInfoFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private GoogleMap mMap;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        alertDialog = new AlertDialog.Builder(this.getActivity() ,R.style.AlertDialogCustom)
+//                .setTitle("נווט ל" + ApplicationConfigs.getBusinessName())
+                .setMessage("נווט ל" + ApplicationConfigs.getBusinessName())
+                .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        LatLng location = ApplicationConfigs.getBusinessLocation();
+
+                        String uri = "geo:0,0?q="+location.latitude+","+location.longitude;
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                        intent.setData(Uri.parse(uri));
+
+                        String title = "בחר אפליקציית ניווט";
+                        Intent chooser = Intent.createChooser(intent, title);
+
+                        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                            startActivity(chooser);
+                        }
+                    }
+                })
+                .setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create();
+    }
+
+
+    AlertDialog alertDialog;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SupportMapFragment mSupportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mSupportMapFragment == null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            mSupportMapFragment = SupportMapFragment.newInstance();
+            fragmentTransaction.replace(R.id.map, mSupportMapFragment).commit();
+        }
+
+        if (mSupportMapFragment != null) {
+            mSupportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    if (googleMap != null) {
+
+                        googleMap.getUiSettings().setAllGesturesEnabled(true);
+
+                        final LatLng location = ApplicationConfigs.getBusinessLocation();
+
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom(15.0f).build();
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                        googleMap.moveCamera(cameraUpdate);
+
+                        googleMap.addMarker(new MarkerOptions().position(location).title(ApplicationConfigs.getBusinessName()));
+
+                        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                            @Override
+                            public void onMapClick(LatLng latLng) {
+                                alertDialog.show();
+                            }
+                        });
+                    }
+
+                }
+            });
+        }
     }
 
     @Override
@@ -102,5 +192,15 @@ public class StoreInfoFragment extends Fragment {
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
 
+        mMap = googleMap;
+
+        // Add a marker in Sydney, Australia, and move the camera.
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+    }
 }
