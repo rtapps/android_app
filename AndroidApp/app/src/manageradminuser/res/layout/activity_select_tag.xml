@@ -7,7 +7,7 @@
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:background="#eeede8"
+        android:background="@color/businessMainColor"
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:layout_height="58dp"
