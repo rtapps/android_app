@@ -4,10 +4,8 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.util.concurrent.TimeUnit;
 
-import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
-import retrofit.RetrofitError;
 import retrofit.client.OkClient;
 import rtapps.app.account.authentication.network.BasicErrorHandler;
 import rtapps.app.config.Configurations;
@@ -18,25 +16,19 @@ import rtapps.app.network.AccessToken;
  */
 public class AuthFileUploadServiceGenerator {
 
-    private static RestAdapter.Builder getBuilder(){
+
+
+    public static <S> S createService(Class<S> serviceClass, final AccessToken accessToken) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(0, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(0, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(0, TimeUnit.SECONDS);
 
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(Configurations.BASE_URL)
                 .setClient(new OkClient(okHttpClient));
 
-        return builder;
 
-    }
-
-    private static RestAdapter.Builder builder = new RestAdapter.Builder()
-            .setEndpoint(Configurations.BASE_URL)
-            .setClient(new OkClient(new OkHttpClient()));
-
-
-    public static <S> S createService(Class<S> serviceClass, final AccessToken accessToken) {
         if (accessToken!= null) {
             builder.setRequestInterceptor(new RequestInterceptor() {
                 @Override

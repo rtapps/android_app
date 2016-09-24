@@ -72,7 +72,7 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
         super.onBindViewHolder(holder, position);
         final CatalogImageItem catalogImageItem = mItemList.get(position);
 
-        holder.itemView.setTag(position);
+        holder.itemView.setTag(catalogImageItem);
 
         if(catalogImageItem.isAddNew()) {
             holder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.add_image_ph));
@@ -126,9 +126,9 @@ public class ItemAdapter extends DragItemAdapter<CatalogImageItem, ItemAdapter.V
 
         @Override
         public void onItemClicked(View view) {
-            Toast.makeText(view.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
-            int position = (int) view.getTag();
-            if ( mItemList.get(position).isAddNew()){
+
+            final CatalogImageItem catalogImageItem = (CatalogImageItem) view.getTag();
+            if ( catalogImageItem.isAddNew()){
                 mImageFileSelector.startImageSelection();
             }
         }

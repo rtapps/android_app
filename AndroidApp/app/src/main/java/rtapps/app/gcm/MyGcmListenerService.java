@@ -16,6 +16,7 @@
 
 package rtapps.app.gcm;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -82,6 +83,8 @@ public class MyGcmListenerService extends GcmListenerService {
                 .setContentTitle(ApplicationConfigs.getBusinessName())
                 .setContentText(message)
                 .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL) // must requires VIBRATE permission
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
