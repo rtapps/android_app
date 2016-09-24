@@ -1,0 +1,16 @@
+<resources>
+
+    <string name="action_settings">Settings</string>
+
+
+    <string name="app_name"> פסי בוטיק</string>
+
+    <string name="tab_sales">הטבות</string>
+    <string name="tab_store_info">מידע</string>
+    <string name="tab_website">האתר</string>
+    <string name="tab_catalog">קטלוג</string>
+
+    <!--<string name="facebook_app_id">278572082518954</string>-->
+
+
+</resources>

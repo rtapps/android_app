@@ -60,7 +60,7 @@ public class StoreInfoFragment extends Fragment {
         });
 
 
-        storeName.setText(R.string.store_name);
+        storeName.setText(R.string.app_name);
         storeAddress.setText(R.string.info_store_address);
         storeAddressCity.setText(R.string.info_store_address_city);
         storePhoneNumber.setText(R.string.info_store_phone_number);
