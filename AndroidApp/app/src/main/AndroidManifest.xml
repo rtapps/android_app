@@ -20,7 +20,7 @@
         tools:replace="android:label"
         android:name="rtapps.app.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/pessy_logo"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/store_name"
         android:supportsRtl="true"
         android:theme="@style/AppThemeRTApps">
