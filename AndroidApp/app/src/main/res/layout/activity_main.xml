@@ -8,21 +8,7 @@
     android:layout_height="match_parent"
     tools:context="rtapps.app.ui.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:background="#eeede8"
-        android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:layout_height="58dp"
-        android:id="@+id/my_toolbar"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/tool_bar_title"/>
-
-    </android.support.v7.widget.Toolbar>
+    <include layout="@layout/main_tool_bar"/>
 
     <View
         android:layout_width="match_parent"

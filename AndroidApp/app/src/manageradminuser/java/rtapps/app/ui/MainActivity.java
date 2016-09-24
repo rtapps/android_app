@@ -22,9 +22,6 @@ public class MainActivity extends MainActivityBase {
             LoginActivity.startActivity(this);
             return;
         }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        toolbar.setTitle("מנהל");
-        setSupportActionBar(toolbar);
     }
 
     public static void startActivity(Context context) {

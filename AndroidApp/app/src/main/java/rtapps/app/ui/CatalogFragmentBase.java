@@ -30,7 +30,6 @@ import java.util.List;
 
 import rtapps.app.databases.CatalogTable;
 import rtapps.app.databases.MessagesTable;
-import rtapps.app.gcm.NotificationsManager;
 
 import rtapps.app.databases.DataBaseHelper;
 import rtapps.app.infrastructure.BusHolder;
