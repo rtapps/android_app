@@ -99,7 +99,7 @@ dependencies {
 
     compile 'id.zelory:compressor:1.0.2'
 
-    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
 
     compile 'com.alexvasilkov:gesture-views:2.1.1'
 
